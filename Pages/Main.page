@@ -23,6 +23,91 @@
 					"_Type": "Section.Type.ObjectHeader",
 					"_Name": "SectionObjectHeader0",
 					"Visible": true
+				},
+				{
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"_Type": "Section.Type.ObjectCardCollection",
+					"Target": {
+						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+						"EntitySet": "cust_Turmas",
+						"QueryOptions": "$top=3"
+					},
+					"_Name": "SectionObjectCardCollection0",
+					"Header": {
+						"_Type": "SectionCommon.Type.Header",
+						"_Name": "SectionCommonTypeHeader0",
+						"AccessoryType": "None",
+						"UseTopPadding": true,
+						"Styles": {
+							"Header": "background-50"
+						},
+						"Caption": "Próximas turmas disponíveis"
+					},
+					"Footer": {
+						"_Type": "SectionCommon.Type.Footer",
+						"_Name": "SectionCommonTypeFooter0",
+						"Caption": "Ver todas as turmas",
+						"AccessoryType": "DisclosureIndicator",
+						"FooterStyle": "Attribute",
+						"Visible": true,
+						"UseBottomPadding": true,
+						"Styles": {
+							"Caption": "letter-color"
+						}
+					},
+					"Visible": true,
+					"EmptySection": {
+						"Caption": "Sem turmas disponíveis",
+						"FooterVisible": true
+					},
+					"DataPaging": {
+						"ShowLoadingIndicator": false,
+						"PageSize": 3
+					},
+					"Card": {
+						"Visible": true,
+						"Title": "{externalCode}",
+						"Footnote": "ID da Turma: {externalCode}",
+						"DetailImage": "/Attendance_List/Images/logo.png",
+						"DetailImageIsCircular": false,
+						"Description": "/Attendance_List/Rules/Main/DescriptionTurma.js",
+						"PrimaryAction": {
+							"Visible": false
+						},
+						"SecondaryAction": {
+							"Title": "Secondary",
+							"Visible": false
+						},
+						"_Type": "Control.Type.ObjectCard"
+					},
+					"Layout": {
+						"LayoutType": "Vertical"
+					}
+				},
+				{
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"_Type": "Section.Type.FormCell",
+					"_Name": "SectionFormCell0",
+					"Controls": [],
+					"Layout": {
+						"NumberOfColumns": 1
+					}
 				}
 			]
 		}

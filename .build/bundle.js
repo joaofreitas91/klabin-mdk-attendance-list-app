@@ -577,6 +577,75 @@ function UserLogSetting(clientAPI) {
 
 /***/ }),
 
+/***/ "./build.definitions/Attendance_List/Rules/Main/DescriptionTurma.js":
+/*!**************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/DescriptionTurma.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ DescriptionTurma)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function DescriptionTurma(clientAPI) {
+    var dDate = new Date(clientAPI.binding.cust_START_TME) 
+    var cRet  = 'Início: ' + dDate.getDate().toString().padStart(2,"0") + "/" + (dDate.getMonth()+1).toString().padStart(2,"0") + "/" + dDate.getFullYear().toString()
+    cRet += " às " + dDate.getHours().toString().padStart(2,"0") +":"+ dDate.getMinutes().toString().padStart(2,"0") + "h"
+    
+    cRet += "\n"
+
+    dDate = new Date(clientAPI.binding.cust_END_TME) 
+    cRet += 'Fim: ' + dDate.getDate().toString().padStart(2,"0") + "/" + (dDate.getMonth()+1).toString().padStart(2,"0") + "/" + dDate.getFullYear().toString()
+    cRet += " às " + dDate.getHours().toString().padStart(2,"0") +":"+ dDate.getMinutes().toString().padStart(2,"0") + "h"
+
+    return(cRet)
+}
+ 
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/GetTurmas.js":
+/*!*******************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/GetTurmas.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetTurmas)
+/* harmony export */ });
+function GetTurmas(context) {    
+    var cTop = "&$top=3"
+    var cExpand = "&$expand=cust_ListaNav($expand=cust_AlunosNav)"
+    var dDate = new Date();
+    var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
+    var cFilter =  "$filter=cust_END_TME ge datetimeoffset'" + cDate + "T00:00:00Z' and cust_LOCN_DESC ne 'null' and externalName ne 'null'";
+    
+    cFilter += cTop + cExpand
+
+    context.executeAction({
+
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+            "Message": `Query: ${cFilter}`,
+            "Animated": true,
+            "Duration": 1,
+            "IsIconHidden": true,
+            "NumberOfLines": 1
+        }
+    });
+
+    return cFilter;
+}
+
+/***/ }),
+
 /***/ "./build.definitions/Attendance_List/Rules/Main/WelcomeMessage.js":
 /*!************************************************************************!*\
   !*** ./build.definitions/Attendance_List/Rules/Main/WelcomeMessage.js ***!
@@ -696,6 +765,7 @@ let attendance_list_actions_logging_loguploadfailure_action = __webpack_require_
 let attendance_list_actions_logging_loguploadsuccessful_action = __webpack_require__(/*! ./Attendance_List/Actions/Logging/LogUploadSuccessful.action */ "./build.definitions/Attendance_List/Actions/Logging/LogUploadSuccessful.action")
 let attendance_list_actions_logging_uploadlog_action = __webpack_require__(/*! ./Attendance_List/Actions/Logging/UploadLog.action */ "./build.definitions/Attendance_List/Actions/Logging/UploadLog.action")
 let attendance_list_actions_logging_uploadlogprogress_action = __webpack_require__(/*! ./Attendance_List/Actions/Logging/UploadLogProgress.action */ "./build.definitions/Attendance_List/Actions/Logging/UploadLogProgress.action")
+let attendance_list_actions_main_navtoturmaslista_action = __webpack_require__(/*! ./Attendance_List/Actions/Main/navToTurmasLista.action */ "./build.definitions/Attendance_List/Actions/Main/navToTurmasLista.action")
 let attendance_list_globals_application_appdefinition_version_global = __webpack_require__(/*! ./Attendance_List/Globals/Application/AppDefinition_Version.global */ "./build.definitions/Attendance_List/Globals/Application/AppDefinition_Version.global")
 let attendance_list_globals_application_applicationname_global = __webpack_require__(/*! ./Attendance_List/Globals/Application/ApplicationName.global */ "./build.definitions/Attendance_List/Globals/Application/ApplicationName.global")
 let attendance_list_globals_application_supportemail_global = __webpack_require__(/*! ./Attendance_List/Globals/Application/SupportEmail.global */ "./build.definitions/Attendance_List/Globals/Application/SupportEmail.global")
@@ -724,6 +794,8 @@ let attendance_list_rules_logging_setuserloglevel_js = __webpack_require__(/*! .
 let attendance_list_rules_logging_togglelogging_js = __webpack_require__(/*! ./Attendance_List/Rules/Logging/ToggleLogging.js */ "./build.definitions/Attendance_List/Rules/Logging/ToggleLogging.js")
 let attendance_list_rules_logging_tracecategories_js = __webpack_require__(/*! ./Attendance_List/Rules/Logging/TraceCategories.js */ "./build.definitions/Attendance_List/Rules/Logging/TraceCategories.js")
 let attendance_list_rules_logging_userlogsetting_js = __webpack_require__(/*! ./Attendance_List/Rules/Logging/UserLogSetting.js */ "./build.definitions/Attendance_List/Rules/Logging/UserLogSetting.js")
+let attendance_list_rules_main_descriptionturma_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/DescriptionTurma.js */ "./build.definitions/Attendance_List/Rules/Main/DescriptionTurma.js")
+let attendance_list_rules_main_getturmas_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/GetTurmas.js */ "./build.definitions/Attendance_List/Rules/Main/GetTurmas.js")
 let attendance_list_rules_main_welcomemessage_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/WelcomeMessage.js */ "./build.definitions/Attendance_List/Rules/Main/WelcomeMessage.js")
 let attendance_list_rules_service_initialize_js = __webpack_require__(/*! ./Attendance_List/Rules/Service/Initialize.js */ "./build.definitions/Attendance_List/Rules/Service/Initialize.js")
 let attendance_list_services_cap_service_sf_lms_service = __webpack_require__(/*! ./Attendance_List/Services/CAP_SERVICE_SF_LMS.service */ "./build.definitions/Attendance_List/Services/CAP_SERVICE_SF_LMS.service")
@@ -780,6 +852,7 @@ module.exports = {
 	attendance_list_actions_logging_loguploadsuccessful_action : attendance_list_actions_logging_loguploadsuccessful_action,
 	attendance_list_actions_logging_uploadlog_action : attendance_list_actions_logging_uploadlog_action,
 	attendance_list_actions_logging_uploadlogprogress_action : attendance_list_actions_logging_uploadlogprogress_action,
+	attendance_list_actions_main_navtoturmaslista_action : attendance_list_actions_main_navtoturmaslista_action,
 	attendance_list_globals_application_appdefinition_version_global : attendance_list_globals_application_appdefinition_version_global,
 	attendance_list_globals_application_applicationname_global : attendance_list_globals_application_applicationname_global,
 	attendance_list_globals_application_supportemail_global : attendance_list_globals_application_supportemail_global,
@@ -808,6 +881,8 @@ module.exports = {
 	attendance_list_rules_logging_togglelogging_js : attendance_list_rules_logging_togglelogging_js,
 	attendance_list_rules_logging_tracecategories_js : attendance_list_rules_logging_tracecategories_js,
 	attendance_list_rules_logging_userlogsetting_js : attendance_list_rules_logging_userlogsetting_js,
+	attendance_list_rules_main_descriptionturma_js : attendance_list_rules_main_descriptionturma_js,
+	attendance_list_rules_main_getturmas_js : attendance_list_rules_main_getturmas_js,
 	attendance_list_rules_main_welcomemessage_js : attendance_list_rules_main_welcomemessage_js,
 	attendance_list_rules_service_initialize_js : attendance_list_rules_service_initialize_js,
 	attendance_list_services_cap_service_sf_lms_service : attendance_list_services_cap_service_sf_lms_service,
@@ -1632,7 +1707,7 @@ module.exports = {"Controls":[{"_Type":"Control.Type.SectionedTable","_Name":"Se
   \***********************************************************/
 /***/ ((module) => {
 
-module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"ObjectHeader":{"Subhead":"Bem vindo(a) ao App Lista de Presença","StatusText":"Status","DetailImageIsCircular":false,"HeadlineText":"/Attendance_List/Rules/Main/WelcomeMessage.js","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader0","Visible":true}]}],"PullDown":{"OnPulledDown":"/Attendance_List/Actions/Application/AppUpdate.action","Styles":{"BackgroundColor":"#f4e9c1","IndicatorColor":"#6cb56a"}},"_Type":"Page","_Name":"Main","Caption":"Main","PrefersLargeCaption":true,"ActionBar":{"Items":[{"_Name":"ActionBarItem0","Caption":"User Menu","Icon":"sap-icon://customer","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Application/UserMenuPopover.action"}],"_Name":"ActionBar1"},"DesignTimeTarget":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"}}
+module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"ObjectHeader":{"Subhead":"Bem vindo(a) ao App Lista de Presença","DetailImageIsCircular":false,"HeadlineText":"/Attendance_List/Rules/Main/WelcomeMessage.js","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader0","Visible":true},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.ObjectCardCollection","Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas","QueryOptions":"$top=3"},"_Name":"SectionObjectCardCollection0","Header":{"_Type":"SectionCommon.Type.Header","_Name":"SectionCommonTypeHeader0","AccessoryType":"None","UseTopPadding":true,"Styles":{"Header":"background-50"},"Caption":"Próximas turmas disponíveis"},"Footer":{"_Type":"SectionCommon.Type.Footer","_Name":"SectionCommonTypeFooter0","Caption":"Ver todas as turmas","AccessoryType":"DisclosureIndicator","FooterStyle":"Attribute","Visible":true,"UseBottomPadding":true,"Styles":{"Caption":"letter-color"}},"Visible":true,"EmptySection":{"Caption":"Sem turmas disponíveis","FooterVisible":true},"DataPaging":{"ShowLoadingIndicator":false,"PageSize":3},"Card":{"Visible":true,"Title":"{externalCode}","Footnote":"ID da Turma: {externalCode}","DetailImage":"/Attendance_List/Images/logo.png","DetailImageIsCircular":false,"Description":"/Attendance_List/Rules/Main/DescriptionTurma.js","PrimaryAction":{"Visible":false},"SecondaryAction":{"Title":"Secondary","Visible":false},"_Type":"Control.Type.ObjectCard"},"Layout":{"LayoutType":"Vertical"}},{"Visible":true,"EmptySection":{"FooterVisible":false},"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0","Controls":[],"Layout":{"NumberOfColumns":1}}]}],"PullDown":{"OnPulledDown":"/Attendance_List/Actions/Application/AppUpdate.action","Styles":{"BackgroundColor":"#f4e9c1","IndicatorColor":"#6cb56a"}},"DesignTimeTarget":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"_Type":"Page","_Name":"Main","Caption":"Home","PrefersLargeCaption":false,"ActionBar":{"Items":[{"_Name":"ActionBarItem0","Caption":"User Menu","Icon":"sap-icon://menu","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Application/UserMenuPopover.action"}],"_Name":"ActionBar1"}}
 
 /***/ }),
 
@@ -2003,6 +2078,16 @@ module.exports = {"ActionResult":{"_Name":"UploadLog"},"ActivityIndicatorText":"
 /***/ ((module) => {
 
 module.exports = {"Animated":true,"CompletionMessage":"Logs Uploaded","CompletionTimeout":2,"Message":"Uploading Log Files...","OnSuccess":"/Attendance_List/Actions/Logging/UploadLog.action","_Type":"Action.Type.ProgressBanner"}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Actions/Main/navToTurmasLista.action":
+/*!********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Actions/Main/navToTurmasLista.action ***!
+  \********************************************************************************/
+/***/ ((module) => {
+
+module.exports = {"_Type":"Action.Type.Navigation","ActionResult":{"_Name":"navToTurmasLista"},"PageToOpen":"/Attendance_List/Pages/Main.page"}
 
 /***/ }),
 
