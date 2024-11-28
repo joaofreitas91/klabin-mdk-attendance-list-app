@@ -1,0 +1,5 @@
+{
+    "ModalPage": true,
+    "PageToOpen": "/Attendance_List/Pages/Application/About.page",
+    "_Type": "Action.Type.Navigation"
+}

@@ -1,0 +1,10 @@
+{
+    "_Type": "Action.Type.OfflineOData.Close",
+    "Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+    "Force": true,
+    "ActionResult": {
+        "_Name": "close"
+    },
+    "OnSuccess": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/CloseOfflineSuccessMessage.action",
+    "OnFailure": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/CloseOfflineFailureMessage.action"
+}

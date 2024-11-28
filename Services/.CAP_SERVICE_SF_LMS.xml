@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="SFSFService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="cust_Turmas" EntityType="SFSFService.cust_Turmas">
+                    <NavigationPropertyBinding Path="createdByNav" Target="User"/>
+                    <NavigationPropertyBinding Path="cust_CursosNav" Target="cust_Cursos"/>
+                    <NavigationPropertyBinding Path="cust_Inst1Nav" Target="cust_Instrutores"/>
+                    <NavigationPropertyBinding Path="cust_Inst2Nav" Target="cust_Instrutores"/>
+                    <NavigationPropertyBinding Path="cust_ListaNav" Target="cust_ListadePresenca"/>
+                    <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="cust_ListadePresenca" EntityType="SFSFService.cust_ListadePresenca">
+                    <NavigationPropertyBinding Path="createdByNav" Target="User"/>
+                    <NavigationPropertyBinding Path="cust_AlunosNav" Target="cust_Alunos"/>
+                    <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="cust_Cursos" EntityType="SFSFService.cust_Cursos">
+                    <NavigationPropertyBinding Path="createdByNav" Target="User"/>
+                    <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="cust_Alunos" EntityType="SFSFService.cust_Alunos">
+                    <NavigationPropertyBinding Path="createdByNav" Target="User"/>
+                    <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="cust_Instrutores" EntityType="SFSFService.cust_Instrutores">
+                    <NavigationPropertyBinding Path="createdByNav" Target="User"/>
+                    <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="cust_Locais" EntityType="SFSFService.cust_Locais">
+                    <NavigationPropertyBinding Path="createdByNav" Target="User"/>
+                    <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="User" EntityType="SFSFService.User"/>
+            </EntityContainer>
+            <EntityType Name="cust_Turmas">
+                <Key>
+                    <PropertyRef Name="externalCode"/>
+                </Key>
+                <Property Name="externalCode" Type="Edm.String" MaxLength="38" Nullable="false"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_ACT_CPNT_ID" Type="Edm.String" MaxLength="15"/>
+                <Property Name="cust_CPNT_TYP_ID" Type="Edm.String" MaxLength="100"/>
+                <Property Name="cust_END_TME" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_INST_ID1" Type="Edm.String" MaxLength="15"/>
+                <Property Name="cust_INST_ID2" Type="Edm.String" MaxLength="15"/>
+                <Property Name="cust_LMS" Type="Edm.String" MaxLength="1"/>
+                <Property Name="cust_LOCN_DESC" Type="Edm.String" MaxLength="900"/>
+                <Property Name="cust_LOCN_ID1" Type="Edm.String" MaxLength="255"/>
+                <Property Name="cust_NOTACTIVE" Type="Edm.String" MaxLength="1"/>
+                <Property Name="cust_SSG_SEG_NUM" Type="Edm.String" MaxLength="38"/>
+                <Property Name="cust_START_TME" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_Status" Type="Edm.String" MaxLength="255"/>
+                <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="mdfSystemRecordStatus" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="createdByNav" Type="SFSFService.User"/>
+                <NavigationProperty Name="cust_CursosNav" Type="SFSFService.cust_Cursos"/>
+                <NavigationProperty Name="cust_Inst1Nav" Type="SFSFService.cust_Instrutores"/>
+                <NavigationProperty Name="cust_Inst2Nav" Type="SFSFService.cust_Instrutores"/>
+                <NavigationProperty Name="cust_ListaNav" Type="Collection(SFSFService.cust_ListadePresenca)"/>
+                <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
+            </EntityType>
+            <EntityType Name="cust_ListadePresenca">
+                <Key>
+                    <PropertyRef Name="externalCode"/>
+                </Key>
+                <Property Name="externalCode" Type="Edm.String" MaxLength="50" Nullable="false"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_Aluno" Type="Edm.String" MaxLength="255"/>
+                <Property Name="cust_LMS" Type="Edm.String" MaxLength="1"/>
+                <Property Name="cust_Status" Type="Edm.String" MaxLength="10"/>
+                <Property Name="cust_Turma" Type="Edm.String" MaxLength="255"/>
+                <Property Name="cust_nota" Type="Edm.Int64"/>
+                <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="mdfSystemRecordStatus" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="createdByNav" Type="SFSFService.User"/>
+                <NavigationProperty Name="cust_AlunosNav" Type="SFSFService.cust_Alunos"/>
+                <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
+            </EntityType>
+            <EntityType Name="cust_Cursos">
+                <Key>
+                    <PropertyRef Name="externalCode"/>
+                </Key>
+                <Property Name="externalCode" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_CPNT_LEN" Type="Edm.String" MaxLength="100"/>
+                <Property Name="cust_CPNT_TITLE" Type="Edm.String" MaxLength="300"/>
+                <Property Name="cust_CPNT_TYP_DESC" Type="Edm.String" MaxLength="255"/>
+                <Property Name="cust_CPNT_TYP_ID" Type="Edm.String" MaxLength="100"/>
+                <Property Name="cust_NOTACTIVE" Type="Edm.String" MaxLength="1"/>
+                <Property Name="cust_desc" Type="Edm.String" MaxLength="4000"/>
+                <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="mdfSystemRecordStatus" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="createdByNav" Type="SFSFService.User"/>
+                <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
+            </EntityType>
+            <EntityType Name="cust_Alunos">
+                <Key>
+                    <PropertyRef Name="externalCode"/>
+                </Key>
+                <Property Name="externalCode" Type="Edm.String" MaxLength="15" Nullable="false"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_NOTACTIVE" Type="Edm.String" MaxLength="1"/>
+                <Property Name="cust_fname" Type="Edm.String" MaxLength="100"/>
+                <Property Name="cust_lname" Type="Edm.String" MaxLength="200"/>
+                <Property Name="cust_matricula" Type="Edm.String" MaxLength="20"/>
+                <Property Name="cust_mname" Type="Edm.String" MaxLength="100"/>
+                <Property Name="cust_region_id" Type="Edm.String" MaxLength="255"/>
+                <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="mdfSystemRecordStatus" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="createdByNav" Type="SFSFService.User"/>
+                <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
+            </EntityType>
+            <EntityType Name="cust_Instrutores">
+                <Key>
+                    <PropertyRef Name="externalCode"/>
+                </Key>
+                <Property Name="externalCode" Type="Edm.String" MaxLength="128" Nullable="false"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_RELATED_USER" Type="Edm.String" MaxLength="20"/>
+                <Property Name="cust_fname" Type="Edm.String" MaxLength="100"/>
+                <Property Name="cust_lname" Type="Edm.String" MaxLength="200"/>
+                <Property Name="cust_mname" Type="Edm.String" MaxLength="100"/>
+                <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="mdfSystemRecordStatus" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="createdByNav" Type="SFSFService.User"/>
+                <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
+            </EntityType>
+            <EntityType Name="cust_Locais">
+                <Key>
+                    <PropertyRef Name="externalCode"/>
+                </Key>
+                <Property Name="externalCode" Type="Edm.String" MaxLength="128" Nullable="false"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="mdfSystemRecordStatus" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="createdByNav" Type="SFSFService.User"/>
+                <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
+            </EntityType>
+            <EntityType Name="User">
+                <Key>
+                    <PropertyRef Name="userId"/>
+                </Key>
+                <Property Name="userId" Type="Edm.String" MaxLength="100" Nullable="false"/>
+                <Property Name="firstName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="displayName" Type="Edm.String" MaxLength="4000"/>
+                <Property Name="email" Type="Edm.String"/>
+                <Property Name="lastName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="username" Type="Edm.String" MaxLength="100"/>
+                <Property Name="assignmentUUID" Type="Edm.String" MaxLength="32" Nullable="false"/>
+            </EntityType>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

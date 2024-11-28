@@ -1,0 +1,36 @@
+{
+	"_Type": "Action.Type.ODataService.Initialize",
+	"ActionResult": {
+		"_Name": "init"
+	},
+	"OnFailure": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/InitializeOfflineFailureMessage.action",
+	"ShowActivityIndicator": true,
+	"ActivityIndicatorText": "Downloading...",
+	"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+	"DefiningRequests": [
+		{
+			"Name": "cust_Alunos",
+			"Query": "cust_Alunos"
+		},
+		{
+			"Name": "cust_Cursos",
+			"Query": "cust_Cursos"
+		},
+		{
+			"Name": "cust_Instrutores",
+			"Query": "cust_Instrutores"
+		},
+		{
+			"Name": "cust_ListadePresenca",
+			"Query": "cust_ListadePresenca"
+		},
+		{
+			"Name": "cust_Locais",
+			"Query": "cust_Locais"
+		},
+		{
+			"Name": "cust_Turmas",
+			"Query": "cust_Turmas"
+		}
+	]
+}

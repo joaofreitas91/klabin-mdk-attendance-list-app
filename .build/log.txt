@@ -1,0 +1,2 @@
+Pass:
+Generated bundle file /home/user/projects/Attendance_List/.build/Attendance_List/.build/uploadBundle.zip

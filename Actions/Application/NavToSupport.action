@@ -1,0 +1,6 @@
+{
+    "ModalPage": true,
+    "NavigationType": "Cross",
+    "PageToOpen": "/Attendance_List/Pages/Application/Support.page",
+    "_Type": "Action.Type.Navigation"
+}

@@ -1,0 +1,7 @@
+{
+	"DestinationName": "CAP-SERVICE-SF-LMS",
+	"PathSuffix": "/odata/v4/sfsf/",
+	"OfflineEnabled": false,
+	"SourceType": "Mobile",
+	"RestService": false
+}

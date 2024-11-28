@@ -1,0 +1,38 @@
+{
+    "Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+    "DefiningRequests": [{
+            "Name": "cust_Alunos",
+            "Query": "cust_Alunos"
+        },
+        {
+            "Name": "cust_Cursos",
+            "Query": "cust_Cursos"
+        },
+        {
+            "Name": "cust_Instrutores",
+            "Query": "cust_Instrutores"
+        },
+        {
+            "Name": "cust_ListadePresenca",
+            "Query": "cust_ListadePresenca"
+        },
+        {
+            "Name": "cust_Locais",
+            "Query": "cust_Locais"
+        },
+        {
+            "Name": "cust_Turmas",
+            "Query": "cust_Turmas"
+        },
+        {
+            "Name": "User",
+            "Query": "User"
+        }
+    ],
+    "_Type": "Action.Type.OfflineOData.Download",
+    "ActionResult": {
+        "_Name": "sync"
+    },
+    "OnFailure": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncFailureMessage.action",
+    "OnSuccess": "/Attendance_List/Rules/CAP_SERVICE_SF_LMS/ErrorArchive_CheckForSyncError.js"
+}
