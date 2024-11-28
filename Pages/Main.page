@@ -1,27 +1,59 @@
 {
-    "Controls": [{
-        "FilterFeedbackBar": {
-            "ShowAllFilters": false,
-            "_Type": "Control.Type.FilterFeedbackBar"
-        },
-        "_Name": "SectionedTable0",
-        "_Type": "Control.Type.SectionedTable",
-        "Sections": []
-    }],
-    "_Name": "Main",
-    "_Type": "Page",
-    "Caption": "Main",
-    "PrefersLargeCaption": true,
-    "ActionBar": {
-        "Items": [{
-            "_Name": "ActionBarItem0",
-            "Caption": "User Menu",
-            "Icon": "sap-icon://customer",
-            "Position": "Right",
-            "IsIconCircular": false,
-            "Visible": true,
-            "OnPress": "/Attendance_List/Actions/Application/UserMenuPopover.action"
-        }],
-        "_Name": "ActionBar1"
-    }
+	"Controls": [
+		{
+			"FilterFeedbackBar": {
+				"ShowAllFilters": false,
+				"_Type": "Control.Type.FilterFeedbackBar"
+			},
+			"_Type": "Control.Type.SectionedTable",
+			"_Name": "SectionedTable0",
+			"Sections": [
+				{
+					"ObjectHeader": {
+						"Subhead": "Bem vindo(a) ao App Lista de Presença",
+						"DetailImageIsCircular": false,
+						"HeadlineText": "/Attendance_List/Rules/Main/WelcomeMessage.js",
+						"StatusPosition": "Stacked",
+						"StatusImagePosition": "Leading",
+						"SubstatusImagePosition": "Leading",
+						"Styles": {
+							"ObjectHeader": "background-100"
+						}
+					},
+					"_Type": "Section.Type.ObjectHeader",
+					"_Name": "SectionObjectHeader0",
+					"Visible": true
+				}
+			]
+		}
+	],
+	"PullDown": {
+		"OnPulledDown": "/Attendance_List/Actions/Application/AppUpdate.action",
+		"Styles": {
+			"BackgroundColor": "#f4e9c1",
+			"IndicatorColor": "#6cb56a"
+		}
+	},
+	"DesignTimeTarget": {
+		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+		"EntitySet": "cust_Turmas"
+	},
+	"_Type": "Page",
+	"_Name": "Main",
+	"Caption": "Home",
+	"PrefersLargeCaption": false,
+	"ActionBar": {
+		"Items": [
+			{
+				"_Name": "ActionBarItem0",
+				"Caption": "User Menu",
+				"Icon": "sap-icon://menu",
+				"Position": "Right",
+				"IsIconCircular": false,
+				"Visible": true,
+				"OnPress": "/Attendance_List/Actions/Application/UserMenuPopover.action"
+			}
+		],
+		"_Name": "ActionBar1"
+	}
 }
