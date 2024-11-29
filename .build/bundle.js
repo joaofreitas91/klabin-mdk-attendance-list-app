@@ -577,22 +577,80 @@ function UserLogSetting(clientAPI) {
 
 /***/ }),
 
-/***/ "./build.definitions/Attendance_List/Rules/Main/DescriptionTurma.js":
-/*!**************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/DescriptionTurma.js ***!
-  \**************************************************************************/
+/***/ "./build.definitions/Attendance_List/Rules/Main/CalendarQuery.js":
+/*!***********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/CalendarQuery.js ***!
+  \***********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ DescriptionTurma)
+/* harmony export */   "default": () => (/* binding */ CalendarQuery)
 /* harmony export */ });
 /**
  * Describe this function...
  * @param {IClientAPI} clientAPI
  */
-function DescriptionTurma(clientAPI) {
+function CalendarQuery(context) {
+    return defaultQuery(context)
+}
+
+function defaultQuery(context) {
+    var cExpand = "&$expand=cust_ListaNav($expand=cust_AlunosNav)"
+    var dDate = new Date();
+    var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
+    let cFilter = "$filter=cust_LOCN_DESC ne null and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
+
+    cFilter += cExpand
+
+    return cFilter;
+}
+
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/GetThreeTeams.js":
+/*!***********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/GetThreeTeams.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetThreeTeams)
+/* harmony export */ });
+function GetThreeTeams(context) {    
+    var cTop = "&$top=3"
+    var cExpand = "&$expand=cust_ListaNav($expand=cust_AlunosNav)"
+    var dDate = new Date();
+    var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
+    var cFilter =  "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and cust_LOCN_DESC ne null and externalName ne null";
+    
+    cFilter += cTop + cExpand
+
+    return cFilter;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/TeamDescription.js":
+/*!*************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/TeamDescription.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TeamDescription)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function TeamDescription(clientAPI) {
     var dDate = new Date(clientAPI.binding.cust_START_TME) 
     var cRet  = 'Início: ' + dDate.getDate().toString().padStart(2,"0") + "/" + (dDate.getMonth()+1).toString().padStart(2,"0") + "/" + dDate.getFullYear().toString()
     cRet += " às " + dDate.getHours().toString().padStart(2,"0") +":"+ dDate.getMinutes().toString().padStart(2,"0") + "h"
@@ -606,43 +664,6 @@ function DescriptionTurma(clientAPI) {
     return(cRet)
 }
  
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/GetTurmas.js":
-/*!*******************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/GetTurmas.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetTurmas)
-/* harmony export */ });
-function GetTurmas(context) {    
-    var cTop = "&$top=3"
-    var cExpand = "&$expand=cust_ListaNav($expand=cust_AlunosNav)"
-    var dDate = new Date();
-    var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
-    var cFilter =  "$filter=cust_END_TME ge datetimeoffset'" + cDate + "T00:00:00Z' and cust_LOCN_DESC ne 'null' and externalName ne 'null'";
-    
-    cFilter += cTop + cExpand
-
-    context.executeAction({
-
-        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-        "Properties": {
-            "Message": `Query: ${cFilter}`,
-            "Animated": true,
-            "Duration": 1,
-            "IsIconHidden": true,
-            "NumberOfLines": 1
-        }
-    });
-
-    return cFilter;
-}
 
 /***/ }),
 
@@ -664,10 +685,9 @@ function UpdateQueryWithSelectedDate(clientAPI) {
         let month = ("0" + (selectedDate.getMonth() + 1)).slice(-2);
         let day = ("0" + selectedDate.getDate()).slice(-2);
         let formattedDate = year + '-' + month + '-' + day;
-        let filterQuery = "$filter=cust_LOCN_DESC ne null and externalName ne null and cust_START_TME ge datetimeoffset'" + formattedDate + "T00:00:00Z' and cust_START_TME le datetimeoffset'" + formattedDate + "T23:59:59Z'";
+        let filterQuery = "$filter=cust_LOCN_DESC ne null and externalName ne null and cust_START_TME ge " + formattedDate + "T00:00:00Z and cust_START_TME le " + formattedDate + "T23:59:59Z";
         let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
-        let oTarget = oCardObj.getTargetSpecifier();        
-        //clientAPI.getPageProxy().setCaption(formattedDate);
+        let oTarget = oCardObj.getTargetSpecifier();
         oTarget.setQueryOptions(filterQuery);
         oCardObj.setTargetSpecifier(oTarget);
     } catch (error) {
@@ -826,8 +846,9 @@ let attendance_list_rules_logging_setuserloglevel_js = __webpack_require__(/*! .
 let attendance_list_rules_logging_togglelogging_js = __webpack_require__(/*! ./Attendance_List/Rules/Logging/ToggleLogging.js */ "./build.definitions/Attendance_List/Rules/Logging/ToggleLogging.js")
 let attendance_list_rules_logging_tracecategories_js = __webpack_require__(/*! ./Attendance_List/Rules/Logging/TraceCategories.js */ "./build.definitions/Attendance_List/Rules/Logging/TraceCategories.js")
 let attendance_list_rules_logging_userlogsetting_js = __webpack_require__(/*! ./Attendance_List/Rules/Logging/UserLogSetting.js */ "./build.definitions/Attendance_List/Rules/Logging/UserLogSetting.js")
-let attendance_list_rules_main_descriptionturma_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/DescriptionTurma.js */ "./build.definitions/Attendance_List/Rules/Main/DescriptionTurma.js")
-let attendance_list_rules_main_getturmas_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/GetTurmas.js */ "./build.definitions/Attendance_List/Rules/Main/GetTurmas.js")
+let attendance_list_rules_main_calendarquery_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/CalendarQuery.js */ "./build.definitions/Attendance_List/Rules/Main/CalendarQuery.js")
+let attendance_list_rules_main_getthreeteams_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/GetThreeTeams.js */ "./build.definitions/Attendance_List/Rules/Main/GetThreeTeams.js")
+let attendance_list_rules_main_teamdescription_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/TeamDescription.js */ "./build.definitions/Attendance_List/Rules/Main/TeamDescription.js")
 let attendance_list_rules_main_updatequerywithselecteddate_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js */ "./build.definitions/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js")
 let attendance_list_rules_main_welcomemessage_js = __webpack_require__(/*! ./Attendance_List/Rules/Main/WelcomeMessage.js */ "./build.definitions/Attendance_List/Rules/Main/WelcomeMessage.js")
 let attendance_list_rules_service_initialize_js = __webpack_require__(/*! ./Attendance_List/Rules/Service/Initialize.js */ "./build.definitions/Attendance_List/Rules/Service/Initialize.js")
@@ -914,8 +935,9 @@ module.exports = {
 	attendance_list_rules_logging_togglelogging_js : attendance_list_rules_logging_togglelogging_js,
 	attendance_list_rules_logging_tracecategories_js : attendance_list_rules_logging_tracecategories_js,
 	attendance_list_rules_logging_userlogsetting_js : attendance_list_rules_logging_userlogsetting_js,
-	attendance_list_rules_main_descriptionturma_js : attendance_list_rules_main_descriptionturma_js,
-	attendance_list_rules_main_getturmas_js : attendance_list_rules_main_getturmas_js,
+	attendance_list_rules_main_calendarquery_js : attendance_list_rules_main_calendarquery_js,
+	attendance_list_rules_main_getthreeteams_js : attendance_list_rules_main_getthreeteams_js,
+	attendance_list_rules_main_teamdescription_js : attendance_list_rules_main_teamdescription_js,
 	attendance_list_rules_main_updatequerywithselecteddate_js : attendance_list_rules_main_updatequerywithselecteddate_js,
 	attendance_list_rules_main_welcomemessage_js : attendance_list_rules_main_welcomemessage_js,
 	attendance_list_rules_service_initialize_js : attendance_list_rules_service_initialize_js,
@@ -1741,7 +1763,7 @@ module.exports = {"Controls":[{"_Type":"Control.Type.SectionedTable","_Name":"Se
   \***********************************************************/
 /***/ ((module) => {
 
-module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"ObjectHeader":{"Subhead":"Bem vindo(a) ao App Lista de Presença","DetailImageIsCircular":false,"HeadlineText":"/Attendance_List/Rules/Main/WelcomeMessage.js","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader0","Visible":true},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.ObjectCardCollection","Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas","QueryOptions":"$top=3"},"_Name":"SectionObjectCardCollection0","Header":{"Styles":{"Header":"background-50"},"_Type":"SectionCommon.Type.Header","_Name":"SectionCommonTypeHeader0","AccessoryType":"None","UseTopPadding":true,"Caption":"Próximas turmas disponíveis"},"Footer":{"Styles":{"Caption":"letter-color"},"_Type":"SectionCommon.Type.Footer","_Name":"SectionCommonTypeFooter0","Caption":"Ver todas as turmas","AccessoryType":"DisclosureIndicator","FooterStyle":"Attribute","Visible":true,"UseBottomPadding":true},"Visible":true,"EmptySection":{"Caption":"Sem turmas disponíveis","FooterVisible":true},"DataPaging":{"ShowLoadingIndicator":false,"PageSize":3},"Card":{"Visible":true,"Title":"{externalCode}","Footnote":"ID da Turma: {externalCode}","DetailImage":"/Attendance_List/Images/logo.png","DetailImageIsCircular":false,"Description":"/Attendance_List/Rules/Main/DescriptionTurma.js","PrimaryAction":{"Visible":false},"SecondaryAction":{"Title":"Secondary","Visible":false},"_Type":"Control.Type.ObjectCard"},"Layout":{"LayoutType":"Vertical"}},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"},{"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader1","ObjectHeader":{"DetailImageIsCircular":false,"HeadlineText":"Calendário de turmas","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"Visible":true},{"_Type":"Section.Type.Calendar","_Name":"SectionCalendar0","Visible":true,"Separators":{"TopSectionSeparator":true,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"CalendarType":"Month","StartDayOfWeek":"Sun","IsPersistentSelection":true,"OnSelectedDateChange":"/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js","Styles":{"Calendar":"Calendar","ExpandableHandle":"letter-color","Buttons":"letter-color","InnerMonthLabel":"letter-color","WeekDayLabel":"background-75","Header":"background-75","Dates":"letter-color"}}]}],"PullDown":{"OnPulledDown":"/Attendance_List/Actions/Application/AppUpdate.action","Styles":{"BackgroundColor":"#f4e9c1","IndicatorColor":"#6cb56a"}},"DesignTimeTarget":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"_Type":"Page","_Name":"Main","Caption":"Home","PrefersLargeCaption":false,"ActionBar":{"Items":[{"_Name":"ActionBarItem0","Caption":"User Menu","Icon":"sap-icon://menu","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Application/UserMenuPopover.action"}],"_Name":"ActionBar1"}}
+module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"ObjectHeader":{"Subhead":"Bem vindo(a) ao App Lista de Presença","DetailImageIsCircular":false,"HeadlineText":"/Attendance_List/Rules/Main/WelcomeMessage.js","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader0","Visible":true},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.ObjectCardCollection","Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas","QueryOptions":"/Attendance_List/Rules/Main/GetThreeTeams.js"},"_Name":"SectionObjectCardCollection0","Header":{"Styles":{"Header":"background-50"},"_Type":"SectionCommon.Type.Header","_Name":"SectionCommonTypeHeader0","AccessoryType":"None","UseTopPadding":true,"Caption":"Próximas turmas disponíveis"},"Footer":{"Styles":{"Caption":"letter-color"},"_Type":"SectionCommon.Type.Footer","_Name":"SectionCommonTypeFooter0","Caption":"Ver todas as turmas","AccessoryType":"DisclosureIndicator","FooterStyle":"Attribute","Visible":true,"UseBottomPadding":true},"Visible":true,"EmptySection":{"Caption":"Sem turmas disponíveis","FooterVisible":true},"DataPaging":{"ShowLoadingIndicator":false,"PageSize":3},"Card":{"Visible":true,"Title":"{externalCode}","Footnote":"ID da Turma: {externalCode}","DetailImage":"/Attendance_List/Images/logo.png","DetailImageIsCircular":false,"Description":"/Attendance_List/Rules/Main/TeamDescription.js","PrimaryAction":{"Visible":false},"SecondaryAction":{"Title":"Secondary","Visible":false},"_Type":"Control.Type.ObjectCard"},"Layout":{"LayoutType":"Vertical"}},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"},{"ObjectHeader":{"DetailImageIsCircular":false,"HeadlineText":"Calendário de turmas","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader1","Visible":true},{"Separators":{"TopSectionSeparator":true,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Styles":{"Calendar":"Calendar","ExpandableHandle":"letter-color","Buttons":"letter-color","InnerMonthLabel":"letter-color","WeekDayLabel":"background-75","Header":"background-75","Dates":"letter-color"},"_Type":"Section.Type.Calendar","_Name":"SectionCalendar1","Visible":true,"CalendarType":"Month","StartDayOfWeek":"Sun","IsPersistentSelection":true,"OnSelectedDateChange":"/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js"},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.ObjectCardCollection","Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas","QueryOptions":"/Attendance_List/Rules/Main/CalendarQuery.js"},"_Name":"SectionObjectCardCollection1","Visible":true,"EmptySection":{"Caption":"Sem turmas para a data selecionada","FooterVisible":false},"DataPaging":{"ShowLoadingIndicator":true,"PageSize":50},"Card":{"Visible":true,"Title":"{externalName}","Subhead":"Local: {cust_LOCN_DESC}","DetailImage":"/Attendance_List/Images/logo.png","DetailImageIsCircular":false,"Description":"/Attendance_List/Rules/Main/TeamDescription.js","PrimaryAction":{"Title":"Primary","Visible":false},"SecondaryAction":{"Title":"Secondary","Visible":false},"Styles":{"BackgroundColor":"background-25"},"_Type":"Control.Type.ObjectCard"},"Layout":{"LayoutType":"Vertical"}}]}],"PullDown":{"OnPulledDown":"/Attendance_List/Actions/Application/AppUpdate.action","Styles":{"BackgroundColor":"#f4e9c1","IndicatorColor":"#6cb56a"}},"DesignTimeTarget":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"_Type":"Page","_Name":"Main","Caption":"Home","PrefersLargeCaption":false,"ActionBar":{"Items":[{"_Name":"ActionBarItem0","Caption":"User Menu","Icon":"sap-icon://menu","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Application/UserMenuPopover.action"}],"_Name":"ActionBar1"}}
 
 /***/ }),
 

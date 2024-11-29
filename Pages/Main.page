@@ -36,7 +36,7 @@
 					"Target": {
 						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 						"EntitySet": "cust_Turmas",
-						"QueryOptions": "$top=3"
+						"QueryOptions": "/Attendance_List/Rules/Main/GetThreeTeams.js"
 					},
 					"_Name": "SectionObjectCardCollection0",
 					"Header": {
@@ -76,7 +76,7 @@
 						"Footnote": "ID da Turma: {externalCode}",
 						"DetailImage": "/Attendance_List/Images/logo.png",
 						"DetailImageIsCircular": false,
-						"Description": "/Attendance_List/Rules/Main/DescriptionTurma.js",
+						"Description": "/Attendance_List/Rules/Main/TeamDescription.js",
 						"PrimaryAction": {
 							"Visible": false
 						},
@@ -110,8 +110,6 @@
 					"_Name": "SectionFormCell0"
 				},
 				{
-					"_Type": "Section.Type.ObjectHeader",
-					"_Name": "SectionObjectHeader1",
 					"ObjectHeader": {
 						"DetailImageIsCircular": false,
 						"HeadlineText": "Calendário de turmas",
@@ -122,12 +120,11 @@
 							"ObjectHeader": "background-100"
 						}
 					},
+					"_Type": "Section.Type.ObjectHeader",
+					"_Name": "SectionObjectHeader1",
 					"Visible": true
 				},
 				{
-					"_Type": "Section.Type.Calendar",
-					"_Name": "SectionCalendar0",
-					"Visible": true,
 					"Separators": {
 						"TopSectionSeparator": true,
 						"BottomSectionSeparator": true,
@@ -135,10 +132,6 @@
 						"FooterSeparator": true,
 						"ControlSeparator": true
 					},
-					"CalendarType": "Month",
-					"StartDayOfWeek": "Sun",
-					"IsPersistentSelection": true,
-					"OnSelectedDateChange": "/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js",
 					"Styles": {
 						"Calendar": "Calendar",
 						"ExpandableHandle": "letter-color",
@@ -147,6 +140,61 @@
 						"WeekDayLabel": "background-75",
 						"Header": "background-75",
 						"Dates": "letter-color"
+					},
+					"_Type": "Section.Type.Calendar",
+					"_Name": "SectionCalendar1",
+					"Visible": true,
+					"CalendarType": "Month",
+					"StartDayOfWeek": "Sun",
+					"IsPersistentSelection": true,
+					"OnSelectedDateChange": "/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js"
+				},
+				{
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"_Type": "Section.Type.ObjectCardCollection",
+					"Target": {
+						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+						"EntitySet": "cust_Turmas",
+						"QueryOptions": "/Attendance_List/Rules/Main/CalendarQuery.js"
+					},
+					"_Name": "SectionObjectCardCollection1",
+					"Visible": true,
+					"EmptySection": {
+						"Caption": "Sem turmas para a data selecionada",
+						"FooterVisible": false
+					},
+					"DataPaging": {
+						"ShowLoadingIndicator": true,
+						"PageSize": 50
+					},
+					"Card": {
+						"Visible": true,
+						"Title": "{externalName}",
+						"Subhead": "Local: {cust_LOCN_DESC}",
+						"DetailImage": "/Attendance_List/Images/logo.png",
+						"DetailImageIsCircular": false,
+						"Description": "/Attendance_List/Rules/Main/TeamDescription.js",
+						"PrimaryAction": {
+							"Title": "Primary",
+							"Visible": false
+						},
+						"SecondaryAction": {
+							"Title": "Secondary",
+							"Visible": false
+						},
+						"Styles": {
+							"BackgroundColor": "background-25"
+						},
+						"_Type": "Control.Type.ObjectCard"
+					},
+					"Layout": {
+						"LayoutType": "Vertical"
 					}
 				}
 			]
