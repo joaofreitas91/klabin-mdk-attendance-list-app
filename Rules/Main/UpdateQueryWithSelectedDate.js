@@ -5,7 +5,9 @@ export default function UpdateQueryWithSelectedDate(clientAPI) {
         let month = ("0" + (selectedDate.getMonth() + 1)).slice(-2);
         let day = ("0" + selectedDate.getDate()).slice(-2);
         let formattedDate = year + '-' + month + '-' + day;
+        var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
         let filterQuery = "$filter=cust_LOCN_DESC ne null and externalName ne null and cust_START_TME ge " + formattedDate + "T00:00:00Z and cust_START_TME le " + formattedDate + "T23:59:59Z";
+        filterQuery += cExpand
         let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
         let oTarget = oCardObj.getTargetSpecifier();
         oTarget.setQueryOptions(filterQuery);
