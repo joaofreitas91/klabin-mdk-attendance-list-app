@@ -72,7 +72,7 @@
 					},
 					"Card": {
 						"Visible": true,
-						"Title": "{externalCode}",
+						"Title": "{externalName}",
 						"Footnote": "ID da Turma: {externalCode}",
 						"DetailImage": "/Attendance_List/Images/logo.png",
 						"DetailImageIsCircular": false,

@@ -1,0 +1,194 @@
+{
+	"Controls": [
+		{
+			"FilterFeedbackBar": {
+				"ShowAllFilters": false,
+				"_Type": "Control.Type.FilterFeedbackBar"
+			},
+			"_Type": "Control.Type.SectionedTable",
+			"_Name": "SectionedTable0",
+			"Sections": [
+				{
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"Controls": [
+						{
+							"Value": "{cust_START_TME}",
+							"_Type": "Control.Type.FormCell.DatePicker",
+							"_Name": "FormCellDatePicker0",
+							"IsVisible": true,
+							"Separator": true,
+							"Caption": "Data início",
+							"IsEditable": true,
+							"Mode": "Datetime"
+						},
+						{
+							"Value": "{cust_END_TME}",
+							"_Type": "Control.Type.FormCell.DatePicker",
+							"_Name": "FormCellDatePicker1",
+							"IsVisible": true,
+							"Separator": true,
+							"Caption": "Data fim",
+							"IsEditable": true,
+							"Mode": "Datetime"
+						}
+					],
+					"Layout": {
+						"NumberOfColumns": 1
+					},
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"_Type": "Section.Type.FormCell",
+					"_Name": "SectionFormCell2"
+				},
+				{
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"Controls": [
+						{
+							"_Type": "Control.Type.FormCell.ListPicker",
+							"_Name": "FormCellListPicker2",
+							"IsVisible": true,
+							"Separator": true,
+							"AllowMultipleSelection": false,
+							"AllowEmptySelection": true,
+							"Caption": "Instrutor Secundário(a)",
+							"DataPaging": {
+								"ShowLoadingIndicator": false,
+								"PageSize": 50
+							},
+							"PickerPrompt": "Informe o instrutor",
+							"IsSelectedSectionEnabled": true,
+							"IsPickerDismissedOnSelection": false,
+							"AllowDefaultValueIfOneItem": false,
+							"IsEditable": true,
+							"Search": {
+								"Enabled": true,
+								"BarcodeScanner": true
+							},
+							"PickerItems": {
+								"Target": {
+									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+									"EntitySet": "cust_Instrutores"
+								},
+								"DisplayValue": "/Attendance_List/Rules/Teams/GetFullName.js",
+								"ReturnValue": "{externalCode}"
+							}
+						}
+					],
+					"Layout": {
+						"NumberOfColumns": 1
+					},
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"_Type": "Section.Type.FormCell",
+					"_Name": "SectionFormCell0"
+				},
+				{
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"Controls": [
+						{
+							"_Type": "Control.Type.FormCell.ListPicker",
+							"_Name": "FormCellListPicker0",
+							"IsVisible": true,
+							"Separator": true,
+							"AllowMultipleSelection": true,
+							"AllowEmptySelection": true,
+							"Caption": "Participantes",
+							"DataPaging": {
+								"ShowLoadingIndicator": false,
+								"PageSize": 50
+							},
+							"PickerPrompt": "Selecione um participante",
+							"IsSelectedSectionEnabled": false,
+							"IsPickerDismissedOnSelection": false,
+							"IsSearchCancelledAfterSelection": false,
+							"AllowDefaultValueIfOneItem": false,
+							"IsEditable": true,
+							"Search": {
+								"Enabled": true,
+								"BarcodeScanner": true
+							},
+							"PickerItems": {
+								"Target": {
+									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+									"EntitySet": "cust_Alunos"
+								},
+								"ObjectCell": {
+									"AvatarStack": {
+										"Avatars": [
+											{
+												"Image": "sap-icon://customer",
+												"ImageText": "VC"
+											}
+										]
+									},
+									"PreserveIconStackSpacing": true,
+									"Selected": true,
+									"Title": "/Attendance_List/Rules/Teams/GetFullName.js",
+									"Visible": true
+								},
+								"ReturnValue": "/Attendance_List/Rules/Teams/ProcessReturnValue.js"
+							}
+						}
+					],
+					"Layout": {
+						"NumberOfColumns": 1
+					},
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"_Type": "Section.Type.FormCell",
+					"_Name": "SectionFormCell1"
+				}
+			]
+		}
+	],
+	"_Type": "Page",
+	"_Name": "TeamEdit",
+	"Caption": "Editar turma",
+	"PrefersLargeCaption": true,
+	"ActionBar": {
+		"Items": [
+			{
+				"_Name": "ActionBarItem1",
+				"Caption": "Item",
+				"SystemItem": "Cancel",
+				"Position": "Left",
+				"IsIconCircular": false,
+				"Visible": true,
+				"OnPress": "/Attendance_List/Actions/CloseModalPage_Cancel.action"
+			},
+			{
+				"_Name": "ActionBarItem2",
+				"Caption": "",
+				"Icon": "sap-icon://menu",
+				"Position": "Right",
+				"IsIconCircular": false,
+				"Visible": true
+			}
+		],
+		"_Name": "ActionBar1"
+	}
+}

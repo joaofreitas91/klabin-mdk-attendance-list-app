@@ -38,7 +38,44 @@
 					"EmptySection": {
 						"FooterVisible": false
 					},
-					"SimplePropertyCells": [],
+					"SimplePropertyCells": [
+						{
+							"SimplePropertyCell": {
+								"Value": "{cust_Inst1Nav/cust_fname} {cust_Inst1Nav/cust_lname}",
+								"_Name": "SectionSimplePropertyCell0",
+								"KeyName": "Instrutor Principal",
+								"AccessoryType": "DisclosureIndicator",
+								"Visible": true
+							}
+						},
+						{
+							"SimplePropertyCell": {
+								"Value": "{cust_Inst2Nav/cust_fname} {cust_Inst2Nav/cust_lname}",
+								"_Name": "SectionSimplePropertyCell1",
+								"KeyName": "Instrutor Secundário",
+								"AccessoryType": "DisclosureIndicator",
+								"Visible": true
+							}
+						},
+						{
+							"SimplePropertyCell": {
+								"Value": "{cust_LOCN_DESC}",
+								"_Name": "SectionSimplePropertyCell2",
+								"KeyName": "Local",
+								"AccessoryType": "None",
+								"Visible": true
+							}
+						},
+						{
+							"SimplePropertyCell": {
+								"Value": "/Attendance_List/Rules/Teams/TeamDuration.js",
+								"_Name": "SectionSimplePropertyCell3",
+								"KeyName": "Carga Horária",
+								"AccessoryType": "None",
+								"Visible": true
+							}
+						}
+					],
 					"Layout": {
 						"NumberOfColumns": 2
 					}
@@ -58,6 +95,13 @@
 						"QueryOptions": "$expand=cust_AlunosNav&$filter=cust_Turma eq '{externalCode}'"
 					},
 					"_Name": "SectionObjectCollection0",
+					"Header": {
+						"_Type": "SectionCommon.Type.Header",
+						"_Name": "SectionCommonTypeHeader0",
+						"AccessoryType": "None",
+						"UseTopPadding": true,
+						"Caption": "Lista de participantes"
+					},
 					"Visible": true,
 					"EmptySection": {
 						"Caption": "Sem participantes até o momento",
@@ -71,7 +115,12 @@
 						"Title": "{cust_AlunosNav/cust_fname}",
 						"Tags": [
 							{
-								"Text": "tag"
+								"Color": "Green",
+								"Text": "{cust_Status}"
+							},
+							{
+								"Color": "Green",
+								"Text": "Nota: 0"
 							}
 						],
 						"Subhead": "{cust_AlunosNav/cust_mname}{cust_AlunosNav/cust_lname}",
@@ -105,6 +154,39 @@
 					"Layout": {
 						"NumberOfColumns": 2
 					}
+				},
+				{
+					"_Type": "Section.Type.ContactCell",
+					"Target": {
+						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+						"EntitySet": "{@odata.readLink}/cust_ListaNav"
+					},
+					"_Name": "SectionContactCell0",
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"ContactCell": {
+						"Visible": true,
+						"ContextMenu": {
+							"PerformFirstActionWithFullSwipe": true
+						},
+						"DetailImage": "res://contact.png",
+						"Headline": "Headline",
+						"Subheadline": "Subheadline",
+						"Description": "Description"
+					},
+					"DataPaging": {
+						"ShowLoadingIndicator": false,
+						"PageSize": 50
+					}
 				}
 			]
 		}
@@ -121,7 +203,8 @@
 				"SystemItem": "Edit",
 				"Position": "Right",
 				"IsIconCircular": false,
-				"Visible": true
+				"Visible": true,
+				"OnPress": "/Attendance_List/Actions/Teams/NavToTeamEdit.action"
 			}
 		],
 		"_Name": "ActionBar1"
