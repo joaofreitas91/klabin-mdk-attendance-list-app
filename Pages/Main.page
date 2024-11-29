@@ -40,26 +40,26 @@
 					},
 					"_Name": "SectionObjectCardCollection0",
 					"Header": {
+						"Styles": {
+							"Header": "background-50"
+						},
 						"_Type": "SectionCommon.Type.Header",
 						"_Name": "SectionCommonTypeHeader0",
 						"AccessoryType": "None",
 						"UseTopPadding": true,
-						"Styles": {
-							"Header": "background-50"
-						},
 						"Caption": "Próximas turmas disponíveis"
 					},
 					"Footer": {
+						"Styles": {
+							"Caption": "letter-color"
+						},
 						"_Type": "SectionCommon.Type.Footer",
 						"_Name": "SectionCommonTypeFooter0",
 						"Caption": "Ver todas as turmas",
 						"AccessoryType": "DisclosureIndicator",
 						"FooterStyle": "Attribute",
 						"Visible": true,
-						"UseBottomPadding": true,
-						"Styles": {
-							"Caption": "letter-color"
-						}
+						"UseBottomPadding": true
 					},
 					"Visible": true,
 					"EmptySection": {
@@ -91,10 +91,6 @@
 					}
 				},
 				{
-					"Visible": true,
-					"EmptySection": {
-						"FooterVisible": false
-					},
 					"Separators": {
 						"TopSectionSeparator": false,
 						"BottomSectionSeparator": true,
@@ -102,11 +98,55 @@
 						"FooterSeparator": true,
 						"ControlSeparator": true
 					},
-					"_Type": "Section.Type.FormCell",
-					"_Name": "SectionFormCell0",
 					"Controls": [],
 					"Layout": {
 						"NumberOfColumns": 1
+					},
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"_Type": "Section.Type.FormCell",
+					"_Name": "SectionFormCell0"
+				},
+				{
+					"_Type": "Section.Type.ObjectHeader",
+					"_Name": "SectionObjectHeader1",
+					"ObjectHeader": {
+						"DetailImageIsCircular": false,
+						"HeadlineText": "Calendário de turmas",
+						"StatusPosition": "Stacked",
+						"StatusImagePosition": "Leading",
+						"SubstatusImagePosition": "Leading",
+						"Styles": {
+							"ObjectHeader": "background-100"
+						}
+					},
+					"Visible": true
+				},
+				{
+					"_Type": "Section.Type.Calendar",
+					"_Name": "SectionCalendar0",
+					"Visible": true,
+					"Separators": {
+						"TopSectionSeparator": true,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"CalendarType": "Month",
+					"StartDayOfWeek": "Sun",
+					"IsPersistentSelection": true,
+					"OnSelectedDateChange": "/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js",
+					"Styles": {
+						"Calendar": "Calendar",
+						"ExpandableHandle": "letter-color",
+						"Buttons": "letter-color",
+						"InnerMonthLabel": "letter-color",
+						"WeekDayLabel": "background-75",
+						"Header": "background-75",
+						"Dates": "letter-color"
 					}
 				}
 			]
