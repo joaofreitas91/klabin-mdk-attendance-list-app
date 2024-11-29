@@ -1,0 +1,129 @@
+{
+	"Controls": [
+		{
+			"FilterFeedbackBar": {
+				"ShowAllFilters": false,
+				"_Type": "Control.Type.FilterFeedbackBar"
+			},
+			"_Type": "Control.Type.SectionedTable",
+			"_Name": "SectionedTable0",
+			"Sections": [
+				{
+					"ObjectHeader": {
+						"Description": "/Attendance_List/Rules/Teams/TeamDescription.js",
+						"DetailImageIsCircular": false,
+						"HeadlineText": "{externalName}",
+						"StatusPosition": "Stacked",
+						"StatusImagePosition": "Leading",
+						"SubstatusImagePosition": "Leading",
+						"Styles": {
+							"ObjectHeader": "background-100"
+						}
+					},
+					"_Type": "Section.Type.ObjectHeader",
+					"_Name": "SectionObjectHeader0",
+					"Visible": true
+				},
+				{
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"_Type": "Section.Type.SimplePropertyCollection",
+					"_Name": "SectionSimplePropertyCollection0",
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
+					"SimplePropertyCells": [],
+					"Layout": {
+						"NumberOfColumns": 2
+					}
+				},
+				{
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"_Type": "Section.Type.ObjectCollection",
+					"Target": {
+						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+						"EntitySet": "cust_ListadePresenca",
+						"QueryOptions": "$expand=cust_AlunosNav&$filter=cust_Turma eq '{externalCode}'"
+					},
+					"_Name": "SectionObjectCollection0",
+					"Visible": true,
+					"EmptySection": {
+						"Caption": "Sem participantes até o momento",
+						"FooterVisible": true
+					},
+					"DataPaging": {
+						"ShowLoadingIndicator": false,
+						"PageSize": 50
+					},
+					"ObjectCell": {
+						"Title": "{cust_AlunosNav/cust_fname}",
+						"Tags": [
+							{
+								"Text": "tag"
+							}
+						],
+						"Subhead": "{cust_AlunosNav/cust_mname}{cust_AlunosNav/cust_lname}",
+						"Footnote": "{cust_AlunosNav/cust_fname}",
+						"Description": "{cust_AlunosNav/cust_fname}",
+						"DisplayDescriptionInMobile": true,
+						"StatusText": "{cust_AlunosNav/cust_fname}",
+						"SubstatusText": "{cust_AlunosNav/cust_fname}",
+						"AccessoryButtonIcon": "sap-icon://user-settings",
+						"AccessoryType": "DisclosureIndicator",
+						"PreserveIconStackSpacing": false,
+						"Styles": {
+							"Title": "letter-color",
+							"Subhead": "letter-black-color"
+						},
+						"AvatarStack": {
+							"Avatars": [
+								{
+									"Image": "sap-icon://customer",
+									"ImageText": ""
+								}
+							],
+							"ImageIsCircular": true,
+							"ImageHasBorder": false
+						},
+						"AvatarGrid": {
+							"Avatars": [],
+							"ImageIsCircular": true
+						}
+					},
+					"Layout": {
+						"NumberOfColumns": 2
+					}
+				}
+			]
+		}
+	],
+	"_Type": "Page",
+	"_Name": "TeamDetails",
+	"Caption": " ",
+	"PrefersLargeCaption": false,
+	"ActionBar": {
+		"Items": [
+			{
+				"_Name": "ActionBarItem0",
+				"Caption": "Item",
+				"SystemItem": "Edit",
+				"Position": "Right",
+				"IsIconCircular": false,
+				"Visible": true
+			}
+		],
+		"_Name": "ActionBar1"
+	}
+}
