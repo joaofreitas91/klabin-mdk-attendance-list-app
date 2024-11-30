@@ -1,0 +1,23 @@
+{
+	"_Type": "Action.Type.ODataService.UpdateEntity",
+	"ActionResult": {
+		"_Name": "UpdateTeam"
+	},
+	"Target": {
+		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+		"EntitySet": "cust_Turmas"
+	},
+	"Properties": {
+		"externalCode": "{externalCode}"
+	},
+	"UpdateLinks": [
+		{
+			"Property": "cust_Inst1Nav",
+			"Target": {
+				"EntitySet": "cust_Instrutores",
+				"QueryOptions": "$filter=cust_fname eq '{cust_fname}'"
+			},
+			"_Enabled": true
+		}
+	]
+}

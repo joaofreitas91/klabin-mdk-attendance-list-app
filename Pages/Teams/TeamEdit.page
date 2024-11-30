@@ -121,8 +121,6 @@
 							},
 							"PickerPrompt": "Selecione um participante",
 							"IsSelectedSectionEnabled": false,
-							"IsPickerDismissedOnSelection": false,
-							"IsSearchCancelledAfterSelection": false,
 							"AllowDefaultValueIfOneItem": false,
 							"IsEditable": true,
 							"Search": {
@@ -143,12 +141,12 @@
 											}
 										]
 									},
-									"PreserveIconStackSpacing": true,
+									"PreserveIconStackSpacing": false,
 									"Selected": true,
 									"Title": "/Attendance_List/Rules/Teams/GetFullName.js",
 									"Visible": true
 								},
-								"ReturnValue": "/Attendance_List/Rules/Teams/ProcessReturnValue.js"
+								"ReturnValue": "{externalCode}"
 							}
 						}
 					],

@@ -45,7 +45,7 @@
 		},
 		{
 			"Title": "Logs",
-			"Icon": "sap-icon://building",
+			"Icon": "sap-icon://document-text",
 			"Style": "",
 			"OnPress": "/Attendance_List/Actions/Application/NavToActivityLog.action",
 			"Visible": true,

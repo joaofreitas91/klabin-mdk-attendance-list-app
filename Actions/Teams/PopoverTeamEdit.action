@@ -1,0 +1,16 @@
+{
+	"_Type": "Action.Type.PopoverMenu",
+	"ActionResult": {
+		"_Name": "PopoverTeamEdit"
+	},
+	"PopoverItems": [
+		{
+			"Title": "Salvar Turma",
+			"Icon": "sap-icon://save",
+			"Style": "letter-color",
+			"OnPress": "/Attendance_List/Actions/Application/UserMenuPopover.action",
+			"Visible": true,
+			"Enabled": true
+		}
+	]
+}
