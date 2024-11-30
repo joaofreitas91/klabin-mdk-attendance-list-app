@@ -81,7 +81,8 @@
 							"PickerItems": {
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-									"EntitySet": "cust_Instrutores"
+									"EntitySet": "cust_Instrutores",
+									"ReadLink": "{@odata.readLink}"
 								},
 								"DisplayValue": "/Attendance_List/Rules/Teams/GetFullName.js",
 								"ReturnValue": "{externalCode}"
@@ -121,6 +122,8 @@
 							},
 							"PickerPrompt": "Selecione um participante",
 							"IsSelectedSectionEnabled": false,
+							"IsPickerDismissedOnSelection": false,
+							"IsSearchCancelledAfterSelection": false,
 							"AllowDefaultValueIfOneItem": false,
 							"IsEditable": true,
 							"Search": {
@@ -184,7 +187,8 @@
 				"Icon": "sap-icon://menu",
 				"Position": "Right",
 				"IsIconCircular": false,
-				"Visible": true
+				"Visible": true,
+				"OnPress": "/Attendance_List/Actions/Teams/PopoverTeamEdit.action"
 			}
 		],
 		"_Name": "ActionBar1"

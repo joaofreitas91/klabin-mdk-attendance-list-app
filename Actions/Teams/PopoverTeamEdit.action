@@ -8,7 +8,7 @@
 			"Title": "Salvar Turma",
 			"Icon": "sap-icon://save",
 			"Style": "letter-color",
-			"OnPress": "/Attendance_List/Actions/Application/UserMenuPopover.action",
+			"OnPress": "/Attendance_List/Rules/Teams/SaveEdit.js",
 			"Visible": true,
 			"Enabled": true
 		}

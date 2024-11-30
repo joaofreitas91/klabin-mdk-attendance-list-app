@@ -154,39 +154,6 @@
 					"Layout": {
 						"NumberOfColumns": 2
 					}
-				},
-				{
-					"_Type": "Section.Type.ContactCell",
-					"Target": {
-						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-						"EntitySet": "{@odata.readLink}/cust_ListaNav"
-					},
-					"_Name": "SectionContactCell0",
-					"Visible": true,
-					"EmptySection": {
-						"FooterVisible": false
-					},
-					"Separators": {
-						"TopSectionSeparator": false,
-						"BottomSectionSeparator": true,
-						"HeaderSeparator": true,
-						"FooterSeparator": true,
-						"ControlSeparator": true
-					},
-					"ContactCell": {
-						"Visible": true,
-						"ContextMenu": {
-							"PerformFirstActionWithFullSwipe": true
-						},
-						"DetailImage": "res://contact.png",
-						"Headline": "Headline",
-						"Subheadline": "Subheadline",
-						"Description": "Description"
-					},
-					"DataPaging": {
-						"ShowLoadingIndicator": false,
-						"PageSize": 50
-					}
 				}
 			]
 		}
