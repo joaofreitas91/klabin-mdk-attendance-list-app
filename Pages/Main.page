@@ -55,10 +55,11 @@
 						},
 						"_Type": "SectionCommon.Type.Footer",
 						"_Name": "SectionCommonTypeFooter0",
-						"Caption": "Ver todas as turmas",
+						"Caption": "Ver todas as turma",
 						"AccessoryType": "DisclosureIndicator",
 						"FooterStyle": "Attribute",
 						"Visible": true,
+						"OnPress": "/Attendance_List/Actions/Main/NavToAllTeams.action",
 						"UseBottomPadding": true
 					},
 					"Visible": true,

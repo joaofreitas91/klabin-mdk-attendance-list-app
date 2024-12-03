@@ -1,0 +1,87 @@
+{
+	"Controls": [
+		{
+			"FilterFeedbackBar": {
+				"ShowAllFilters": false,
+				"_Type": "Control.Type.FilterFeedbackBar"
+			},
+			"_Type": "Control.Type.SectionedTable",
+			"_Name": "SectionedTable0",
+			"Sections": [
+				{
+					"ObjectHeader": {
+						"DetailImageIsCircular": false,
+						"HeadlineText": "Lista de turmas",
+						"StatusPosition": "Stacked",
+						"StatusImagePosition": "Leading",
+						"SubstatusImagePosition": "Leading",
+						"Target": {
+							"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+							"EntitySet": "cust_Turmas"
+						},
+						"Styles": {
+							"ObjectHeader": "background-100"
+						}
+					},
+					"_Type": "Section.Type.ObjectHeader",
+					"_Name": "SectionObjectHeader0",
+					"Visible": true
+				},
+				{
+					"_Type": "Section.Type.ObjectCardCollection",
+					"Target": {
+						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+						"EntitySet": "cust_Turmas",
+						"QueryOptions": "$filter=cust_LOCN_DESC ne 'null' and externalName ne 'null'&$orderby=cust_START_TME"
+					},
+					"_Name": "SectionObjectCardCollection0",
+					"Visible": true,
+					"EmptySection": {
+						"Caption": "Nenhuma turma encontrada",
+						"FooterVisible": false
+					},
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
+					"DataPaging": {
+						"ShowLoadingIndicator": false,
+						"PageSize": 50
+					},
+					"Card": {
+						"Visible": true,
+						"Title": "{externalName}",
+						"Subhead": "/Attendance_List/Rules/Main/StartTeam.js",
+						"Footnote": "Local: {cust_LOCN_DESC}",
+						"DetailImageIsCircular": false,
+						"StatusText": "/Attendance_List/Rules/Main/EndTeam.js",
+						"PrimaryAction": {
+							"OnPress": "/Attendance_List/Actions/Main/NavToTeamDetails.action",
+							"Style": "botoes",
+							"Title": "Detalhes",
+							"Visible": true
+						},
+						"SecondaryAction": {
+							"Title": "Secondary",
+							"Visible": false
+						},
+						"_Type": "Control.Type.ObjectCard"
+					},
+					"Search": {
+						"Enabled": true
+					},
+					"Layout": {
+						"LayoutType": "Vertical"
+					}
+				}
+			]
+		}
+	],
+	"_Type": "Page",
+	"_Name": "TeamList",
+	"Caption": " ",
+	"PrefersLargeCaption": true
+}
