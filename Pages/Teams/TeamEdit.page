@@ -109,6 +109,9 @@
 					},
 					"Controls": [
 						{
+							"Value": [
+								"{externalCode}"
+							],
 							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPicker0",
 							"IsVisible": true,
@@ -117,18 +120,30 @@
 							"AllowEmptySelection": true,
 							"Caption": "Participantes",
 							"DataPaging": {
-								"ShowLoadingIndicator": false,
-								"PageSize": 50
+								"ShowLoadingIndicator": true
 							},
 							"PickerPrompt": "Selecione um participante",
-							"IsSelectedSectionEnabled": false,
+							"IsSelectedSectionEnabled": true,
 							"IsPickerDismissedOnSelection": false,
 							"IsSearchCancelledAfterSelection": false,
 							"AllowDefaultValueIfOneItem": false,
 							"IsEditable": true,
+							"FilterProperty": "{externalCode}",
 							"Search": {
+								"options": {
+									"CaseSensitive": true,
+									"NumberSearch": {
+										"Enabled": true,
+										"ConversionMethod": "UseCast"
+									},
+									"UseSearchOverFilter": {
+										"Enabled": true
+									}
+								},
 								"Enabled": true,
-								"BarcodeScanner": true
+								"Placeholder": "Pesquisar participante...",
+								"BarcodeScanner": true,
+								"MinimumCharacterThreshold": 1
 							},
 							"PickerItems": {
 								"Target": {
@@ -146,7 +161,7 @@
 									},
 									"PreserveIconStackSpacing": false,
 									"Selected": true,
-									"Title": "/Attendance_List/Rules/Teams/GetFullName.js",
+									"Title": "{cust_matricula} - {cust_fname} {cust_lname}",
 									"Visible": true
 								},
 								"ReturnValue": "{externalCode}"

@@ -843,8 +843,6 @@ __webpack_require__.r(__webpack_exports__);
 function GetEndDate(clientAPI) {
     const endDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePickerEndDate/#Value")
 
-    alert(endDate)
-
     return `/Date(${new Date(endDate).getTime()})/`
 }
 
@@ -869,10 +867,63 @@ __webpack_require__.r(__webpack_exports__);
 function FormatStartDate(clientAPI) {
     const startDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePickerStartDate/#Value")
 
-    alert(startDate)
-
     return `/Date(${new Date(startDate).getTime()})/`
 }
+
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Delete.js":
+/*!*****************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Delete.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Delete)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function Delete(clientAPI) {
+    try {
+        clientAPI.executeAction("/Attendance_List/Actions/Teams/DeleteTeam.action").then(() => {
+            clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Exclusão de turma",
+                    "Message": "Turma excluida com sucesso!",
+                    "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+                },
+            });
+        })
+            .catch((e) => {
+                clientAPI.executeAction({
+                    "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                    "Properties": {
+                        "Title": "Exclusão de turma",
+                        "Message": `Erro: ${e}`
+                    }
+                });
+            })
+
+    } catch (error) {
+
+        return clientAPI.executeAction({
+            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+            "Properties": {
+                "Title": "Exclusão de turma",
+                "Message": `Erro: ${error.message}`
+            }
+        });
+    }
+
+}
+
+
 
 
 /***/ }),
@@ -1024,19 +1075,25 @@ __webpack_require__.r(__webpack_exports__);
  * @param {IClientAPI} clientAPI
  */
 function SaveCreate(clientAPI) {
+
+    alert("teste: " + clientAPI.getValue())
+
     try {
         clientAPI.executeAction("/Attendance_List/Actions/Teams/CreateEntityTeam.action").then(() => {
             clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
-                    "Message": `Sucesso`
-                }
+                    "Title": "Criação de turma",
+                    "Message": "Turma criada com sucesso!",
+                    "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+                },
             });
         })
             .catch((e) => {
                 clientAPI.executeAction({
                     "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                     "Properties": {
+                        "Title": "Criação de turma",
                         "Message": `Erro: ${e}`
                     }
                 });
@@ -1047,6 +1104,7 @@ function SaveCreate(clientAPI) {
         return clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
             "Properties": {
+                "Title": "Criação de turma",
                 "Message": `Erro: ${error.message}`
             }
         });
@@ -1117,8 +1175,10 @@ function SaveEdit(clientAPI) {
             clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
-                    "Message": `Sucesso`
-                }
+                    "Title": "Edição de turma",
+                    "Message": "Turma editada com sucesso!",
+                    "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+                },
             });
         })
         .catch((e) => {
@@ -1142,6 +1202,26 @@ function SaveEdit(clientAPI) {
 
 }
 
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/SearchQuery.js":
+/*!**********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/SearchQuery.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SearchQuery)
+/* harmony export */ });
+function SearchQuery(context) {
+    const searchTerm = context.evaluateTargetPath('#Control:FormCellListPicker2/SearchString');
+
+    alert(searchTerm)
+
+}
 
 /***/ }),
 
@@ -1256,6 +1336,8 @@ let attendance_list_actions_logging_uploadlogprogress_action = __webpack_require
 let attendance_list_actions_main_navtoallteams_action = __webpack_require__(/*! ./Attendance_List/Actions/Main/NavToAllTeams.action */ "./build.definitions/Attendance_List/Actions/Main/NavToAllTeams.action")
 let attendance_list_actions_main_navtoteamdetails_action = __webpack_require__(/*! ./Attendance_List/Actions/Main/NavToTeamDetails.action */ "./build.definitions/Attendance_List/Actions/Main/NavToTeamDetails.action")
 let attendance_list_actions_teams_createentityteam_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CreateEntityTeam.action */ "./build.definitions/Attendance_List/Actions/Teams/CreateEntityTeam.action")
+let attendance_list_actions_teams_deleteteam_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/DeleteTeam.action */ "./build.definitions/Attendance_List/Actions/Teams/DeleteTeam.action")
+let attendance_list_actions_teams_navtomain_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/NavToMain.action */ "./build.definitions/Attendance_List/Actions/Teams/NavToMain.action")
 let attendance_list_actions_teams_navtoteamcreate_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/NavToTeamCreate.action */ "./build.definitions/Attendance_List/Actions/Teams/NavToTeamCreate.action")
 let attendance_list_actions_teams_navtoteamdetails_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/NavToTeamDetails.action */ "./build.definitions/Attendance_List/Actions/Teams/NavToTeamDetails.action")
 let attendance_list_actions_teams_navtoteamedit_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/NavToTeamEdit.action */ "./build.definitions/Attendance_List/Actions/Teams/NavToTeamEdit.action")
@@ -1306,6 +1388,7 @@ let attendance_list_rules_main_welcomemessage_js = __webpack_require__(/*! ./Att
 let attendance_list_rules_service_initialize_js = __webpack_require__(/*! ./Attendance_List/Rules/Service/Initialize.js */ "./build.definitions/Attendance_List/Rules/Service/Initialize.js")
 let attendance_list_rules_teams_create_formatenddate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Create/FormatEndDate.js */ "./build.definitions/Attendance_List/Rules/Teams/Create/FormatEndDate.js")
 let attendance_list_rules_teams_create_formatstartdate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Create/FormatStartDate.js */ "./build.definitions/Attendance_List/Rules/Teams/Create/FormatStartDate.js")
+let attendance_list_rules_teams_delete_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Delete.js */ "./build.definitions/Attendance_List/Rules/Teams/Delete.js")
 let attendance_list_rules_teams_formatenddate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/FormatEndDate.js */ "./build.definitions/Attendance_List/Rules/Teams/FormatEndDate.js")
 let attendance_list_rules_teams_formatstartdate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/FormatStartDate.js */ "./build.definitions/Attendance_List/Rules/Teams/FormatStartDate.js")
 let attendance_list_rules_teams_getfullname_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/GetFullName.js */ "./build.definitions/Attendance_List/Rules/Teams/GetFullName.js")
@@ -1313,6 +1396,7 @@ let attendance_list_rules_teams_processreturnvalue_js = __webpack_require__(/*! 
 let attendance_list_rules_teams_queryshowallteams_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/QueryShowAllTeams.js */ "./build.definitions/Attendance_List/Rules/Teams/QueryShowAllTeams.js")
 let attendance_list_rules_teams_savecreate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/SaveCreate.js */ "./build.definitions/Attendance_List/Rules/Teams/SaveCreate.js")
 let attendance_list_rules_teams_saveedit_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/SaveEdit.js */ "./build.definitions/Attendance_List/Rules/Teams/SaveEdit.js")
+let attendance_list_rules_teams_searchquery_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/SearchQuery.js */ "./build.definitions/Attendance_List/Rules/Teams/SearchQuery.js")
 let attendance_list_rules_teams_teamdescription_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/TeamDescription.js */ "./build.definitions/Attendance_List/Rules/Teams/TeamDescription.js")
 let attendance_list_rules_teams_teamduration_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/TeamDuration.js */ "./build.definitions/Attendance_List/Rules/Teams/TeamDuration.js")
 let attendance_list_services_cap_service_sf_lms_service = __webpack_require__(/*! ./Attendance_List/Services/CAP_SERVICE_SF_LMS.service */ "./build.definitions/Attendance_List/Services/CAP_SERVICE_SF_LMS.service")
@@ -1373,6 +1457,8 @@ module.exports = {
 	attendance_list_actions_main_navtoallteams_action : attendance_list_actions_main_navtoallteams_action,
 	attendance_list_actions_main_navtoteamdetails_action : attendance_list_actions_main_navtoteamdetails_action,
 	attendance_list_actions_teams_createentityteam_action : attendance_list_actions_teams_createentityteam_action,
+	attendance_list_actions_teams_deleteteam_action : attendance_list_actions_teams_deleteteam_action,
+	attendance_list_actions_teams_navtomain_action : attendance_list_actions_teams_navtomain_action,
 	attendance_list_actions_teams_navtoteamcreate_action : attendance_list_actions_teams_navtoteamcreate_action,
 	attendance_list_actions_teams_navtoteamdetails_action : attendance_list_actions_teams_navtoteamdetails_action,
 	attendance_list_actions_teams_navtoteamedit_action : attendance_list_actions_teams_navtoteamedit_action,
@@ -1423,6 +1509,7 @@ module.exports = {
 	attendance_list_rules_service_initialize_js : attendance_list_rules_service_initialize_js,
 	attendance_list_rules_teams_create_formatenddate_js : attendance_list_rules_teams_create_formatenddate_js,
 	attendance_list_rules_teams_create_formatstartdate_js : attendance_list_rules_teams_create_formatstartdate_js,
+	attendance_list_rules_teams_delete_js : attendance_list_rules_teams_delete_js,
 	attendance_list_rules_teams_formatenddate_js : attendance_list_rules_teams_formatenddate_js,
 	attendance_list_rules_teams_formatstartdate_js : attendance_list_rules_teams_formatstartdate_js,
 	attendance_list_rules_teams_getfullname_js : attendance_list_rules_teams_getfullname_js,
@@ -1430,6 +1517,7 @@ module.exports = {
 	attendance_list_rules_teams_queryshowallteams_js : attendance_list_rules_teams_queryshowallteams_js,
 	attendance_list_rules_teams_savecreate_js : attendance_list_rules_teams_savecreate_js,
 	attendance_list_rules_teams_saveedit_js : attendance_list_rules_teams_saveedit_js,
+	attendance_list_rules_teams_searchquery_js : attendance_list_rules_teams_searchquery_js,
 	attendance_list_rules_teams_teamdescription_js : attendance_list_rules_teams_teamdescription_js,
 	attendance_list_rules_teams_teamduration_js : attendance_list_rules_teams_teamduration_js,
 	attendance_list_services_cap_service_sf_lms_service : attendance_list_services_cap_service_sf_lms_service,
@@ -2284,7 +2372,7 @@ module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Typ
   \*********************************************************************/
 /***/ ((module) => {
 
-module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"Value":"{cust_START_TME}","_Type":"Control.Type.FormCell.DatePicker","_Name":"FormCellDatePicker0","IsVisible":true,"Separator":true,"Caption":"Data início","IsEditable":true,"Mode":"Datetime"},{"Value":"{cust_END_TME}","_Type":"Control.Type.FormCell.DatePicker","_Name":"FormCellDatePicker1","IsVisible":true,"Separator":true,"Caption":"Data fim","IsEditable":true,"Mode":"Datetime"}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell2"},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPicker2","IsVisible":true,"Separator":true,"AllowMultipleSelection":false,"AllowEmptySelection":true,"Caption":"Instrutor Secundário(a)","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Informe o instrutor","IsSelectedSectionEnabled":true,"IsPickerDismissedOnSelection":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true,"BarcodeScanner":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Instrutores","ReadLink":"{@odata.readLink}"},"DisplayValue":"/Attendance_List/Rules/Teams/GetFullName.js","ReturnValue":"{externalCode}"}}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPicker0","IsVisible":true,"Separator":true,"AllowMultipleSelection":true,"AllowEmptySelection":true,"Caption":"Participantes","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Selecione um participante","IsSelectedSectionEnabled":false,"IsPickerDismissedOnSelection":false,"IsSearchCancelledAfterSelection":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true,"BarcodeScanner":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Alunos"},"ObjectCell":{"AvatarStack":{"Avatars":[{"Image":"sap-icon://customer","ImageText":"VC"}]},"PreserveIconStackSpacing":false,"Selected":true,"Title":"/Attendance_List/Rules/Teams/GetFullName.js","Visible":true},"ReturnValue":"{externalCode}"}}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell1"}]}],"_Type":"Page","_Name":"TeamEdit","Caption":"Editar turma","PrefersLargeCaption":true,"ActionBar":{"Items":[{"_Name":"ActionBarItem1","Caption":"Item","SystemItem":"Cancel","Position":"Left","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/CloseModalPage_Cancel.action"},{"_Name":"ActionBarItem2","Caption":"","Icon":"sap-icon://menu","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Teams/PopoverTeamEdit.action"}],"_Name":"ActionBar1"}}
+module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"Value":"{cust_START_TME}","_Type":"Control.Type.FormCell.DatePicker","_Name":"FormCellDatePicker0","IsVisible":true,"Separator":true,"Caption":"Data início","IsEditable":true,"Mode":"Datetime"},{"Value":"{cust_END_TME}","_Type":"Control.Type.FormCell.DatePicker","_Name":"FormCellDatePicker1","IsVisible":true,"Separator":true,"Caption":"Data fim","IsEditable":true,"Mode":"Datetime"}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell2"},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPicker2","IsVisible":true,"Separator":true,"AllowMultipleSelection":false,"AllowEmptySelection":true,"Caption":"Instrutor Secundário(a)","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Informe o instrutor","IsSelectedSectionEnabled":true,"IsPickerDismissedOnSelection":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true,"BarcodeScanner":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Instrutores","ReadLink":"{@odata.readLink}"},"DisplayValue":"/Attendance_List/Rules/Teams/GetFullName.js","ReturnValue":"{externalCode}"}}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"Value":["{externalCode}"],"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPicker0","IsVisible":true,"Separator":true,"AllowMultipleSelection":true,"AllowEmptySelection":true,"Caption":"Participantes","DataPaging":{"ShowLoadingIndicator":true},"PickerPrompt":"Selecione um participante","IsSelectedSectionEnabled":true,"IsPickerDismissedOnSelection":false,"IsSearchCancelledAfterSelection":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"FilterProperty":"{externalCode}","Search":{"options":{"CaseSensitive":true,"NumberSearch":{"Enabled":true,"ConversionMethod":"UseCast"},"UseSearchOverFilter":{"Enabled":true}},"Enabled":true,"Placeholder":"Pesquisar participante...","BarcodeScanner":true,"MinimumCharacterThreshold":1},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Alunos"},"ObjectCell":{"AvatarStack":{"Avatars":[{"Image":"sap-icon://customer","ImageText":"VC"}]},"PreserveIconStackSpacing":false,"Selected":true,"Title":"{cust_matricula} - {cust_fname} {cust_lname}","Visible":true},"ReturnValue":"{externalCode}"}}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell1"}]}],"_Type":"Page","_Name":"TeamEdit","Caption":"Editar turma","PrefersLargeCaption":true,"ActionBar":{"Items":[{"_Name":"ActionBarItem1","Caption":"Item","SystemItem":"Cancel","Position":"Left","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/CloseModalPage_Cancel.action"},{"_Name":"ActionBarItem2","Caption":"","Icon":"sap-icon://menu","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Teams/PopoverTeamEdit.action"}],"_Name":"ActionBar1"}}
 
 /***/ }),
 
@@ -2614,7 +2702,7 @@ module.exports = {"_Type":"Action.Type.BannerMessage","ActionResult":{"_Name":"G
   \****************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.Message","ActionResult":{"_Name":"GenericMessageBox"},"Message":"Message","OKCaption":"OK"}
+module.exports = {"_Type":"Action.Type.Message","ActionResult":{"_Name":"GenericMessageBox"},"Message":"Message","Title":"Title","OKCaption":"OK"}
 
 /***/ }),
 
@@ -2704,7 +2792,27 @@ module.exports = {"_Type":"Action.Type.Navigation","ActionResult":{"_Name":"NavT
   \*********************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult":{"_Name":"CreateEntityTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"Properties":{"externalCode":"94918","cust_END_TME":"/Attendance_List/Rules/Teams/Create/FormatEndDate.js","cust_INST_ID1":"#Control:FormCellListPickerInstructor1/#SelectedValue","cust_INST_ID2":"#Control:FormCellListPickerInstructor2/#SelectedValue","cust_LOCN_DESC":"#Control:FormCellListPickerLocale/#Value/#First/DisplayValue","cust_LOCN_ID1":"#Control:FormCellListPickerLocale/#SelectedValue","cust_START_TME":"/Attendance_List/Rules/Teams/Create/FormatStartDate.js","externalName":"#Page:TeamCreate/#Control:FormCellSimplePropertyTeamDescription/#Value"},"RequestOptions":{"UpdateMode":"POST"}}
+module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult":{"_Name":"CreateEntityTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"Properties":{"externalCode":"94918","cust_ACT_CPNT_ID":"#Control:FormCellListPickerCurse/#SelectedValue","cust_END_TME":"/Attendance_List/Rules/Teams/Create/FormatEndDate.js","cust_INST_ID1":"#Control:FormCellListPickerInstructor1/#SelectedValue","cust_INST_ID2":"#Control:FormCellListPickerInstructor2/#SelectedValue","cust_LOCN_DESC":"#Control:FormCellListPickerLocale/#Value/#First/DisplayValue","cust_LOCN_ID1":"#Control:FormCellListPickerLocale/#SelectedValue","cust_SSG_SEG_NUM":"#Control:FormCellSimplePropertyWorkload/#Value","cust_START_TME":"/Attendance_List/Rules/Teams/Create/FormatStartDate.js","externalName":"#Page:TeamCreate/#Control:FormCellSimplePropertyTeamDescription/#Value"},"RequestOptions":{"UpdateMode":"POST"}}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Actions/Teams/DeleteTeam.action":
+/*!***************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Actions/Teams/DeleteTeam.action ***!
+  \***************************************************************************/
+/***/ ((module) => {
+
+module.exports = {"_Type":"Action.Type.ODataService.DeleteEntity","ActionResult":{"_Name":"DeleteTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas","ReadLink":"{@odata.id}"}}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Actions/Teams/NavToMain.action":
+/*!**************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Actions/Teams/NavToMain.action ***!
+  \**************************************************************************/
+/***/ ((module) => {
+
+module.exports = {"_Type":"Action.Type.Navigation","ActionResult":{"_Name":"NavToMain"},"PageToOpen":"/Attendance_List/Pages/Main.page","BackStackVisible":true,"ClearHistory":true}
 
 /***/ }),
 
@@ -2764,7 +2872,7 @@ module.exports = {"_Type":"Action.Type.Message","Message":"Team created successf
   \********************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.PopoverMenu","ActionResult":{"_Name":"PopoverTeamEdit"},"PopoverItems":[{"Title":"Salvar Turma","Icon":"sap-icon://save","Style":"letter-color","OnPress":"/Attendance_List/Rules/Teams/SaveEdit.js","Visible":true,"Enabled":true}]}
+module.exports = {"_Type":"Action.Type.PopoverMenu","ActionResult":{"_Name":"PopoverTeamEdit"},"PopoverItems":[{"Title":"Salvar Turma","Icon":"sap-icon://save","Style":"letter-color","OnPress":"/Attendance_List/Rules/Teams/SaveEdit.js","Visible":true,"Enabled":true},{"Title":"Excluir Turma","Icon":"sap-icon://delete","Style":"letter-color","OnPress":"/Attendance_List/Rules/Teams/Delete.js","Visible":true,"Enabled":true}]}
 
 /***/ }),
 

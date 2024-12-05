@@ -1,0 +1,9 @@
+{
+	"_Type": "Action.Type.Navigation",
+	"ActionResult": {
+		"_Name": "NavToMain"
+	},
+	"PageToOpen": "/Attendance_List/Pages/Main.page",
+	"BackStackVisible": true,
+	"ClearHistory": true
+}

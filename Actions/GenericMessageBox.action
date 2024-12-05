@@ -1,8 +1,9 @@
 {
-    "_Type": "Action.Type.Message",
-    "ActionResult": {
-        "_Name": "GenericMessageBox"
-    },
-    "Message": "Message",
-    "OKCaption": "OK"
+	"_Type": "Action.Type.Message",
+	"ActionResult": {
+		"_Name": "GenericMessageBox"
+	},
+	"Message": "Message",
+	"Title": "Title",
+	"OKCaption": "OK"
 }

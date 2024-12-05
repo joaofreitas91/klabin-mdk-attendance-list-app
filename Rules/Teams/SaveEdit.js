@@ -46,14 +46,17 @@ export default function SaveEdit(clientAPI) {
             clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
-                    "Message": `Sucesso`
-                }
+                    "Title": "Edição de turma",
+                    "Message": "Turma editada com sucesso!",
+                    "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+                },
             });
         })
         .catch((e) => {
             clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
+                    "Title": "Edição de turma",
                     "Message": `Erro: ${e}`
                 }
             });
@@ -64,6 +67,7 @@ export default function SaveEdit(clientAPI) {
         return clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
             "Properties": {
+                "Title": "Edição de turma",
                 "Message": `Erro: ${error.message}`
             }
         });

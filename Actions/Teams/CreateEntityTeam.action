@@ -9,11 +9,13 @@
 	},
 	"Properties": {
 		"externalCode": "94918",
+		"cust_ACT_CPNT_ID": "#Control:FormCellListPickerCurse/#SelectedValue",
 		"cust_END_TME": "/Attendance_List/Rules/Teams/Create/FormatEndDate.js",
 		"cust_INST_ID1": "#Control:FormCellListPickerInstructor1/#SelectedValue",
 		"cust_INST_ID2": "#Control:FormCellListPickerInstructor2/#SelectedValue",
 		"cust_LOCN_DESC": "#Control:FormCellListPickerLocale/#Value/#First/DisplayValue",
 		"cust_LOCN_ID1": "#Control:FormCellListPickerLocale/#SelectedValue",
+		"cust_SSG_SEG_NUM": "#Control:FormCellSimplePropertyWorkload/#Value",
 		"cust_START_TME": "/Attendance_List/Rules/Teams/Create/FormatStartDate.js",
 		"externalName": "#Page:TeamCreate/#Control:FormCellSimplePropertyTeamDescription/#Value"
 	},

@@ -1,0 +1,11 @@
+{
+	"_Type": "Action.Type.ODataService.DeleteEntity",
+	"ActionResult": {
+		"_Name": "DeleteTeam"
+	},
+	"Target": {
+		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+		"EntitySet": "cust_Turmas",
+		"ReadLink": "{@odata.id}"
+	}
+}

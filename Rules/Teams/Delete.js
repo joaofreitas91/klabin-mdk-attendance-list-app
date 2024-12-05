@@ -2,15 +2,14 @@
  * Describe this function...
  * @param {IClientAPI} clientAPI
  */
-export default function SaveCreate(clientAPI) {
-
+export default function Delete(clientAPI) {
     try {
-        clientAPI.executeAction("/Attendance_List/Actions/Teams/CreateEntityTeam.action").then(() => {
+        clientAPI.executeAction("/Attendance_List/Actions/Teams/DeleteTeam.action").then(() => {
             clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
-                    "Title": "Criação de turma",
-                    "Message": "Turma criada com sucesso!",
+                    "Title": "Exclusão de turma",
+                    "Message": "Turma excluida com sucesso!",
                     "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
                 },
             });
@@ -19,7 +18,7 @@ export default function SaveCreate(clientAPI) {
                 clientAPI.executeAction({
                     "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                     "Properties": {
-                        "Title": "Criação de turma",
+                        "Title": "Exclusão de turma",
                         "Message": `Erro: ${e}`
                     }
                 });
@@ -30,11 +29,12 @@ export default function SaveCreate(clientAPI) {
         return clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
             "Properties": {
-                "Title": "Criação de turma",
+                "Title": "Exclusão de turma",
                 "Message": `Erro: ${error.message}`
             }
         });
     }
 
 }
+
 
