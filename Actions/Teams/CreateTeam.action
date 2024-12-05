@@ -1,7 +1,0 @@
-{
-	"_Type": "Action.Type.ODataService.Create",
-	"ActionResult": {
-		"_Name": "CreateTeam"
-	},
-	"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service"
-}

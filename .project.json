@@ -8,21 +8,7 @@
 	"CF": {
 		"Target": "https://api.cf.br10.hana.ondemand.com",
 		"Organization": "2dbbc9a6-81d3-4a38-9f4c-dba6c2c8c53a",
-		"Space": "6b81515d-24b0-4536-a1a9-8c4717a6c918",
-		"Deploy": {
-			"Description": "",
-			"WebClient": {
-				"Runtime": "",
-				"URL": ""
-			},
-			"Destination": [
-				{
-					"CF": "",
-					"MDK": "CAP-SERVICE-SF-LMS",
-					"URL": ""
-				}
-			]
-		}
+		"Space": "6b81515d-24b0-4536-a1a9-8c4717a6c918"
 	},
 	"MobileService": {
 		"Type": "standard",

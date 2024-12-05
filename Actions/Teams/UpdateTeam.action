@@ -10,8 +10,9 @@
 	},
 	"Properties": {
 		"externalCode": "{externalCode}",
-		"cust_END_TME": "#Control:FormCellDatePicker1/#Value",
-		"cust_START_TME": "#Control:FormCellDatePicker0/#Value"
+		"cust_END_TME": "/Attendance_List/Rules/Teams/FormatEndDate.js",
+		"cust_INST_ID2": "#Page:TeamEdit/#Control:FormCellListPicker2/#SelectedValue",
+		"cust_START_TME": "/Attendance_List/Rules/Teams/FormatStartDate.js"
 	},
 	"RequestOptions": {
 		"UpdateMode": "PATCH"

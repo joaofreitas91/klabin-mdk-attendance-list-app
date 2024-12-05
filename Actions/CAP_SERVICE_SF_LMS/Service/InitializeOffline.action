@@ -10,7 +10,8 @@
 	"DefiningRequests": [
 		{
 			"Name": "cust_Alunos",
-			"Query": "cust_Alunos"
+			"Query": "cust_Alunos",
+			"AutomaticallyRetrievesStreams": false
 		},
 		{
 			"Name": "cust_Cursos",

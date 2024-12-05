@@ -1,0 +1,6 @@
+{
+  "_Type": "Action.Type.Message",
+  "Message": "Failed to create team.",
+  "Title": "Error",
+  "OKCaption": "Retry"
+}

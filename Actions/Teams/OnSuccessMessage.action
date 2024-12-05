@@ -1,0 +1,6 @@
+{
+  "_Type": "Action.Type.Message",
+  "Message": "Team created successfully!",
+  "Title": "Success",
+  "OKCaption": "OK"
+}

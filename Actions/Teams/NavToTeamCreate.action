@@ -1,0 +1,7 @@
+{
+	"_Type": "Action.Type.Navigation",
+	"ActionResult": {
+		"_Name": "NavToTeamCreate"
+	},
+	"PageToOpen": "/Attendance_List/Pages/Teams/TeamCreate.page"
+}

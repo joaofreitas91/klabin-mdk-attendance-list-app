@@ -28,24 +28,24 @@
 					"Visible": true
 				},
 				{
-					"_Type": "Section.Type.ObjectCardCollection",
-					"Target": {
-						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-						"EntitySet": "cust_Turmas",
-						"QueryOptions": "$filter=cust_LOCN_DESC ne 'null' and externalName ne 'null'&$orderby=cust_START_TME"
-					},
-					"_Name": "SectionObjectCardCollection0",
-					"Visible": true,
-					"EmptySection": {
-						"Caption": "Nenhuma turma encontrada",
-						"FooterVisible": false
-					},
 					"Separators": {
 						"TopSectionSeparator": false,
 						"BottomSectionSeparator": true,
 						"HeaderSeparator": true,
 						"FooterSeparator": true,
 						"ControlSeparator": true
+					},
+					"_Type": "Section.Type.ObjectCardCollection",
+					"Target": {
+						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+						"EntitySet": "cust_Turmas",
+						"QueryOptions": "/Attendance_List/Rules/Teams/QueryShowAllTeams.js"
+					},
+					"_Name": "SectionObjectCardCollection0",
+					"Visible": true,
+					"EmptySection": {
+						"Caption": "Nenhuma turma encontrada",
+						"FooterVisible": false
 					},
 					"DataPaging": {
 						"ShowLoadingIndicator": false,
