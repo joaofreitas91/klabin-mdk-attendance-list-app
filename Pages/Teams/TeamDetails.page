@@ -41,7 +41,7 @@
 					"SimplePropertyCells": [
 						{
 							"SimplePropertyCell": {
-								"Value": "{cust_Inst1Nav/cust_fname} {cust_Inst1Nav/cust_lname}",
+								"Value": "/Attendance_List/Rules/Teams/Details/GetInstNav1.js",
 								"_Name": "SectionSimplePropertyCell0",
 								"KeyName": "Instrutor Principal",
 								"AccessoryType": "DisclosureIndicator",
@@ -50,7 +50,7 @@
 						},
 						{
 							"SimplePropertyCell": {
-								"Value": "{cust_Inst2Nav/cust_fname} {cust_Inst2Nav/cust_lname}",
+								"Value": "/Attendance_List/Rules/Teams/Details/GetInstNav2.js",
 								"_Name": "SectionSimplePropertyCell1",
 								"KeyName": "Instrutor Secundário",
 								"AccessoryType": "DisclosureIndicator",
@@ -92,7 +92,7 @@
 					"Target": {
 						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 						"EntitySet": "cust_ListadePresenca",
-						"QueryOptions": "$expand=cust_AlunosNav&$filter=cust_Turma eq '{externalCode}'"
+						"QueryOptions": "$filter=cust_Turma eq '{externalCode}'"
 					},
 					"_Name": "SectionObjectCollection0",
 					"Header": {
@@ -100,7 +100,7 @@
 						"_Name": "SectionCommonTypeHeader0",
 						"AccessoryType": "None",
 						"UseTopPadding": true,
-						"Caption": "Lista de participantes"
+						"Caption": "Lista de presença"
 					},
 					"Visible": true,
 					"EmptySection": {
@@ -112,24 +112,10 @@
 						"PageSize": 50
 					},
 					"ObjectCell": {
-						"Title": "{cust_AlunosNav/cust_fname}",
-						"Tags": [
-							{
-								"Color": "Green",
-								"Text": "{cust_Status}"
-							},
-							{
-								"Color": "Green",
-								"Text": "Nota: 0"
-							}
-						],
-						"Subhead": "{cust_AlunosNav/cust_mname}{cust_AlunosNav/cust_lname}",
-						"Footnote": "{cust_AlunosNav/cust_fname}",
-						"Description": "{cust_AlunosNav/cust_fname}",
+						"Title": "{externalName}",
+						"Description": "{externalName}",
 						"DisplayDescriptionInMobile": true,
-						"StatusText": "{cust_AlunosNav/cust_fname}",
-						"SubstatusText": "{cust_AlunosNav/cust_fname}",
-						"AccessoryButtonIcon": "sap-icon://user-settings",
+						"AccessoryButtonIcon": "sap-icon://checklist-item",
 						"AccessoryType": "DisclosureIndicator",
 						"PreserveIconStackSpacing": false,
 						"Styles": {
@@ -139,8 +125,7 @@
 						"AvatarStack": {
 							"Avatars": [
 								{
-									"Image": "sap-icon://customer",
-									"ImageText": ""
+									"Image": "sap-icon://calendar"
 								}
 							],
 							"ImageIsCircular": true,
