@@ -1,9 +1,9 @@
 {
-    "Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-    "_Type": "Action.Type.OfflineOData.Upload",
-    "ActionResult": {
-        "_Name": "sync"
-    },
-    "OnSuccess": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/DownloadStartedMessage.action",
-    "OnFailure": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncFailureMessage.action"
+	"_Type": "Action.Type.OfflineOData.Upload",
+	"ActionResult": {
+		"_Name": "sync"
+	},
+	"OnFailure": "/Attendance_List/Actions/GenericMessageBox.action",
+	"OnSuccess": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/DownloadStartedMessage.action",
+	"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service"
 }

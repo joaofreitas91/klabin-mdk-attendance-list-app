@@ -80,13 +80,15 @@
 						"Description": "/Attendance_List/Rules/Main/TeamDescription.js",
 						"OnPress": "/Attendance_List/Actions/Teams/NavToTeamDetails.action",
 						"PrimaryAction": {
-							"Visible": false
+							"Visible": false,
+							"_Type": "ObjectCard.Type.ActionItem"
 						},
 						"SecondaryAction": {
 							"Title": "Secondary",
-							"Visible": false
+							"Visible": false,
+							"_Type": "ObjectCard.Type.ActionItem"
 						},
-						"_Type": "Control.Type.ObjectCard"
+						"_Type": "ObjectCardCollection.Type.Card"
 					},
 					"Layout": {
 						"LayoutType": "Vertical"
@@ -185,16 +187,18 @@
 						"OnPress": "/Attendance_List/Actions/Teams/NavToTeamDetails.action",
 						"PrimaryAction": {
 							"Title": "Primary",
-							"Visible": false
+							"Visible": false,
+							"_Type": "ObjectCard.Type.ActionItem"
 						},
 						"SecondaryAction": {
 							"Title": "Secondary",
-							"Visible": false
+							"Visible": false,
+							"_Type": "ObjectCard.Type.ActionItem"
 						},
 						"Styles": {
 							"BackgroundColor": "background-25"
 						},
-						"_Type": "Control.Type.ObjectCard"
+						"_Type": "ObjectCardCollection.Type.Card"
 					},
 					"Layout": {
 						"LayoutType": "Vertical"
@@ -212,15 +216,15 @@
 	},
 	"DesignTimeTarget": {
 		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-		"EntitySet": "cust_Turmas"
+		"EntitySet": "cust_Turmas",
+		"QueryOptions": "/Attendance_List/Rules/Main/GetThreeTeams.js"
 	},
 	"_Type": "Page",
 	"_Name": "Main",
-	"Caption": "Home",
-	"PrefersLargeCaption": false,
 	"ActionBar": {
 		"Items": [
 			{
+				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem0",
 				"Caption": "User Menu",
 				"Icon": "sap-icon://menu",
@@ -230,6 +234,9 @@
 				"OnPress": "/Attendance_List/Actions/Application/UserMenuPopover.action"
 			}
 		],
-		"_Name": "ActionBar1"
+		"_Name": "ActionBar1",
+		"_Type": "Control.Type.ActionBar",
+		"Caption": "Home",
+		"PrefersLargeCaption": false
 	}
 }

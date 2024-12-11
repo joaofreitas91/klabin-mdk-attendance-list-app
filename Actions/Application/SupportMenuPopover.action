@@ -46,8 +46,30 @@
 		{
 			"Title": "Logs",
 			"Icon": "sap-icon://document-text",
-			"Style": "",
 			"OnPress": "/Attendance_List/Actions/Application/NavToActivityLog.action",
+			"Visible": true,
+			"Enabled": true,
+			"Styles.Title": ""
+		},
+		{
+			"Title": "Download",
+			"Icon": "sap-icon://synchronize",
+			"OnPress": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/DownloadOffline.action",
+			"Visible": true,
+			"Enabled": true,
+			"Styles.Title": "",
+			"Styles.Icon": "",
+			"TextAlignment": "Center"
+		},
+		{
+			"Title": "Upload",
+			"Icon": "sap-icon://synchronize",
+			"TextAlignment": "Center",
+			"Styles": {
+				"Title": "",
+				"Icon": ""
+			},
+			"OnPress": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/UploadOffline.action",
 			"Visible": true,
 			"Enabled": true
 		}

@@ -62,13 +62,15 @@
 							"OnPress": "/Attendance_List/Actions/Main/NavToTeamDetails.action",
 							"Style": "botoes",
 							"Title": "Detalhes",
-							"Visible": true
+							"Visible": true,
+							"_Type": "ObjectCard.Type.ActionItem"
 						},
 						"SecondaryAction": {
 							"Title": "Secondary",
-							"Visible": false
+							"Visible": false,
+							"_Type": "ObjectCard.Type.ActionItem"
 						},
-						"_Type": "Control.Type.ObjectCard"
+						"_Type": "ObjectCardCollection.Type.Card"
 					},
 					"Search": {
 						"Enabled": true
@@ -82,6 +84,9 @@
 	],
 	"_Type": "Page",
 	"_Name": "TeamList",
-	"Caption": " ",
-	"PrefersLargeCaption": true
+	"ActionBar": {
+		"Caption": " ",
+		"PrefersLargeCaption": true,
+		"_Type": "Control.Type.ActionBar"
+	}
 }

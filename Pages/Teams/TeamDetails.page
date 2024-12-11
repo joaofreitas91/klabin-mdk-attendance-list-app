@@ -45,7 +45,8 @@
 								"_Name": "SectionSimplePropertyCell0",
 								"KeyName": "Instrutor Principal",
 								"AccessoryType": "DisclosureIndicator",
-								"Visible": true
+								"Visible": true,
+								"_Type": "SimplePropertyCollection.Type.Cell"
 							}
 						},
 						{
@@ -54,7 +55,8 @@
 								"_Name": "SectionSimplePropertyCell1",
 								"KeyName": "Instrutor Secundário",
 								"AccessoryType": "DisclosureIndicator",
-								"Visible": true
+								"Visible": true,
+								"_Type": "SimplePropertyCollection.Type.Cell"
 							}
 						},
 						{
@@ -63,7 +65,8 @@
 								"_Name": "SectionSimplePropertyCell2",
 								"KeyName": "Local",
 								"AccessoryType": "None",
-								"Visible": true
+								"Visible": true,
+								"_Type": "SimplePropertyCollection.Type.Cell"
 							}
 						},
 						{
@@ -72,7 +75,8 @@
 								"_Name": "SectionSimplePropertyCell3",
 								"KeyName": "Carga Horária",
 								"AccessoryType": "None",
-								"Visible": true
+								"Visible": true,
+								"_Type": "SimplePropertyCollection.Type.Cell"
 							}
 						}
 					],
@@ -134,7 +138,8 @@
 						"AvatarGrid": {
 							"Avatars": [],
 							"ImageIsCircular": true
-						}
+						},
+						"_Type": "ObjectCollection.Type.ObjectCell"
 					},
 					"Layout": {
 						"NumberOfColumns": 2
@@ -145,8 +150,6 @@
 	],
 	"_Type": "Page",
 	"_Name": "TeamDetails",
-	"Caption": " ",
-	"PrefersLargeCaption": false,
 	"ActionBar": {
 		"Items": [
 			{
@@ -156,9 +159,13 @@
 				"Position": "Right",
 				"IsIconCircular": false,
 				"Visible": true,
-				"OnPress": "/Attendance_List/Actions/Teams/NavToTeamEdit.action"
+				"OnPress": "/Attendance_List/Actions/Teams/NavToTeamEdit.action",
+				"_Type": "Control.Type.ActionBarItem"
 			}
 		],
-		"_Name": "ActionBar1"
+		"_Name": "ActionBar1",
+		"Caption": " ",
+		"PrefersLargeCaption": false,
+		"_Type": "Control.Type.ActionBar"
 	}
 }

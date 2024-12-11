@@ -278,8 +278,6 @@
 	},
 	"_Type": "Page",
 	"_Name": "TeamCreate",
-	"Caption": "Criar turma",
-	"PrefersLargeCaption": true,
 	"ActionBar": {
 		"Items": [
 			{
@@ -288,7 +286,8 @@
 				"SystemItem": "Cancel",
 				"Position": "Left",
 				"IsIconCircular": false,
-				"Visible": true
+				"Visible": true,
+				"_Type": "Control.Type.ActionBarItem"
 			},
 			{
 				"_Name": "ActionBarItem2",
@@ -297,9 +296,13 @@
 				"Position": "Right",
 				"IsIconCircular": false,
 				"Visible": true,
-				"OnPress": "/Attendance_List/Rules/Teams/SaveCreate.js"
+				"OnPress": "/Attendance_List/Rules/Teams/SaveCreate.js",
+				"_Type": "Control.Type.ActionBarItem"
 			}
 		],
-		"_Name": "Salvar"
+		"_Name": "Salvar",
+		"Caption": "Criar turma",
+		"PrefersLargeCaption": true,
+		"_Type": "Control.Type.ActionBar"
 	}
 }

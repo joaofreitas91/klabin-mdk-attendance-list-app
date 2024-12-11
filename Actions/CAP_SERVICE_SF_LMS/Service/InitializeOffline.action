@@ -15,23 +15,28 @@
 		},
 		{
 			"Name": "cust_Cursos",
-			"Query": "cust_Cursos"
+			"Query": "cust_Cursos",
+			"AutomaticallyRetrievesStreams": false
 		},
 		{
 			"Name": "cust_Instrutores",
-			"Query": "cust_Instrutores"
-		},
-		{
-			"Name": "cust_ListadePresenca",
-			"Query": "cust_ListadePresenca"
+			"Query": "cust_Instrutores",
+			"AutomaticallyRetrievesStreams": false
 		},
 		{
 			"Name": "cust_Locais",
-			"Query": "cust_Locais"
+			"Query": "cust_Locais",
+			"AutomaticallyRetrievesStreams": false
 		},
 		{
 			"Name": "cust_Turmas",
-			"Query": "cust_Turmas"
+			"Query": "cust_Turmas?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav",
+			"AutomaticallyRetrievesStreams": false
+		},
+		{
+			"Name": "cust_ListadePresenca",
+			"Query": "cust_ListadePresenca",
+			"AutomaticallyRetrievesStreams": false
 		}
 	]
 }

@@ -1,7 +1,11 @@
 {
 	"DestinationName": "CAP-SERVICE-SF-LMS",
-	"PathSuffix": "/odata/v4/sfsf/",
-	"OfflineEnabled": false,
+	"OfflineEnabled": true,
+	"OfflineOptions": {
+		"CSDLOptions": [
+			"processMixedVersions"
+		]
+	},
 	"SourceType": "Mobile",
 	"RestService": false
 }

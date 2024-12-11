@@ -4,7 +4,9 @@
 		{
 			"Title": "Sincronizar",
 			"Icon": "sap-icon://synchronize",
-			"Style": "",
+			"Styles": {
+				"Title": ""
+			},
 			"OnPress": "/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncStartedMessage.action",
 			"Visible": true,
 			"Enabled": true
@@ -12,7 +14,9 @@
 		{
 			"Title": "Suporte",
 			"Icon": "sap-icon://headset",
-			"Style": "",
+			"Styles": {
+				"Title": ""
+			},
 			"OnPress": "/Attendance_List/Actions/Application/SupportMenuPopover.action",
 			"Visible": true,
 			"Enabled": true
@@ -20,7 +24,9 @@
 		{
 			"Title": "Incluir Turma",
 			"Icon": "sap-icon://add",
-			"Style": "",
+			"Styles": {
+				"Title": ""
+			},
 			"Visible": true,
 			"Enabled": true,
 			"OnPress": "/Attendance_List/Actions/Teams/NavToTeamCreate.action"
@@ -28,7 +34,9 @@
 		{
 			"Title": "Upload",
 			"Icon": "sap-icon://upload",
-			"Style": "",
+			"Styles": {
+				"Title": ""
+			},
 			"Visible": true,
 			"Enabled": true,
 			"rawValue": ""

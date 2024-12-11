@@ -57,7 +57,7 @@
                 <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_ACT_CPNT_ID" Type="Edm.String" MaxLength="15"/>
                 <Property Name="cust_CPNT_TYP_ID" Type="Edm.String" MaxLength="100"/>
-                <Property Name="cust_END_TME" Type="Edm.String"/>
+                <Property Name="cust_END_TME" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_INST_ID1" Type="Edm.String" MaxLength="15"/>
                 <Property Name="cust_INST_ID2" Type="Edm.String" MaxLength="15"/>
                 <Property Name="cust_LMS" Type="Edm.String" MaxLength="1"/>
@@ -65,7 +65,7 @@
                 <Property Name="cust_LOCN_ID1" Type="Edm.String" MaxLength="255"/>
                 <Property Name="cust_NOTACTIVE" Type="Edm.String" MaxLength="1"/>
                 <Property Name="cust_SSG_SEG_NUM" Type="Edm.String" MaxLength="38"/>
-                <Property Name="cust_START_TME" Type="Edm.String"/>
+                <Property Name="cust_START_TME" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_Status" Type="Edm.String" MaxLength="255"/>
                 <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
                 <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
@@ -75,7 +75,9 @@
                 <NavigationProperty Name="cust_CursosNav" Type="SFSFService.cust_Cursos"/>
                 <NavigationProperty Name="cust_Inst1Nav" Type="SFSFService.cust_Instrutores"/>
                 <NavigationProperty Name="cust_Inst2Nav" Type="SFSFService.cust_Instrutores"/>
-                <NavigationProperty Name="cust_ListaNav" Type="Collection(SFSFService.cust_ListadePresenca)"/>
+                <NavigationProperty Name="cust_ListaNav" Type="Collection(SFSFService.cust_ListadePresenca)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
                 <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
             </EntityType>
             <EntityType Name="cust_ListadePresenca">
@@ -89,7 +91,10 @@
                 <Property Name="cust_LMS" Type="Edm.String" MaxLength="1"/>
                 <Property Name="cust_Status" Type="Edm.String" MaxLength="10"/>
                 <Property Name="cust_Turma" Type="Edm.String" MaxLength="255"/>
+                <Property Name="cust_enddate" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_nota" Type="Edm.Int64"/>
+                <Property Name="cust_sequencia" Type="Edm.String" MaxLength="10"/>
+                <Property Name="cust_startdate" Type="Edm.DateTimeOffset"/>
                 <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
                 <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
                 <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>

@@ -113,7 +113,10 @@
 	],
 	"_Type": "Page",
 	"_Name": "UserActivityLog",
-	"Caption": "Activity Log",
-	"PrefersLargeCaption": false,
+	"ActionBar": {
+		"Caption": "Activity Log",
+		"PrefersLargeCaption": false,
+		"_Type": "Control.Type.ActionBar"
+	},
 	"OnLoaded": "/Attendance_List/Rules/Logging/UserLogSetting.js"
 }

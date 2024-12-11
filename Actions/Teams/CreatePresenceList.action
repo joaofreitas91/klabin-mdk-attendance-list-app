@@ -3,14 +3,9 @@
 	"ActionResult": {
 		"_Name": "CreatePresenceList"
 	},
+	"Properties": {},
 	"Target": {
 		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 		"EntitySet": "cust_ListadePresenca"
-	},
-	"Properties": {
-		"externalCode": "/Attendance_List/Rules/Teams/Create/GenerateId/GenerateId.js",
-		"cust_Aluno": "",
-		"cust_Turma": "",
-		"externalName": ""
 	}
 }

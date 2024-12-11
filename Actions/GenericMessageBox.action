@@ -3,7 +3,7 @@
 	"ActionResult": {
 		"_Name": "GenericMessageBox"
 	},
-	"Message": "Message",
+	"Message": "Message - {#ActionResults:sync/error}",
 	"Title": "Title",
 	"OKCaption": "OK"
 }

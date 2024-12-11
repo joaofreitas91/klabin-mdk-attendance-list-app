@@ -19,7 +19,8 @@
 					"ObjectCell": {
 						"ContextMenu": {
 							"Items": [],
-							"PerformFirstActionWithFullSwipe": true
+							"PerformFirstActionWithFullSwipe": true,
+							"_Type": "ObjectCell.Type.ContextMenu"
 						},
 						"Title": "{HTTPStatusCode}",
 						"Subhead": "{RequestURL}",
@@ -31,7 +32,8 @@
 						"PreserveIconStackSpacing": false,
 						"AccessoryType": "None",
 						"OnPress": "/Attendance_List/Actions/ErrorArchive/NavToErrorArchive_Detail.action",
-						"Selected": false
+						"Selected": false,
+						"_Type": "ObjectTable.Type.ObjectCell"
 					},
 					"DataPaging": {
 						"ShowLoadingIndicator": false,
@@ -49,6 +51,9 @@
 	],
 	"_Type": "Page",
 	"_Name": "ErrorArchive_List",
-	"Caption": "Error List",
-	"PrefersLargeCaption": true
+	"ActionBar": {
+		"Caption": "Error List",
+		"PrefersLargeCaption": true,
+		"_Type": "Control.Type.ActionBar"
+	}
 }

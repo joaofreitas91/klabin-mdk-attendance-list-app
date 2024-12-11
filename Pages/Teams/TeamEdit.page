@@ -183,8 +183,6 @@
 	],
 	"_Type": "Page",
 	"_Name": "TeamEdit",
-	"Caption": "Editar turma",
-	"PrefersLargeCaption": true,
 	"ActionBar": {
 		"Items": [
 			{
@@ -194,7 +192,8 @@
 				"Position": "Left",
 				"IsIconCircular": false,
 				"Visible": true,
-				"OnPress": "/Attendance_List/Actions/CloseModalPage_Cancel.action"
+				"OnPress": "/Attendance_List/Actions/CloseModalPage_Cancel.action",
+				"_Type": "Control.Type.ActionBarItem"
 			},
 			{
 				"_Name": "ActionBarItem2",
@@ -203,9 +202,13 @@
 				"Position": "Right",
 				"IsIconCircular": false,
 				"Visible": true,
-				"OnPress": "/Attendance_List/Actions/Teams/PopoverTeamEdit.action"
+				"OnPress": "/Attendance_List/Actions/Teams/PopoverTeamEdit.action",
+				"_Type": "Control.Type.ActionBarItem"
 			}
 		],
-		"_Name": "ActionBar1"
+		"_Name": "ActionBar1",
+		"Caption": "Editar turma",
+		"PrefersLargeCaption": true,
+		"_Type": "Control.Type.ActionBar"
 	}
 }

@@ -7,7 +7,9 @@
 		{
 			"Title": "Salvar Turma",
 			"Icon": "sap-icon://save",
-			"Style": "letter-color",
+			"Styles": {
+				"Title": "letter-color"
+			},
 			"OnPress": "/Attendance_List/Rules/Teams/SaveEdit.js",
 			"Visible": true,
 			"Enabled": true
@@ -15,7 +17,9 @@
 		{
 			"Title": "Excluir Turma",
 			"Icon": "sap-icon://delete",
-			"Style": "letter-color",
+			"Styles": {
+				"Title": "letter-color"
+			},
 			"OnPress": "/Attendance_List/Rules/Teams/Delete.js",
 			"Visible": true,
 			"Enabled": true

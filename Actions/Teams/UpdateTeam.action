@@ -6,14 +6,18 @@
 	"Target": {
 		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 		"EntitySet": "cust_Turmas",
-		"ReadLink": "{@odata.readLink}"
+		"QueryOptions": "$filter=externalCode eq '202020'"
 	},
-	"Properties": {
-		"externalCode": "{externalCode}",
-		"cust_END_TME": "/Attendance_List/Rules/Teams/FormatEndDate.js",
-		"cust_INST_ID2": "#Page:TeamEdit/#Control:FormCellListPicker2/#SelectedValue",
-		"cust_START_TME": "/Attendance_List/Rules/Teams/FormatStartDate.js"
-	},
+	"UpdateLinks": [
+		{
+			"Property": "cust_ListaNav",
+			"Target": {
+				"EntitySet": "cust_ListadePresenca",
+				"QueryOptions": "$filter=cust_Turma eq '202020'"
+			},
+			"_Enabled": true
+		}
+	],
 	"RequestOptions": {
 		"UpdateMode": "PATCH"
 	}
