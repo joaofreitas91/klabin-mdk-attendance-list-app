@@ -12,7 +12,6 @@ export default async function SaveCreate(clientAPI) {
         const partners = clientAPI.evaluateTargetPath('#Control:FormCellListPickerParticipants/#Value/')
 
         const props = partners.map((i, index) => {
-            // const externalCode = `${teamId}_${i.ReturnValue}_${today}`
             const externalCode = `909090${index}`
             const props = {
                 "externalCode": externalCode,

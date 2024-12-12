@@ -1257,7 +1257,6 @@ async function SaveCreate(clientAPI) {
         const partners = clientAPI.evaluateTargetPath('#Control:FormCellListPickerParticipants/#Value/')
 
         const props = partners.map((i, index) => {
-            // const externalCode = `${teamId}_${i.ReturnValue}_${today}`
             const externalCode = `909090${index}`
             const props = {
                 "externalCode": externalCode,
@@ -3041,7 +3040,7 @@ module.exports = {"_Type":"Action.Type.Navigation","ActionResult":{"_Name":"NavT
   \*********************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult":{"_Name":"CreateEntityTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"Properties":{"externalCode":"","cust_ACT_CPNT_ID":"#Control:FormCellListPickerCurse/#SelectedValue","cust_INST_ID1":"#Control:FormCellListPickerInstructor1/#SelectedValue","cust_INST_ID2":"#Control:FormCellListPickerInstructor2/#SelectedValue","cust_LOCN_DESC":"#Control:FormCellListPickerLocale/#Value/#First/DisplayValue","cust_LOCN_ID1":"#Control:FormCellListPickerLocale/#SelectedValue","cust_SSG_SEG_NUM":"#Control:FormCellSimplePropertyWorkload/#Value","externalName":"#Page:TeamCreate/#Control:FormCellSimplePropertyTeamDescription/#Value"}}
+module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult":{"_Name":"CreateEntityTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"Properties":{"externalCode":"","cust_ACT_CPNT_ID":"#Control:FormCellListPickerCurse/#SelectedValue","cust_END_TME":"#Control:FormCellDatePickerEndDate/#Value","cust_INST_ID1":"#Control:FormCellListPickerInstructor1/#SelectedValue","cust_INST_ID2":"#Control:FormCellListPickerInstructor2/#SelectedValue","cust_LOCN_DESC":"#Control:FormCellListPickerLocale/#Value/#First/DisplayValue","cust_LOCN_ID1":"#Control:FormCellListPickerLocale/#SelectedValue","cust_SSG_SEG_NUM":"#Control:FormCellSimplePropertyWorkload/#Value","cust_START_TME":"#Control:FormCellDatePickerStartDate/#Value","externalName":"#Page:TeamCreate/#Control:FormCellSimplePropertyTeamDescription/#Value"}}
 
 /***/ }),
 
