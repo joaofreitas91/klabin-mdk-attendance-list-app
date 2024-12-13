@@ -29,7 +29,7 @@
 		},
 		{
 			"Name": "cust_Turmas",
-			"Query": "cust_Turmas?$filter=cust_LMS ne 'S' and cust_Status ne 'cancelada'&$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav",
+			"Query": "cust_Turmas?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav&$filter=cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null",
 			"AutomaticallyRetrievesStreams": false
 		},
 		{
