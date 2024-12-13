@@ -43,40 +43,40 @@
 							"SimplePropertyCell": {
 								"Value": "/Attendance_List/Rules/Teams/Details/GetInstNav1.js",
 								"_Name": "SectionSimplePropertyCell0",
+								"_Type": "SimplePropertyCollection.Type.Cell",
 								"KeyName": "Instrutor Principal",
 								"AccessoryType": "DisclosureIndicator",
-								"Visible": true,
-								"_Type": "SimplePropertyCollection.Type.Cell"
+								"Visible": true
 							}
 						},
 						{
 							"SimplePropertyCell": {
 								"Value": "/Attendance_List/Rules/Teams/Details/GetInstNav2.js",
 								"_Name": "SectionSimplePropertyCell1",
+								"_Type": "SimplePropertyCollection.Type.Cell",
 								"KeyName": "Instrutor Secundário",
 								"AccessoryType": "DisclosureIndicator",
-								"Visible": true,
-								"_Type": "SimplePropertyCollection.Type.Cell"
+								"Visible": true
 							}
 						},
 						{
 							"SimplePropertyCell": {
 								"Value": "{cust_LOCN_DESC}",
 								"_Name": "SectionSimplePropertyCell2",
+								"_Type": "SimplePropertyCollection.Type.Cell",
 								"KeyName": "Local",
 								"AccessoryType": "None",
-								"Visible": true,
-								"_Type": "SimplePropertyCollection.Type.Cell"
+								"Visible": true
 							}
 						},
 						{
 							"SimplePropertyCell": {
 								"Value": "/Attendance_List/Rules/Teams/TeamDuration.js",
 								"_Name": "SectionSimplePropertyCell3",
+								"_Type": "SimplePropertyCollection.Type.Cell",
 								"KeyName": "Carga Horária",
 								"AccessoryType": "None",
-								"Visible": true,
-								"_Type": "SimplePropertyCollection.Type.Cell"
+								"Visible": true
 							}
 						}
 					],
@@ -96,7 +96,7 @@
 					"Target": {
 						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 						"EntitySet": "cust_ListadePresenca",
-						"QueryOptions": "$filter=cust_Turma eq '{externalCode}'"
+						"QueryOptions": "$expand=cust_AlunosNav&$filter=cust_Turma eq '{externalCode}'"
 					},
 					"_Name": "SectionObjectCollection0",
 					"Header": {
@@ -116,12 +116,24 @@
 						"PageSize": 50
 					},
 					"ObjectCell": {
-						"Title": "{externalName}",
-						"Description": "{externalName}",
+						"Title": "/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js",
+						"Tags": [
+							{
+								"Color": "Blue",
+								"Text": "/Attendance_List/Rules/Teams/Details/GetTeamStatus.js"
+							},
+							{
+								"Color": "Green",
+								"Text": "/Attendance_List/Rules/Teams/Details/GetPartnerNote.js"
+							}
+						],
+						"Subhead": "/Attendance_List/Rules/Teams/Details/GetAlunoName.js",
 						"DisplayDescriptionInMobile": true,
-						"AccessoryButtonIcon": "sap-icon://checklist-item",
+						"AccessoryButtonIcon": "sap-icon://user-settings",
 						"AccessoryType": "DisclosureIndicator",
 						"PreserveIconStackSpacing": false,
+						"OnPress": "/Attendance_List/Actions/Teams/NavToBePresence.action",
+						"OnAccessoryButtonPress": "/Attendance_List/Actions/Teams/NavToBePresence.action",
 						"Styles": {
 							"Title": "letter-color",
 							"Subhead": "letter-black-color"
@@ -129,7 +141,8 @@
 						"AvatarStack": {
 							"Avatars": [
 								{
-									"Image": "sap-icon://calendar"
+									"Image": "sap-icon://customer",
+									"Style": "avatar"
 								}
 							],
 							"ImageIsCircular": true,
@@ -153,19 +166,19 @@
 	"ActionBar": {
 		"Items": [
 			{
+				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem0",
 				"Caption": "Item",
 				"SystemItem": "Edit",
 				"Position": "Right",
 				"IsIconCircular": false,
 				"Visible": true,
-				"OnPress": "/Attendance_List/Actions/Teams/NavToTeamEdit.action",
-				"_Type": "Control.Type.ActionBarItem"
+				"OnPress": "/Attendance_List/Actions/Teams/PopoverTeamEdit.action"
 			}
 		],
 		"_Name": "ActionBar1",
+		"_Type": "Control.Type.ActionBar",
 		"Caption": " ",
-		"PrefersLargeCaption": false,
-		"_Type": "Control.Type.ActionBar"
+		"PrefersLargeCaption": false
 	}
 }

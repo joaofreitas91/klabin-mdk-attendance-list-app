@@ -42,7 +42,7 @@ export default function SaveEdit(clientAPI) {
             mdfSystemRecordStatus: clientAPI.binding.mdfSystemRecordStatus || "",
         }
             
-        return clientAPI.executeAction("/Attendance_List/Actions/Teams/UpdateTeam.action").then(() => {
+        return clientAPI.executeAction("/Attendance_List/Actions/Teams/UpdatePresenceList.action").then(() => {
             clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {

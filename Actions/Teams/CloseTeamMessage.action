@@ -1,0 +1,11 @@
+{
+	"_Type": "Action.Type.Message",
+	"ActionResult": {
+		"_Name": "CloseTeamMessage"
+	},
+	"Message": "Lembre-se de verificar as notas da turma",
+	"Title": "Deseja encerrar a turma?",
+	"OKCaption": "Encerrar",
+	"OnOK": "/Attendance_List/Rules/Teams/Update/CloseTeam.js",
+	"CancelCaption": "Cancelar"
+}

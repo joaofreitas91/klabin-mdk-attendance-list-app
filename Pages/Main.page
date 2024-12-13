@@ -64,7 +64,7 @@
 					},
 					"Visible": true,
 					"EmptySection": {
-						"Caption": "Sem turmas disponíveis",
+						"Caption": "Sem turmas disponíveis hoje",
 						"FooterVisible": true
 					},
 					"DataPaging": {

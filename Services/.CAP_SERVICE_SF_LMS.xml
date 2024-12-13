@@ -92,7 +92,7 @@
                 <Property Name="cust_Status" Type="Edm.String" MaxLength="10"/>
                 <Property Name="cust_Turma" Type="Edm.String" MaxLength="255"/>
                 <Property Name="cust_enddate" Type="Edm.DateTimeOffset"/>
-                <Property Name="cust_nota" Type="Edm.Int64"/>
+                <Property Name="cust_nota" Type="Edm.String"/>
                 <Property Name="cust_sequencia" Type="Edm.String" MaxLength="10"/>
                 <Property Name="cust_startdate" Type="Edm.DateTimeOffset"/>
                 <Property Name="externalName" Type="Edm.String" MaxLength="128"/>

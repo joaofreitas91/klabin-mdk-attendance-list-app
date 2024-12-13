@@ -1,0 +1,15 @@
+{
+	"_Type": "Action.Type.ODataService.UpdateEntity",
+	"ActionResult": {
+		"_Name": "UpdateTeam"
+	},
+	"Target": {
+		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+		"EntitySet": "cust_Turmas",
+		"ReadLink": "{@odata.readLink}"
+	},
+	"Properties": {
+		"externalCode": "{externalCode}",
+		"cust_Status": "cancelado"
+	}
+}

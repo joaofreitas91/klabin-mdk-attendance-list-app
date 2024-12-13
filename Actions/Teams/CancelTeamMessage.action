@@ -1,0 +1,11 @@
+{
+	"_Type": "Action.Type.Message",
+	"ActionResult": {
+		"_Name": "CloseTeamMessage"
+	},
+	"Message": "Essa turma será removida e não será possível alterá-la posteriormente",
+	"Title": "Deseja cancelar a turma?",
+	"OKCaption": "Cancelar",
+	"OnOK": "/Attendance_List/Actions/Teams/CancelTeam.action",
+	"CancelCaption": "Cancelar"
+}

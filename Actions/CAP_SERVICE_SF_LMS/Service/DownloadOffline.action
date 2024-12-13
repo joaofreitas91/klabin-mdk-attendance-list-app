@@ -29,12 +29,12 @@
 		},
 		{
 			"Name": "cust_Turmas",
-			"Query": "cust_Turmas?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav",
+			"Query": "cust_Turmas?$filter=cust_LMS ne 'S'&$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav",
 			"AutomaticallyRetrievesStreams": false
 		},
 		{
 			"Name": "cust_ListadePresenca",
-			"Query": "cust_ListadePresenca",
+			"Query": "cust_ListadePresenca?$expand=cust_AlunosNav",
 			"AutomaticallyRetrievesStreams": false
 		}
 	]

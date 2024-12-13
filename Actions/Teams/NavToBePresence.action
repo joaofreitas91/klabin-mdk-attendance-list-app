@@ -1,0 +1,10 @@
+{
+	"_Type": "Action.Type.Navigation",
+	"ActionResult": {
+		"_Name": "NavToBePresence"
+	},
+	"PageToOpen": "/Attendance_List/Pages/Teams/BePresence.page",
+	"BackStackVisible": true,
+	"ModalPage": true,
+	"NavigationType": "Inner"
+}
