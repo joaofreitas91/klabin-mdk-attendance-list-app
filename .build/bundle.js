@@ -650,7 +650,7 @@ function defaultQuery(context) {
     var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
     var dDate = new Date();
     var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
-    let cFilter = "$filter=cust_LOCN_DESC ne null and cust_LMS ne 'S' and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
+    let cFilter = "$filter=cust_LOCN_DESC ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada' and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
 
     cFilter += cExpand
 
@@ -700,7 +700,7 @@ function GetThreeTeams(context) {
     var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
     var dDate = new Date();
     var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
-    var cFilter =  "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and cust_LOCN_DESC ne null and externalName ne null and cust_LMS ne 'S'";
+    var cFilter =  "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and cust_LOCN_DESC ne null and externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'";
     var cFilter
     cFilter += cTop + cExpand
 
@@ -785,7 +785,7 @@ function UpdateQueryWithSelectedDate(clientAPI) {
         let day = ("0" + selectedDate.getDate()).slice(-2);
         let formattedDate = year + '-' + month + '-' + day;
         var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
-        let filterQuery = "$filter=cust_LOCN_DESC ne null and cust_LMS ne 'S' and externalName ne null and cust_START_TME ge " + formattedDate + "T00:00:00Z and cust_START_TME le " + formattedDate + "T23:59:59Z";
+        let filterQuery = "$filter=cust_LOCN_DESC ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada' and externalName ne null and cust_START_TME ge " + formattedDate + "T00:00:00Z and cust_START_TME le " + formattedDate + "T23:59:59Z";
         filterQuery += cExpand
         let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
         let oTarget = oCardObj.getTargetSpecifier();
@@ -1342,7 +1342,7 @@ __webpack_require__.r(__webpack_exports__);
  * @param {IClientAPI} clientAPI
  */
 function QueryShowAllTeams(clientAPI) {
-    return "?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=cust_LOCN_DESC ne null and externalName ne null and cust_LMS ne 'S'&$orderby=cust_START_TME"
+    return "?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=cust_LOCN_DESC ne null and externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'&$orderby=cust_START_TME"
 }
 
 
@@ -1578,6 +1578,55 @@ function TeamDuration(clientAPI) {
         cRet += ' Hora'
     }
     return(cRet)
+}
+
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/CancelTeam.js":
+/*!****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/CancelTeam.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ CancelTeam)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function CancelTeam(clientAPI) {
+    try {
+        await clientAPI.executeAction({
+            "Name": "/Attendance_List/Actions/Teams/CancelTeam.action",
+            "Properties": {
+                "Properties": {
+                    "cust_Status": "cancelada"
+                }
+            }
+        })
+        
+        await clientAPI.executeAction({
+            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+            "Properties": {
+                "Title": "Cancelamento de turma",
+                "Message": "Turma cancelada com sucesso!",
+                "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+            },
+        });
+
+    }catch(e){
+        return clientAPI.executeAction({
+            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+            "Properties": {
+                "Title": "Criação de turma",
+                "Message": `Erro: ${e.message}`
+            }
+        });
+    }
 }
 
 
@@ -1843,6 +1892,7 @@ let attendance_list_rules_teams_savecreate_js = __webpack_require__(/*! ./Attend
 let attendance_list_rules_teams_saveedit_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/SaveEdit.js */ "./build.definitions/Attendance_List/Rules/Teams/SaveEdit.js")
 let attendance_list_rules_teams_teamdescription_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/TeamDescription.js */ "./build.definitions/Attendance_List/Rules/Teams/TeamDescription.js")
 let attendance_list_rules_teams_teamduration_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/TeamDuration.js */ "./build.definitions/Attendance_List/Rules/Teams/TeamDuration.js")
+let attendance_list_rules_teams_update_cancelteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/CancelTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/CancelTeam.js")
 let attendance_list_rules_teams_update_closeteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/CloseTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/CloseTeam.js")
 let attendance_list_rules_teams_update_getpresencevalue_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/GetPresenceValue.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceValue.js")
 let attendance_list_rules_teams_update_updateteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/UpdateTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/UpdateTeam.js")
@@ -1984,6 +2034,7 @@ module.exports = {
 	attendance_list_rules_teams_saveedit_js : attendance_list_rules_teams_saveedit_js,
 	attendance_list_rules_teams_teamdescription_js : attendance_list_rules_teams_teamdescription_js,
 	attendance_list_rules_teams_teamduration_js : attendance_list_rules_teams_teamduration_js,
+	attendance_list_rules_teams_update_cancelteam_js : attendance_list_rules_teams_update_cancelteam_js,
 	attendance_list_rules_teams_update_closeteam_js : attendance_list_rules_teams_update_closeteam_js,
 	attendance_list_rules_teams_update_getpresencevalue_js : attendance_list_rules_teams_update_getpresencevalue_js,
 	attendance_list_rules_teams_update_updateteam_js : attendance_list_rules_teams_update_updateteam_js,
@@ -2850,7 +2901,7 @@ module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Typ
   \************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"ObjectHeader":{"Description":"/Attendance_List/Rules/Teams/TeamDescription.js","DetailImageIsCircular":false,"HeadlineText":"{externalName}","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader0","Visible":true},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.SimplePropertyCollection","_Name":"SectionSimplePropertyCollection0","Visible":true,"EmptySection":{"FooterVisible":false},"SimplePropertyCells":[{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/Details/GetInstNav1.js","_Name":"SectionSimplePropertyCell0","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Instrutor Principal","AccessoryType":"DisclosureIndicator","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/Details/GetInstNav2.js","_Name":"SectionSimplePropertyCell1","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Instrutor Secundário","AccessoryType":"DisclosureIndicator","Visible":true}},{"SimplePropertyCell":{"Value":"{cust_LOCN_DESC}","_Name":"SectionSimplePropertyCell2","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Local","AccessoryType":"None","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/TeamDuration.js","_Name":"SectionSimplePropertyCell3","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Carga Horária","AccessoryType":"None","Visible":true}}],"Layout":{"NumberOfColumns":2}},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.ObjectCollection","Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_ListadePresenca","QueryOptions":"$expand=cust_AlunosNav&$filter=cust_Turma eq '{externalCode}'"},"_Name":"SectionObjectCollection0","Header":{"_Type":"SectionCommon.Type.Header","_Name":"SectionCommonTypeHeader0","AccessoryType":"None","UseTopPadding":true,"Caption":"Lista de presença"},"Visible":true,"EmptySection":{"Caption":"Sem participantes até o momento","FooterVisible":true},"DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"ObjectCell":{"Title":"/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js","Tags":[{"Color":"Blue","Text":"/Attendance_List/Rules/Teams/Details/GetTeamStatus.js"},{"Color":"Green","Text":"/Attendance_List/Rules/Teams/Details/GetPartnerNote.js"}],"Subhead":"/Attendance_List/Rules/Teams/Details/GetAlunoName.js","DisplayDescriptionInMobile":true,"AccessoryButtonIcon":"sap-icon://user-settings","AccessoryType":"DisclosureIndicator","PreserveIconStackSpacing":false,"OnPress":"/Attendance_List/Actions/Teams/NavToBePresence.action","OnAccessoryButtonPress":"/Attendance_List/Actions/Teams/NavToBePresence.action","Styles":{"Title":"letter-color","Subhead":"letter-black-color"},"AvatarStack":{"Avatars":[{"Image":"sap-icon://customer","Style":"avatar"}],"ImageIsCircular":true,"ImageHasBorder":false},"AvatarGrid":{"Avatars":[],"ImageIsCircular":true},"_Type":"ObjectCollection.Type.ObjectCell"},"Layout":{"NumberOfColumns":2}}]}],"_Type":"Page","_Name":"TeamDetails","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem0","Caption":"Item","SystemItem":"Edit","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Teams/PopoverTeamEdit.action"}],"_Name":"ActionBar1","_Type":"Control.Type.ActionBar","Caption":" ","PrefersLargeCaption":false}}
+module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"ObjectHeader":{"Description":"/Attendance_List/Rules/Teams/TeamDescription.js","DetailImageIsCircular":false,"HeadlineText":"{externalName}","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader0","Visible":true},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.SimplePropertyCollection","_Name":"SectionSimplePropertyCollection0","Visible":true,"EmptySection":{"FooterVisible":false},"SimplePropertyCells":[{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/Details/GetInstNav1.js","_Name":"SectionSimplePropertyCell0","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Instrutor Principal","AccessoryType":"DisclosureIndicator","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/Details/GetInstNav2.js","_Name":"SectionSimplePropertyCell1","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Instrutor Secundário","AccessoryType":"DisclosureIndicator","Visible":true}},{"SimplePropertyCell":{"Value":"{cust_LOCN_DESC}","_Name":"SectionSimplePropertyCell2","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Local","AccessoryType":"None","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/TeamDuration.js","_Name":"SectionSimplePropertyCell3","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Carga Horária","AccessoryType":"None","Visible":true}}],"Layout":{"NumberOfColumns":2}},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.ObjectCollection","Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_ListadePresenca","QueryOptions":"$expand=cust_AlunosNav&$filter=cust_Turma eq '{externalCode}'"},"_Name":"SectionObjectCollection0","Header":{"_Type":"SectionCommon.Type.Header","_Name":"SectionCommonTypeHeader0","AccessoryType":"None","UseTopPadding":true,"Caption":"Lista de presença"},"Visible":true,"EmptySection":{"Caption":"Sem participantes até o momento","FooterVisible":true},"DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"ObjectCell":{"Title":"/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js","Tags":[{"Color":"Green","Text":"/Attendance_List/Rules/Teams/Details/GetTeamStatus.js"},{"Color":"Green","Text":"/Attendance_List/Rules/Teams/Details/GetPartnerNote.js"}],"Subhead":"/Attendance_List/Rules/Teams/Details/GetAlunoName.js","DisplayDescriptionInMobile":true,"AccessoryButtonIcon":"sap-icon://user-settings","AccessoryType":"DisclosureIndicator","PreserveIconStackSpacing":false,"OnPress":"/Attendance_List/Actions/Teams/NavToBePresence.action","OnAccessoryButtonPress":"/Attendance_List/Actions/Teams/NavToBePresence.action","Styles":{"Title":"letter-color","Subhead":"letter-black-color"},"AvatarStack":{"Avatars":[{"Image":"sap-icon://customer","Style":"avatar"}],"ImageIsCircular":true,"ImageHasBorder":false},"AvatarGrid":{"Avatars":[],"ImageIsCircular":true},"_Type":"ObjectCollection.Type.ObjectCell"},"Layout":{"NumberOfColumns":2}}]}],"_Type":"Page","_Name":"TeamDetails","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem0","Caption":"Item","SystemItem":"Edit","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Teams/PopoverTeamEdit.action"}],"_Name":"ActionBar1","_Type":"Control.Type.ActionBar","Caption":" ","PrefersLargeCaption":false}}
 
 /***/ }),
 
@@ -3050,7 +3101,7 @@ module.exports = {"Message":"Data service closed successfully","NumberOfLines":1
   \*****************************************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.OfflineOData.Download","ActionResult":{"_Name":"sync"},"OnFailure":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncFailureMessage.action","OnSuccess":"/Attendance_List/Rules/CAP_SERVICE_SF_LMS/ErrorArchive_CheckForSyncError.js","Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","DefiningRequests":[{"Name":"cust_Alunos","Query":"cust_Alunos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Cursos","Query":"cust_Cursos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Instrutores","Query":"cust_Instrutores","AutomaticallyRetrievesStreams":false},{"Name":"cust_Locais","Query":"cust_Locais","AutomaticallyRetrievesStreams":false},{"Name":"cust_Turmas","Query":"cust_Turmas?$filter=cust_LMS ne 'S'&$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav","AutomaticallyRetrievesStreams":false},{"Name":"cust_ListadePresenca","Query":"cust_ListadePresenca?$expand=cust_AlunosNav","AutomaticallyRetrievesStreams":false}]}
+module.exports = {"_Type":"Action.Type.OfflineOData.Download","ActionResult":{"_Name":"sync"},"OnFailure":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncFailureMessage.action","OnSuccess":"/Attendance_List/Rules/CAP_SERVICE_SF_LMS/ErrorArchive_CheckForSyncError.js","Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","DefiningRequests":[{"Name":"cust_Alunos","Query":"cust_Alunos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Cursos","Query":"cust_Cursos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Instrutores","Query":"cust_Instrutores","AutomaticallyRetrievesStreams":false},{"Name":"cust_Locais","Query":"cust_Locais","AutomaticallyRetrievesStreams":false},{"Name":"cust_Turmas","Query":"cust_Turmas?$filter=cust_LMS ne 'S' and cust_Status ne 'cancelada'&$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav","AutomaticallyRetrievesStreams":false},{"Name":"cust_ListadePresenca","Query":"cust_ListadePresenca?$expand=cust_AlunosNav","AutomaticallyRetrievesStreams":false}]}
 
 /***/ }),
 
@@ -3070,7 +3121,7 @@ module.exports = {"Message":"Download in progress...","CompletionMessage":"Downl
   \*******************************************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.ODataService.Initialize","ActionResult":{"_Name":"init"},"OnFailure":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/InitializeOfflineFailureMessage.action","ShowActivityIndicator":true,"ActivityIndicatorText":"Downloading...","Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","DefiningRequests":[{"Name":"cust_Alunos","Query":"cust_Alunos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Cursos","Query":"cust_Cursos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Instrutores","Query":"cust_Instrutores","AutomaticallyRetrievesStreams":false},{"Name":"cust_Locais","Query":"cust_Locais","AutomaticallyRetrievesStreams":false},{"Name":"cust_Turmas","Query":"cust_Turmas?$filter=cust_LMS ne 'S'&$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav","AutomaticallyRetrievesStreams":false},{"Name":"cust_ListadePresenca","Query":"cust_ListadePresenca?$expand=cust_AlunosNav","AutomaticallyRetrievesStreams":false}]}
+module.exports = {"_Type":"Action.Type.ODataService.Initialize","ActionResult":{"_Name":"init"},"OnFailure":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/InitializeOfflineFailureMessage.action","ShowActivityIndicator":true,"ActivityIndicatorText":"Downloading...","Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","DefiningRequests":[{"Name":"cust_Alunos","Query":"cust_Alunos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Cursos","Query":"cust_Cursos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Instrutores","Query":"cust_Instrutores","AutomaticallyRetrievesStreams":false},{"Name":"cust_Locais","Query":"cust_Locais","AutomaticallyRetrievesStreams":false},{"Name":"cust_Turmas","Query":"cust_Turmas?$filter=cust_LMS ne 'S' and cust_Status ne 'cancelada'&$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav","AutomaticallyRetrievesStreams":false},{"Name":"cust_ListadePresenca","Query":"cust_ListadePresenca?$expand=cust_AlunosNav","AutomaticallyRetrievesStreams":false}]}
 
 /***/ }),
 
@@ -3280,7 +3331,7 @@ module.exports = {"_Type":"Action.Type.Navigation","ActionResult":{"_Name":"NavT
   \***************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.ODataService.UpdateEntity","ActionResult":{"_Name":"UpdateTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas","ReadLink":"{@odata.readLink}"},"Properties":{"externalCode":"{externalCode}","cust_Status":"cancelado"}}
+module.exports = {"_Type":"Action.Type.ODataService.UpdateEntity","ActionResult":{"_Name":"UpdateTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas","ReadLink":"{@odata.readLink}"},"Properties":{"externalCode":"{externalCode}"}}
 
 /***/ }),
 
@@ -3290,7 +3341,7 @@ module.exports = {"_Type":"Action.Type.ODataService.UpdateEntity","ActionResult"
   \**********************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.Message","ActionResult":{"_Name":"CloseTeamMessage"},"Message":"Essa turma será removida e não será possível alterá-la posteriormente","Title":"Deseja cancelar a turma?","OKCaption":"Cancelar","OnOK":"/Attendance_List/Actions/Teams/CancelTeam.action","CancelCaption":"Cancelar"}
+module.exports = {"_Type":"Action.Type.Message","ActionResult":{"_Name":"CloseTeamMessage"},"Message":"Essa turma será removida e não será possível alterá-la posteriormente","Title":"Deseja cancelar a turma?","OKCaption":"Cancelar","OnOK":"/Attendance_List/Rules/Teams/Update/CancelTeam.js","CancelCaption":"Cancelar"}
 
 /***/ }),
 

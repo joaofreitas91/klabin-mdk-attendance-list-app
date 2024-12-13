@@ -119,7 +119,7 @@
 						"Title": "/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js",
 						"Tags": [
 							{
-								"Color": "Blue",
+								"Color": "Green",
 								"Text": "/Attendance_List/Rules/Teams/Details/GetTeamStatus.js"
 							},
 							{

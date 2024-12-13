@@ -9,7 +9,6 @@
 		"ReadLink": "{@odata.readLink}"
 	},
 	"Properties": {
-		"externalCode": "{externalCode}",
-		"cust_Status": "cancelado"
+		"externalCode": "{externalCode}"
 	}
 }
