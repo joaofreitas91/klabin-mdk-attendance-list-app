@@ -161,7 +161,7 @@
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 									"EntitySet": "cust_Instrutores"
 								},
-								"DisplayValue": "/Attendance_List/Rules/Teams/GetFullName.js",
+								"DisplayValue": "{externalCode} - {cust_fname} {cust_lname}",
 								"ReturnValue": "{externalCode}"
 							}
 						},
@@ -190,7 +190,7 @@
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 									"EntitySet": "cust_Instrutores"
 								},
-								"DisplayValue": "/Attendance_List/Rules/Teams/GetFullName.js",
+								"DisplayValue": "{externalCode} - {cust_fname} {cust_lname}",
 								"ReturnValue": "{externalCode}"
 							}
 						}
@@ -252,7 +252,7 @@
 									},
 									"PreserveIconStackSpacing": false,
 									"Selected": true,
-									"Title": "/Attendance_List/Rules/Teams/GetFullName.js",
+									"Title": "{cust_matricula} - {cust_fname} {cust_lname}",
 									"Visible": true
 								},
 								"ReturnValue": "{externalCode}"
@@ -281,28 +281,28 @@
 	"ActionBar": {
 		"Items": [
 			{
+				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem1",
 				"Caption": "Item",
 				"SystemItem": "Cancel",
 				"Position": "Left",
 				"IsIconCircular": false,
-				"Visible": true,
-				"_Type": "Control.Type.ActionBarItem"
+				"Visible": true
 			},
 			{
+				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem2",
 				"Caption": "Item",
 				"SystemItem": "Save",
 				"Position": "Right",
 				"IsIconCircular": false,
 				"Visible": true,
-				"OnPress": "/Attendance_List/Rules/Teams/SaveCreate.js",
-				"_Type": "Control.Type.ActionBarItem"
+				"OnPress": "/Attendance_List/Rules/Teams/SaveCreate.js"
 			}
 		],
 		"_Name": "Salvar",
+		"_Type": "Control.Type.ActionBar",
 		"Caption": "Criar turma",
-		"PrefersLargeCaption": true,
-		"_Type": "Control.Type.ActionBar"
+		"PrefersLargeCaption": true
 	}
 }
