@@ -1657,6 +1657,10 @@ async function CloseTeam(clientAPI) {
                 }
             }
         })
+
+        await clientAPI.executeAction({
+            "Name": "/Attendance_List/Actions/Teams/ClosePresenceList.action"
+        })
         
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
@@ -1837,6 +1841,7 @@ let attendance_list_actions_main_navtoallteams_action = __webpack_require__(/*! 
 let attendance_list_actions_main_navtoteamdetails_action = __webpack_require__(/*! ./Attendance_List/Actions/Main/NavToTeamDetails.action */ "./build.definitions/Attendance_List/Actions/Main/NavToTeamDetails.action")
 let attendance_list_actions_teams_cancelteam_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CancelTeam.action */ "./build.definitions/Attendance_List/Actions/Teams/CancelTeam.action")
 let attendance_list_actions_teams_cancelteammessage_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CancelTeamMessage.action */ "./build.definitions/Attendance_List/Actions/Teams/CancelTeamMessage.action")
+let attendance_list_actions_teams_closepresencelist_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/ClosePresenceList.action */ "./build.definitions/Attendance_List/Actions/Teams/ClosePresenceList.action")
 let attendance_list_actions_teams_closeteam_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CloseTeam.action */ "./build.definitions/Attendance_List/Actions/Teams/CloseTeam.action")
 let attendance_list_actions_teams_closeteammessage_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CloseTeamMessage.action */ "./build.definitions/Attendance_List/Actions/Teams/CloseTeamMessage.action")
 let attendance_list_actions_teams_createentityteam_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CreateEntityTeam.action */ "./build.definitions/Attendance_List/Actions/Teams/CreateEntityTeam.action")
@@ -1980,6 +1985,7 @@ module.exports = {
 	attendance_list_actions_main_navtoteamdetails_action : attendance_list_actions_main_navtoteamdetails_action,
 	attendance_list_actions_teams_cancelteam_action : attendance_list_actions_teams_cancelteam_action,
 	attendance_list_actions_teams_cancelteammessage_action : attendance_list_actions_teams_cancelteammessage_action,
+	attendance_list_actions_teams_closepresencelist_action : attendance_list_actions_teams_closepresencelist_action,
 	attendance_list_actions_teams_closeteam_action : attendance_list_actions_teams_closeteam_action,
 	attendance_list_actions_teams_closeteammessage_action : attendance_list_actions_teams_closeteammessage_action,
 	attendance_list_actions_teams_createentityteam_action : attendance_list_actions_teams_createentityteam_action,
@@ -3368,6 +3374,16 @@ module.exports = {"_Type":"Action.Type.ODataService.UpdateEntity","ActionResult"
 /***/ ((module) => {
 
 module.exports = {"_Type":"Action.Type.Message","ActionResult":{"_Name":"CloseTeamMessage"},"Message":"Essa turma será removida e não será possível alterá-la posteriormente","Title":"Deseja cancelar a turma?","OKCaption":"Cancelar","OnOK":"/Attendance_List/Rules/Teams/Update/CancelTeam.js","CancelCaption":"Cancelar"}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Actions/Teams/ClosePresenceList.action":
+/*!**********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Actions/Teams/ClosePresenceList.action ***!
+  \**********************************************************************************/
+/***/ ((module) => {
+
+module.exports = {"_Type":"Action.Type.ODataService.UpdateEntity","ActionResult":{"_Name":"ClosePresenceList"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_ListadePresenca","QueryOptions":"$filter=cust_Turma eq '{externalCode}'"}}
 
 /***/ }),
 
