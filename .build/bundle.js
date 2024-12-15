@@ -1657,10 +1657,6 @@ async function CloseTeam(clientAPI) {
                 }
             }
         })
-
-        await clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/Teams/ClosePresenceList.action"
-        })
         
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
