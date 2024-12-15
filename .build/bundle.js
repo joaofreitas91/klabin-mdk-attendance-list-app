@@ -1765,6 +1765,30 @@ async function UpdateTeam(clientAPI) {
 
 /***/ }),
 
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js":
+/*!****************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ValidatePresenceSwitch)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function ValidatePresenceSwitch(clientAPI) {
+    var today = new Date().getTime()
+    var endDate = new Date(clientAPI.binding.cust_enddate).getTime()   
+    return today <= endDate
+}
+
+
+/***/ }),
+
 /***/ "./build.definitions/application-index.js":
 /*!************************************************!*\
   !*** ./build.definitions/application-index.js ***!
@@ -1896,6 +1920,7 @@ let attendance_list_rules_teams_update_cancelteam_js = __webpack_require__(/*! .
 let attendance_list_rules_teams_update_closeteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/CloseTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/CloseTeam.js")
 let attendance_list_rules_teams_update_getpresencevalue_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/GetPresenceValue.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceValue.js")
 let attendance_list_rules_teams_update_updateteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/UpdateTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/UpdateTeam.js")
+let attendance_list_rules_teams_update_validatepresenceswitch_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js")
 let attendance_list_services_cap_service_sf_lms_service = __webpack_require__(/*! ./Attendance_List/Services/CAP_SERVICE_SF_LMS.service */ "./build.definitions/Attendance_List/Services/CAP_SERVICE_SF_LMS.service")
 let attendance_list_styles_styles_css = __webpack_require__(/*! ./Attendance_List/Styles/Styles.css */ "./build.definitions/Attendance_List/Styles/Styles.css")
 let attendance_list_styles_styles_dark_css = __webpack_require__(/*! ./Attendance_List/Styles/Styles.dark.css */ "./build.definitions/Attendance_List/Styles/Styles.dark.css")
@@ -2038,6 +2063,7 @@ module.exports = {
 	attendance_list_rules_teams_update_closeteam_js : attendance_list_rules_teams_update_closeteam_js,
 	attendance_list_rules_teams_update_getpresencevalue_js : attendance_list_rules_teams_update_getpresencevalue_js,
 	attendance_list_rules_teams_update_updateteam_js : attendance_list_rules_teams_update_updateteam_js,
+	attendance_list_rules_teams_update_validatepresenceswitch_js : attendance_list_rules_teams_update_validatepresenceswitch_js,
 	attendance_list_services_cap_service_sf_lms_service : attendance_list_services_cap_service_sf_lms_service,
 	attendance_list_styles_styles_css : attendance_list_styles_styles_css,
 	attendance_list_styles_styles_dark_css : attendance_list_styles_styles_dark_css,
@@ -2881,7 +2907,7 @@ module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Typ
   \***********************************************************************/
 /***/ ((module) => {
 
-module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"Value":"/Attendance_List/Rules/Teams/Update/GetPresenceValue.js","_Type":"Control.Type.FormCell.Switch","_Name":"FormCellSwitch0","IsVisible":true,"Separator":true,"Styles":{"Switch":"letter-green-color"},"Caption":"Marcar presença","IsEditable":true},{"Validation":{"Styles":{"Message":"l"}},"Value":"{cust_nota}","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FormCellSimpleProperty0","IsVisible":true,"Separator":true,"Caption":"Inserir a nota","KeyboardType":"Number","AlternateInput":"None","Enabled":true,"IsEditable":true}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"}]}],"_Type":"Page","_Name":"BePresence","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem0","Caption":"Salvar","SystemItem":"Save","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Rules/Teams/Update/UpdateTeam.js"}],"_Name":"ActionBar0","_Type":"Control.Type.ActionBar"}}
+module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"Value":"/Attendance_List/Rules/Teams/Update/GetPresenceValue.js","_Type":"Control.Type.FormCell.Switch","_Name":"FormCellSwitch0","IsVisible":true,"Separator":true,"Styles":{"Switch":"letter-green-color"},"Caption":"Marcar presença","IsEditable":"/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js"},{"Validation":{"Styles":{"Message":"l"}},"Value":"{cust_nota}","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FormCellSimpleProperty0","IsVisible":true,"Separator":true,"Caption":"Inserir a nota","KeyboardType":"Number","AlternateInput":"None","Enabled":true,"IsEditable":true}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"}]}],"_Type":"Page","_Name":"BePresence","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem0","Caption":"Salvar","SystemItem":"Save","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Rules/Teams/Update/UpdateTeam.js"}],"_Name":"ActionBar0","_Type":"Control.Type.ActionBar"}}
 
 /***/ }),
 

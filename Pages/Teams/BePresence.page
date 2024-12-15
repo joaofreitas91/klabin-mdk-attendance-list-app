@@ -27,7 +27,7 @@
 								"Switch": "letter-green-color"
 							},
 							"Caption": "Marcar presença",
-							"IsEditable": true
+							"IsEditable": "/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js"
 						},
 						{
 							"Validation": {
