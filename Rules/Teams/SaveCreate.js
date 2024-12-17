@@ -9,12 +9,16 @@ export default async function SaveCreate(clientAPI) {
     try {
         const teamId = Cuid()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
-
+        const userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId');
         const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue')
 
         const query = `$filter=externalCode eq '${cust_cursos_id}'`
-        const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID"], query)
-    
+        const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID", "cust_CPNT_TITLE"], query)
+
+        const queryInst = `$filter=cust_RELATED_USER eq '${userId}'`
+        const instructors = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode"], queryInst)
+        
+        const inst1 = instructors.find(i => i.externalCode)
         const curse = entity.find(i => i.cust_CPNT_TYP_ID)
 
         const props = partners.map((i, index) => {
@@ -33,7 +37,9 @@ export default async function SaveCreate(clientAPI) {
             "Properties": {
                 "Properties": {
                     "externalCode": teamId,
-                    "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID
+                    "externalName": curse.cust_CPNT_TITLE,
+                    "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
+                    "cust_INST_ID1": inst1.externalCode
                 }
             }
         })

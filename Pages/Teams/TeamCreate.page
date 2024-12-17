@@ -20,7 +20,7 @@
 						{
 							"_Type": "Control.Type.FormCell.SimpleProperty",
 							"_Name": "FormCellSimplePropertyTeamDescription",
-							"IsVisible": true,
+							"IsVisible": false,
 							"Separator": true,
 							"Caption": "Descrição da turma",
 							"PlaceHolder": "Título da turma",
@@ -71,7 +71,7 @@
 						{
 							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPickerLocale",
-							"IsVisible": false,
+							"IsVisible": true,
 							"Separator": true,
 							"AllowMultipleSelection": false,
 							"AllowEmptySelection": true,
@@ -139,7 +139,7 @@
 						{
 							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPickerInstructor1",
-							"IsVisible": true,
+							"IsVisible": false,
 							"Separator": true,
 							"AllowMultipleSelection": false,
 							"AllowEmptySelection": false,
@@ -159,7 +159,8 @@
 							"PickerItems": {
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-									"EntitySet": "cust_Instrutores"
+									"EntitySet": "cust_Instrutores",
+									"QueryOptions": "/Attendance_List/Rules/Teams/Create/QueryInstructorList.js"
 								},
 								"DisplayValue": "{externalName}",
 								"ReturnValue": "{externalCode}"
@@ -188,7 +189,8 @@
 							"PickerItems": {
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-									"EntitySet": "cust_Instrutores"
+									"EntitySet": "cust_Instrutores",
+									"QueryOptions": "/Attendance_List/Rules/Teams/Create/QueryInstructorList.js"
 								},
 								"DisplayValue": "{externalName}",
 								"ReturnValue": "{externalCode}"

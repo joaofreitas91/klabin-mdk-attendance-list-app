@@ -963,6 +963,53 @@ async function GenerateId(clientAPI) {
 
 /***/ }),
 
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/GetUserId.js":
+/*!***************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/GetUserId.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getUserId)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function getUserId(clientAPI) {
+    let userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId');
+    alert(userId);
+
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/QueryInstructorList.js":
+/*!*************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/QueryInstructorList.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ QueryInstructorList)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function QueryInstructorList(clientAPI) {
+    let userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId');
+
+    return `$filter=cust_RELATED_USER ne '${userId}'`
+}
+
+
+/***/ }),
+
 /***/ "./build.definitions/Attendance_List/Rules/Teams/Create/SetInitialBinding.js":
 /*!***********************************************************************************!*\
   !*** ./build.definitions/Attendance_List/Rules/Teams/Create/SetInitialBinding.js ***!
@@ -1371,12 +1418,16 @@ async function SaveCreate(clientAPI) {
     try {
         const teamId = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
-
+        const userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId');
         const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue')
 
         const query = `$filter=externalCode eq '${cust_cursos_id}'`
-        const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID"], query)
-    
+        const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID", "cust_CPNT_TITLE"], query)
+
+        const queryInst = `$filter=cust_RELATED_USER eq '${userId}'`
+        const instructors = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode"], queryInst)
+        
+        const inst1 = instructors.find(i => i.externalCode)
         const curse = entity.find(i => i.cust_CPNT_TYP_ID)
 
         const props = partners.map((i, index) => {
@@ -1395,7 +1446,9 @@ async function SaveCreate(clientAPI) {
             "Properties": {
                 "Properties": {
                     "externalCode": teamId,
-                    "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID
+                    "externalName": curse.cust_CPNT_TITLE,
+                    "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
+                    "cust_INST_ID1": inst1.externalCode
                 }
             }
         })
@@ -1907,6 +1960,8 @@ let attendance_list_rules_service_initialize_js = __webpack_require__(/*! ./Atte
 let attendance_list_rules_teams_create_formatenddate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Create/FormatEndDate.js */ "./build.definitions/Attendance_List/Rules/Teams/Create/FormatEndDate.js")
 let attendance_list_rules_teams_create_formatstartdate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Create/FormatStartDate.js */ "./build.definitions/Attendance_List/Rules/Teams/Create/FormatStartDate.js")
 let attendance_list_rules_teams_create_generateid_generateid_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Create/GenerateId/GenerateId.js */ "./build.definitions/Attendance_List/Rules/Teams/Create/GenerateId/GenerateId.js")
+let attendance_list_rules_teams_create_getuserid_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Create/GetUserId.js */ "./build.definitions/Attendance_List/Rules/Teams/Create/GetUserId.js")
+let attendance_list_rules_teams_create_queryinstructorlist_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Create/QueryInstructorList.js */ "./build.definitions/Attendance_List/Rules/Teams/Create/QueryInstructorList.js")
 let attendance_list_rules_teams_create_setinitialbinding_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Create/SetInitialBinding.js */ "./build.definitions/Attendance_List/Rules/Teams/Create/SetInitialBinding.js")
 let attendance_list_rules_teams_delete_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Delete.js */ "./build.definitions/Attendance_List/Rules/Teams/Delete.js")
 let attendance_list_rules_teams_details_getalunofirstname_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js */ "./build.definitions/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js")
@@ -2051,6 +2106,8 @@ module.exports = {
 	attendance_list_rules_teams_create_formatenddate_js : attendance_list_rules_teams_create_formatenddate_js,
 	attendance_list_rules_teams_create_formatstartdate_js : attendance_list_rules_teams_create_formatstartdate_js,
 	attendance_list_rules_teams_create_generateid_generateid_js : attendance_list_rules_teams_create_generateid_generateid_js,
+	attendance_list_rules_teams_create_getuserid_js : attendance_list_rules_teams_create_getuserid_js,
+	attendance_list_rules_teams_create_queryinstructorlist_js : attendance_list_rules_teams_create_queryinstructorlist_js,
 	attendance_list_rules_teams_create_setinitialbinding_js : attendance_list_rules_teams_create_setinitialbinding_js,
 	attendance_list_rules_teams_delete_js : attendance_list_rules_teams_delete_js,
 	attendance_list_rules_teams_details_getalunofirstname_js : attendance_list_rules_teams_details_getalunofirstname_js,
@@ -2937,7 +2994,7 @@ module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Typ
   \***********************************************************************/
 /***/ ((module) => {
 
-module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FormCellSimplePropertyTeamDescription","IsVisible":true,"Separator":true,"Caption":"Descrição da turma","PlaceHolder":"Título da turma","KeyboardType":"Default","AlternateInput":"None","Enabled":true,"IsEditable":true},{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerCurse","IsVisible":true,"Separator":true,"AllowMultipleSelection":false,"AllowEmptySelection":true,"Caption":"Curso","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Selecione o curso","IsSelectedSectionEnabled":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Cursos"},"DisplayValue":"{cust_CPNT_TITLE}","ReturnValue":"{externalCode}"}},{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FormCellSimplePropertyWorkload","IsVisible":true,"Separator":true,"Caption":"Carga horária","KeyboardType":"Default","AlternateInput":"None","Enabled":true,"IsEditable":true},{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerLocale","IsVisible":false,"Separator":true,"AllowMultipleSelection":false,"AllowEmptySelection":true,"Caption":"Local","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Selecione o local","IsSelectedSectionEnabled":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Locais"},"DisplayValue":"{externalName}","ReturnValue":"{externalCode}"}},{"Value":"{cust_START_TME}","_Type":"Control.Type.FormCell.DatePicker","_Name":"FormCellDatePickerStartDate","IsVisible":true,"Separator":true,"Caption":"Data início","IsEditable":true,"Mode":"Datetime"},{"Value":"{cust_END_TME}","_Type":"Control.Type.FormCell.DatePicker","_Name":"FormCellDatePickerEndDate","IsVisible":true,"Separator":true,"Caption":"Data fim","IsEditable":true,"Mode":"Datetime"}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerInstructor1","IsVisible":true,"Separator":true,"AllowMultipleSelection":false,"AllowEmptySelection":false,"Caption":"Instrutor Principal","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Informe o instrutor(a)","IsSelectedSectionEnabled":true,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true,"BarcodeScanner":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Instrutores"},"DisplayValue":"{externalName}","ReturnValue":"{externalCode}"}},{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerInstructor2","IsVisible":true,"Separator":false,"AllowMultipleSelection":false,"AllowEmptySelection":true,"Caption":"Instrutor Secundário(a)","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Informe o instrutor","IsSelectedSectionEnabled":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true,"BarcodeScanner":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Instrutores"},"DisplayValue":"{externalName}","ReturnValue":"{externalCode}"}}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell1"},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerParticipants","IsVisible":true,"Separator":true,"AllowMultipleSelection":true,"AllowEmptySelection":true,"Caption":"Participantes","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Selecione os participantes","IsSelectedSectionEnabled":false,"IsPickerDismissedOnSelection":false,"IsSearchCancelledAfterSelection":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true,"BarcodeScanner":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Alunos"},"ObjectCell":{"AvatarStack":{"Avatars":[{"Image":"sap-icon://customer","ImageText":"VC"}]},"Description":"vhsbc","DisplayDescriptionInMobile":false,"PreserveIconStackSpacing":false,"Selected":true,"Title":"{externalName}","Visible":true},"ReturnValue":"{externalCode}"}}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell2"}]}],"DesignTimeTarget":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"_Type":"Page","_Name":"TeamCreate","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem1","Caption":"Item","SystemItem":"Cancel","Position":"Left","IsIconCircular":false,"Visible":true},{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem2","Caption":"Item","SystemItem":"Save","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Rules/Teams/SaveCreate.js"}],"_Name":"Salvar","_Type":"Control.Type.ActionBar","Caption":"Criar turma","PrefersLargeCaption":true}}
+module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FormCellSimplePropertyTeamDescription","IsVisible":false,"Separator":true,"Caption":"Descrição da turma","PlaceHolder":"Título da turma","KeyboardType":"Default","AlternateInput":"None","Enabled":true,"IsEditable":true},{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerCurse","IsVisible":true,"Separator":true,"AllowMultipleSelection":false,"AllowEmptySelection":true,"Caption":"Curso","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Selecione o curso","IsSelectedSectionEnabled":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Cursos"},"DisplayValue":"{cust_CPNT_TITLE}","ReturnValue":"{externalCode}"}},{"_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FormCellSimplePropertyWorkload","IsVisible":true,"Separator":true,"Caption":"Carga horária","KeyboardType":"Default","AlternateInput":"None","Enabled":true,"IsEditable":true},{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerLocale","IsVisible":true,"Separator":true,"AllowMultipleSelection":false,"AllowEmptySelection":true,"Caption":"Local","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Selecione o local","IsSelectedSectionEnabled":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Locais"},"DisplayValue":"{externalName}","ReturnValue":"{externalCode}"}},{"Value":"{cust_START_TME}","_Type":"Control.Type.FormCell.DatePicker","_Name":"FormCellDatePickerStartDate","IsVisible":true,"Separator":true,"Caption":"Data início","IsEditable":true,"Mode":"Datetime"},{"Value":"{cust_END_TME}","_Type":"Control.Type.FormCell.DatePicker","_Name":"FormCellDatePickerEndDate","IsVisible":true,"Separator":true,"Caption":"Data fim","IsEditable":true,"Mode":"Datetime"}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerInstructor1","IsVisible":false,"Separator":true,"AllowMultipleSelection":false,"AllowEmptySelection":false,"Caption":"Instrutor Principal","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Informe o instrutor(a)","IsSelectedSectionEnabled":true,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true,"BarcodeScanner":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Instrutores","QueryOptions":"/Attendance_List/Rules/Teams/Create/QueryInstructorList.js"},"DisplayValue":"{externalName}","ReturnValue":"{externalCode}"}},{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerInstructor2","IsVisible":true,"Separator":false,"AllowMultipleSelection":false,"AllowEmptySelection":true,"Caption":"Instrutor Secundário(a)","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Informe o instrutor","IsSelectedSectionEnabled":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true,"BarcodeScanner":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Instrutores","QueryOptions":"/Attendance_List/Rules/Teams/Create/QueryInstructorList.js"},"DisplayValue":"{externalName}","ReturnValue":"{externalCode}"}}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell1"},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"_Type":"Control.Type.FormCell.ListPicker","_Name":"FormCellListPickerParticipants","IsVisible":true,"Separator":true,"AllowMultipleSelection":true,"AllowEmptySelection":true,"Caption":"Participantes","DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"PickerPrompt":"Selecione os participantes","IsSelectedSectionEnabled":false,"IsPickerDismissedOnSelection":false,"IsSearchCancelledAfterSelection":false,"AllowDefaultValueIfOneItem":false,"IsEditable":true,"Search":{"Enabled":true,"BarcodeScanner":true},"PickerItems":{"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Alunos"},"ObjectCell":{"AvatarStack":{"Avatars":[{"Image":"sap-icon://customer","ImageText":"VC"}]},"Description":"vhsbc","DisplayDescriptionInMobile":false,"PreserveIconStackSpacing":false,"Selected":true,"Title":"{externalName}","Visible":true},"ReturnValue":"{externalCode}"}}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell2"}]}],"DesignTimeTarget":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"_Type":"Page","_Name":"TeamCreate","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem1","Caption":"Item","SystemItem":"Cancel","Position":"Left","IsIconCircular":false,"Visible":true},{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem2","Caption":"Item","SystemItem":"Save","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Rules/Teams/SaveCreate.js"}],"_Name":"Salvar","_Type":"Control.Type.ActionBar","Caption":"Criar turma","PrefersLargeCaption":true}}
 
 /***/ }),
 
@@ -3107,7 +3164,7 @@ module.exports = {"_Type":"Action.Type.PopoverMenu","PopoverItems":[{"Enabled":t
   \**************************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.PopoverMenu","PopoverItems":[{"Title":"Sincronizar","Icon":"sap-icon://synchronize","Styles":{"Title":""},"OnPress":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncStartedMessage.action","Visible":true,"Enabled":true},{"Title":"Suporte","Icon":"sap-icon://headset","Styles":{"Title":""},"OnPress":"/Attendance_List/Actions/Application/SupportMenuPopover.action","Visible":true,"Enabled":true},{"Title":"Incluir Turma","Icon":"sap-icon://add","Styles":{"Title":""},"Visible":true,"Enabled":true,"OnPress":"/Attendance_List/Actions/Teams/NavToTeamCreate.action"},{"Title":"Upload","Icon":"sap-icon://upload","Styles":{"Title":""},"Visible":true,"Enabled":true,"rawValue":""}]}
+module.exports = {"_Type":"Action.Type.PopoverMenu","PopoverItems":[{"Title":"Sincronizar","Icon":"sap-icon://synchronize","OnPress":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncStartedMessage.action","Visible":true,"Enabled":true,"Styles.Title":""},{"Title":"Suporte","Icon":"sap-icon://headset","OnPress":"/Attendance_List/Actions/Application/SupportMenuPopover.action","Visible":true,"Enabled":true,"Styles.Title":""},{"Title":"Incluir Turma","Icon":"sap-icon://add","Visible":true,"Enabled":true,"OnPress":"/Attendance_List/Actions/Teams/NavToTeamCreate.action","Styles.Title":""},{"Title":"Upload","Icon":"sap-icon://upload","Visible":true,"Enabled":true,"Styles.Title":"","OnPress":"/Attendance_List/Rules/Teams/Create/GetUserId.js"}]}
 
 /***/ }),
 
@@ -3427,7 +3484,7 @@ module.exports = {"_Type":"Action.Type.Message","ActionResult":{"_Name":"CloseTe
   \*********************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult":{"_Name":"CreateEntityTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"Properties":{"externalCode":"","cust_ACT_CPNT_ID":"#Control:FormCellListPickerCurse/#SelectedValue/1","cust_END_TME":"#Control:FormCellDatePickerEndDate/#Value","cust_INST_ID1":"#Control:FormCellListPickerInstructor1/#SelectedValue","cust_INST_ID2":"#Control:FormCellListPickerInstructor2/#SelectedValue","cust_LOCN_DESC":"#Control:FormCellListPickerLocale/#Value/#First/DisplayValue","cust_LOCN_ID1":"#Control:FormCellListPickerLocale/#SelectedValue","cust_SSG_SEG_NUM":"#Control:FormCellSimplePropertyWorkload/#Value","cust_START_TME":"#Control:FormCellDatePickerStartDate/#Value","externalName":"#Page:TeamCreate/#Control:FormCellSimplePropertyTeamDescription/#Value"}}
+module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult":{"_Name":"CreateEntityTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"Properties":{"externalCode":"","cust_ACT_CPNT_ID":"#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue","cust_END_TME":"#Control:FormCellDatePickerEndDate/#Value","cust_INST_ID2":"#Control:FormCellListPickerInstructor2/#SelectedValue","cust_LOCN_DESC":"#Control:FormCellListPickerLocale/#Value/#First/DisplayValue","cust_LOCN_ID1":"#Control:FormCellListPickerLocale/#SelectedValue","cust_SSG_SEG_NUM":"#Control:FormCellSimplePropertyWorkload/#Value","cust_START_TME":"#Control:FormCellDatePickerStartDate/#Value"}}
 
 /***/ }),
 
