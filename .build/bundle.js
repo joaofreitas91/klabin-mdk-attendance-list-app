@@ -1292,40 +1292,6 @@ function GetFullName(clientAPI) {
 
 /***/ }),
 
-/***/ "./build.definitions/Attendance_List/Rules/Teams/GetFullNameList.js":
-/*!**************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/GetFullNameList.js ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetFullNameList)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function GetFullNameList(clientAPI) {
-
-    var cExtCode  = '{externalCode} {cust_fname}'
-/*
-    var cName     = clientAPI.binding.cust_fname
-    var cMiddle   = clientAPI.binding.cust_mname
-    var cLast     = clientAPI.binding.cust_lname
-    var cFullName = ''
-
-    cFullName = cExtCode + ' ' + cName.trim()
-    cFullName += (cMiddle.length > 0 ? (cMiddle.trim() + ' ') : ' ')
-    cFullName += cLast.trim()
-*/
-    return(cExtCode)
-}
-
-
-/***/ }),
-
 /***/ "./build.definitions/Attendance_List/Rules/Teams/ProcessReturnValue.js":
 /*!*****************************************************************************!*\
   !*** ./build.definitions/Attendance_List/Rules/Teams/ProcessReturnValue.js ***!
@@ -1405,7 +1371,14 @@ async function SaveCreate(clientAPI) {
     try {
         const teamId = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
-        
+
+        const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue')
+
+        const query = `$filter=externalCode eq '${cust_cursos_id}'`
+        const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID"], query)
+    
+        const curse = entity.find(i => i.cust_CPNT_TYP_ID)
+
         const props = partners.map((i, index) => {
             const externalCode = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
             const props = {
@@ -1421,7 +1394,8 @@ async function SaveCreate(clientAPI) {
             "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
             "Properties": {
                 "Properties": {
-                    "externalCode": teamId
+                    "externalCode": teamId,
+                    "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID
                 }
             }
         })
@@ -1945,7 +1919,6 @@ let attendance_list_rules_teams_details_onpartnerpress_js = __webpack_require__(
 let attendance_list_rules_teams_formatenddate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/FormatEndDate.js */ "./build.definitions/Attendance_List/Rules/Teams/FormatEndDate.js")
 let attendance_list_rules_teams_formatstartdate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/FormatStartDate.js */ "./build.definitions/Attendance_List/Rules/Teams/FormatStartDate.js")
 let attendance_list_rules_teams_getfullname_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/GetFullName.js */ "./build.definitions/Attendance_List/Rules/Teams/GetFullName.js")
-let attendance_list_rules_teams_getfullnamelist_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/GetFullNameList.js */ "./build.definitions/Attendance_List/Rules/Teams/GetFullNameList.js")
 let attendance_list_rules_teams_processreturnvalue_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/ProcessReturnValue.js */ "./build.definitions/Attendance_List/Rules/Teams/ProcessReturnValue.js")
 let attendance_list_rules_teams_queryshowallteams_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/QueryShowAllTeams.js */ "./build.definitions/Attendance_List/Rules/Teams/QueryShowAllTeams.js")
 let attendance_list_rules_teams_savecreate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/SaveCreate.js */ "./build.definitions/Attendance_List/Rules/Teams/SaveCreate.js")
@@ -2090,7 +2063,6 @@ module.exports = {
 	attendance_list_rules_teams_formatenddate_js : attendance_list_rules_teams_formatenddate_js,
 	attendance_list_rules_teams_formatstartdate_js : attendance_list_rules_teams_formatstartdate_js,
 	attendance_list_rules_teams_getfullname_js : attendance_list_rules_teams_getfullname_js,
-	attendance_list_rules_teams_getfullnamelist_js : attendance_list_rules_teams_getfullnamelist_js,
 	attendance_list_rules_teams_processreturnvalue_js : attendance_list_rules_teams_processreturnvalue_js,
 	attendance_list_rules_teams_queryshowallteams_js : attendance_list_rules_teams_queryshowallteams_js,
 	attendance_list_rules_teams_savecreate_js : attendance_list_rules_teams_savecreate_js,

@@ -9,7 +9,14 @@ export default async function SaveCreate(clientAPI) {
     try {
         const teamId = Cuid()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
-        
+
+        const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue')
+
+        const query = `$filter=externalCode eq '${cust_cursos_id}'`
+        const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID"], query)
+    
+        const curse = entity.find(i => i.cust_CPNT_TYP_ID)
+
         const props = partners.map((i, index) => {
             const externalCode = Cuid()
             const props = {
@@ -25,7 +32,8 @@ export default async function SaveCreate(clientAPI) {
             "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
             "Properties": {
                 "Properties": {
-                    "externalCode": teamId
+                    "externalCode": teamId,
+                    "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID
                 }
             }
         })
