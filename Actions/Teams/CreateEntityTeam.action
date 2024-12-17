@@ -9,7 +9,7 @@
 	},
 	"Properties": {
 		"externalCode": "",
-		"cust_ACT_CPNT_ID": "#Control:FormCellListPickerCurse/#SelectedValue",
+		"cust_ACT_CPNT_ID": "#Control:FormCellListPickerCurse/#SelectedValue/1",
 		"cust_END_TME": "#Control:FormCellDatePickerEndDate/#Value",
 		"cust_INST_ID1": "#Control:FormCellListPickerInstructor1/#SelectedValue",
 		"cust_INST_ID2": "#Control:FormCellListPickerInstructor2/#SelectedValue",

@@ -71,7 +71,7 @@
 						{
 							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPickerLocale",
-							"IsVisible": true,
+							"IsVisible": false,
 							"Separator": true,
 							"AllowMultipleSelection": false,
 							"AllowEmptySelection": true,
@@ -161,7 +161,7 @@
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 									"EntitySet": "cust_Instrutores"
 								},
-								"DisplayValue": "{externalCode} - {cust_fname} {cust_lname}",
+								"DisplayValue": "{externalName}",
 								"ReturnValue": "{externalCode}"
 							}
 						},
@@ -190,7 +190,7 @@
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 									"EntitySet": "cust_Instrutores"
 								},
-								"DisplayValue": "{externalCode} - {cust_fname} {cust_lname}",
+								"DisplayValue": "{externalName}",
 								"ReturnValue": "{externalCode}"
 							}
 						}
@@ -250,9 +250,11 @@
 											}
 										]
 									},
+									"Description": "vhsbc",
+									"DisplayDescriptionInMobile": false,
 									"PreserveIconStackSpacing": false,
 									"Selected": true,
-									"Title": "{cust_matricula} - {cust_fname} {cust_lname}",
+									"Title": "{externalName}",
 									"Visible": true
 								},
 								"ReturnValue": "{externalCode}"

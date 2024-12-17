@@ -51,11 +51,12 @@
 					},
 					"Footer": {
 						"Styles": {
-							"Caption": "letter-color"
+							"Caption": "letter-color",
+							"AttributeLabel": "letter-color"
 						},
 						"_Type": "SectionCommon.Type.Footer",
 						"_Name": "SectionCommonTypeFooter0",
-						"Caption": "Ver todas as turma",
+						"Caption": "Ver todas as turmas",
 						"AccessoryType": "DisclosureIndicator",
 						"FooterStyle": "Attribute",
 						"Visible": true,

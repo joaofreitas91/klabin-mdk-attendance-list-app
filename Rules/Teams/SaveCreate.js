@@ -9,7 +9,7 @@ export default async function SaveCreate(clientAPI) {
     try {
         const teamId = Cuid()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
-
+        
         const props = partners.map((i, index) => {
             const externalCode = Cuid()
             const props = {
