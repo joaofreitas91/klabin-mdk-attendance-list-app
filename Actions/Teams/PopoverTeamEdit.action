@@ -17,7 +17,6 @@
 		{
 			"Title": "Encerrar Turma",
 			"Icon": "sap-icon://save",
-			"TextAlignment": "",
 			"Styles": {
 				"Title": "letter-color",
 				"Icon": ""
