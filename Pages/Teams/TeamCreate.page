@@ -286,15 +286,6 @@
 		"Items": [
 			{
 				"_Type": "Control.Type.ActionBarItem",
-				"_Name": "ActionBarItem1",
-				"Caption": "Item",
-				"SystemItem": "Cancel",
-				"Position": "Left",
-				"IsIconCircular": false,
-				"Visible": true
-			},
-			{
-				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem2",
 				"Caption": "Item",
 				"SystemItem": "Save",
