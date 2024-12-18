@@ -5,7 +5,7 @@
 	},
 	"Message": "Lembre-se de verificar as notas da turma",
 	"Title": "Deseja encerrar a turma?",
-	"OKCaption": "Encerrar",
+	"OKCaption": "Confirmar",
 	"OnOK": "/Attendance_List/Rules/Teams/Update/CloseTeam.js",
-	"CancelCaption": "Cancelar"
+	"CancelCaption": "Voltar"
 }
