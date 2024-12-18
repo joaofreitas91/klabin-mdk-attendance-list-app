@@ -17,7 +17,7 @@ export default async function SaveCreate(clientAPI) {
 
         const queryInst = `$filter=cust_RELATED_USER eq '${userId}'`
         const instructors = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode"], queryInst)
-        
+
         const inst1 = instructors.find(i => i.externalCode)
         const curse = entity.find(i => i.cust_CPNT_TYP_ID)
 
@@ -32,6 +32,27 @@ export default async function SaveCreate(clientAPI) {
             return props
         })
 
+        /* 
+        Validação do Datepicker da data inicial
+        Regra: Não pode criar turma iniciando com data diferente da data atual
+        */
+        const startDateTime = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerStartDate/#Value') // Valor do DatePicker
+        const inputDate = new Date(startDateTime) // Valor do DatePicker formatado no new Date
+        inputDate.setHours(0, 0, 0, 0) // Setando o tempo igual a zero pois será comparado apenas a data
+        const currentDate = new Date() // Data atual
+        currentDate.setHours(0, 0, 0, 0) // Setando o tempo igual a zero pois será comparado apenas a data
+
+        if (inputDate.getTime() !== currentDate.getTime()) { // Se a data inicial for diferente da data atual retorna mensagem de erro
+            return await clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": "A data inicial não pode ser diferente da data atual!"
+                },
+            });
+        }
+        // Final da validação da data inicial
+        
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
             "Properties": {
@@ -53,7 +74,7 @@ export default async function SaveCreate(clientAPI) {
                 }
             })
         }))
-        
+
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
             "Properties": {
@@ -62,7 +83,7 @@ export default async function SaveCreate(clientAPI) {
                 "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
             },
         });
-        
+
     } catch (error) {
 
         return clientAPI.executeAction({
