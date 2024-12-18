@@ -5,16 +5,6 @@
 	},
 	"PopoverItems": [
 		{
-			"Title": "Encerrar Turma",
-			"Icon": "sap-icon://save",
-			"OnPress": "/Attendance_List/Actions/Teams/CloseTeamMessage.action",
-			"Visible": true,
-			"Enabled": true,
-			"Styles": {
-				"Title": "letter-color"
-			}
-		},
-		{
 			"Title": "Cancelar Turma",
 			"Icon": "sap-icon://delete",
 			"OnPress": "/Attendance_List/Actions/Teams/CancelTeamMessage.action",
@@ -23,6 +13,18 @@
 			"Styles": {
 				"Title": "letter-color"
 			}
+		},
+		{
+			"Title": "Encerrar Turma",
+			"Icon": "sap-icon://save",
+			"TextAlignment": "",
+			"Styles": {
+				"Title": "letter-color",
+				"Icon": ""
+			},
+			"OnPress": "/Attendance_List/Actions/Teams/CloseTeamMessage.action",
+			"Visible": true,
+			"Enabled": true
 		}
 	]
 }
