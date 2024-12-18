@@ -4,7 +4,7 @@
 		"_Name": "CloseTeamMessage"
 	},
 	"Message": "Lembre-se de verificar as notas da turma",
-	"Title": "Deseja encerrar a turma?",
+	"Title": "Deseja ENCERRAR a turma?",
 	"OKCaption": "Confirmar",
 	"OnOK": "/Attendance_List/Rules/Teams/Update/CloseTeam.js",
 	"CancelCaption": "Voltar"

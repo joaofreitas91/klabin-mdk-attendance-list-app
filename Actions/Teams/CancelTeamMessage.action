@@ -4,8 +4,8 @@
 		"_Name": "CloseTeamMessage"
 	},
 	"Message": "Essa turma será removida e não será possível alterá-la posteriormente",
-	"Title": "Deseja cancelar a turma?",
-	"OKCaption": "Cancelar",
+	"Title": "Deseja CANCELAR a turma?",
+	"OKCaption": "Confirmar",
 	"OnOK": "/Attendance_List/Rules/Teams/Update/CancelTeam.js",
 	"CancelCaption": "Voltar"
 }
