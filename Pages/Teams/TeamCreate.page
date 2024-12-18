@@ -71,7 +71,7 @@
 						{
 							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPickerLocale",
-							"IsVisible": true,
+							"IsVisible": false,
 							"Separator": true,
 							"AllowMultipleSelection": false,
 							"AllowEmptySelection": true,
@@ -139,7 +139,7 @@
 						{
 							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPickerInstructor1",
-							"IsVisible": false,
+							"IsVisible": true,
 							"Separator": true,
 							"AllowMultipleSelection": false,
 							"AllowEmptySelection": false,
