@@ -7,5 +7,5 @@
 	"Title": "Deseja cancelar a turma?",
 	"OKCaption": "Cancelar",
 	"OnOK": "/Attendance_List/Rules/Teams/Update/CancelTeam.js",
-	"CancelCaption": "Cancelar"
+	"CancelCaption": "Voltar"
 }
