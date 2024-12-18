@@ -23,7 +23,7 @@
 							"_Name": "FormCellDatePicker0",
 							"IsVisible": true,
 							"Separator": true,
-							"Caption": "Data início",
+							"Caption": "Data e horário de início",
 							"IsEditable": true,
 							"Mode": "Datetime"
 						},
@@ -33,7 +33,7 @@
 							"_Name": "FormCellDatePicker1",
 							"IsVisible": true,
 							"Separator": true,
-							"Caption": "Data fim",
+							"Caption": "Data e horário de frim",
 							"IsEditable": true,
 							"Mode": "Datetime"
 						}
@@ -186,29 +186,29 @@
 	"ActionBar": {
 		"Items": [
 			{
+				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem1",
 				"Caption": "Item",
 				"SystemItem": "Cancel",
 				"Position": "Left",
 				"IsIconCircular": false,
 				"Visible": true,
-				"OnPress": "/Attendance_List/Actions/CloseModalPage_Cancel.action",
-				"_Type": "Control.Type.ActionBarItem"
+				"OnPress": "/Attendance_List/Actions/CloseModalPage_Cancel.action"
 			},
 			{
+				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem2",
 				"Caption": "",
 				"Icon": "sap-icon://menu",
 				"Position": "Right",
 				"IsIconCircular": false,
 				"Visible": true,
-				"OnPress": "/Attendance_List/Actions/Teams/PopoverTeamEdit.action",
-				"_Type": "Control.Type.ActionBarItem"
+				"OnPress": "/Attendance_List/Actions/Teams/PopoverTeamEdit.action"
 			}
 		],
 		"_Name": "ActionBar1",
+		"_Type": "Control.Type.ActionBar",
 		"Caption": "Editar turma",
-		"PrefersLargeCaption": true,
-		"_Type": "Control.Type.ActionBar"
+		"PrefersLargeCaption": true
 	}
 }

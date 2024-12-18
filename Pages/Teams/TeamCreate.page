@@ -102,7 +102,7 @@
 							"_Name": "FormCellDatePickerStartDate",
 							"IsVisible": true,
 							"Separator": true,
-							"Caption": "Data início",
+							"Caption": "Data e horário de início",
 							"IsEditable": true,
 							"Mode": "Datetime"
 						},
@@ -112,7 +112,7 @@
 							"_Name": "FormCellDatePickerEndDate",
 							"IsVisible": true,
 							"Separator": true,
-							"Caption": "Data fim",
+							"Caption": "Data e horário de fim",
 							"IsEditable": true,
 							"Mode": "Datetime"
 						}
