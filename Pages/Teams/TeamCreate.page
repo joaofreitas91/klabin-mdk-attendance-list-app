@@ -53,7 +53,7 @@
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 									"EntitySet": "cust_Cursos"
 								},
-								"DisplayValue": "{cust_CPNT_TITLE}",
+								"DisplayValue": "{externalCode} {cust_CPNT_TITLE}",
 								"ReturnValue": "{externalCode}"
 							}
 						},
