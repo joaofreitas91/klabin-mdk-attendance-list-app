@@ -36,6 +36,11 @@
 			"Name": "cust_ListadePresenca",
 			"Query": "cust_ListadePresenca?$expand=cust_AlunosNav",
 			"AutomaticallyRetrievesStreams": false
+		},
+		{
+			"Name": "cust_listadiaria",
+			"Query": "cust_listadiaria",
+			"AutomaticallyRetrievesStreams": false
 		}
 	]
 }

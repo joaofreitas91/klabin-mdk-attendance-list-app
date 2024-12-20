@@ -1415,9 +1415,65 @@ __webpack_require__.r(__webpack_exports__);
 
 async function SaveCreate(clientAPI) {
 
+    function gerarPresencaCurso(dataHoraInicio, dataHoraFim) {
+        const inicio = new Date(dataHoraInicio);
+        const fim = new Date(dataHoraFim);
+    
+        // Extrair o horário inicial e final
+        const horarioInicial = {
+            horas: inicio.getHours(),
+            minutos: inicio.getMinutes()
+        };
+    
+        const horarioFinal = {
+            horas: fim.getHours(),
+            minutos: fim.getMinutes()
+        };
+    
+        // Normalizar as datas para o horário fixo
+        inicio.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
+        fim.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
+    
+        const listaPresenca = [];
+        let dataAtual = new Date(inicio);
+    
+        // Gerar lista de presença
+        while (dataAtual <= fim) {
+            const dataInicioDia = new Date(dataAtual);
+            const dataFimDia = new Date(dataAtual);
+    
+            // Configurar o horário inicial e final do dia
+            dataInicioDia.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
+            dataFimDia.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
+    
+            // Garantir que o último dia não ultrapasse a data final
+            if (dataFimDia > fim) {
+                dataFimDia.setTime(fim.getTime());
+            }
+    
+            // Adicionar o dia à lista de presença
+            listaPresenca.push({
+                inicio: dataInicioDia,
+                fim: dataFimDia
+            });
+    
+            // Avançar para o próximo dia
+            dataAtual.setDate(dataAtual.getDate() + 1);
+        }
+    
+        return listaPresenca;
+    }
+
     try {
+
         const teamId = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
+
+        const firstDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerStartDate/#Value')
+        const lastDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerEndDate/#Value')
+
+        const courseDays = gerarPresencaCurso(new Date(firstDay).toISOString(), new Date(lastDay).toISOString())
+        alert(JSON.stringify(courseDays, null, 2))
         /* const userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId'); */
         const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue')
 
@@ -1430,13 +1486,25 @@ async function SaveCreate(clientAPI) {
         const inst1 = instructors.find(i => i.externalCode) */
         const curse = entity.find(i => i.cust_CPNT_TYP_ID)
 
-        const props = partners.map((i, index) => {
+        const partnerList = partners.map((i, index) => {
             const externalCode = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
             const props = {
                 "externalCode": externalCode,
                 "cust_Turma": teamId,
                 "cust_Aluno": i.ReturnValue,
                 "externalName": `Dia ${index + 1}`
+            }
+            return props
+        })
+
+        const dailyList = courseDays.map((i, index) => {
+            const externalCode = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
+            const props = {
+                "externalCode": `1010${index}`,
+                "cust_turma": teamId,
+                "cust_startdate": new Date(i.inicio).toISOString(),
+                "cust_enddate": new Date(i.fim).toISOString(),
+                "cust_totalhoras": clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyWorkload/#Value')
             }
             return props
         })
@@ -1460,6 +1528,7 @@ async function SaveCreate(clientAPI) {
                 },
             });
         }
+        
         // Final da validação da data inicial
         
         await clientAPI.executeAction({
@@ -1473,10 +1542,20 @@ async function SaveCreate(clientAPI) {
             }
         })
 
-        await Promise.all(props.map(prop => {
+        await Promise.all(partnerList.map(prop => {
 
             return clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/Teams/CreatePresenceList.action",
+                "Properties": {
+                    "Properties": prop,
+                }
+            })
+        }))
+
+        await Promise.all(dailyList.map(prop => {
+
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/Teams/CreateDailyList.action",
                 "Properties": {
                     "Properties": prop,
                 }
@@ -1921,6 +2000,7 @@ let attendance_list_actions_teams_cancelteammessage_action = __webpack_require__
 let attendance_list_actions_teams_closepresencelist_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/ClosePresenceList.action */ "./build.definitions/Attendance_List/Actions/Teams/ClosePresenceList.action")
 let attendance_list_actions_teams_closeteam_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CloseTeam.action */ "./build.definitions/Attendance_List/Actions/Teams/CloseTeam.action")
 let attendance_list_actions_teams_closeteammessage_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CloseTeamMessage.action */ "./build.definitions/Attendance_List/Actions/Teams/CloseTeamMessage.action")
+let attendance_list_actions_teams_createdailylist_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CreateDailyList.action */ "./build.definitions/Attendance_List/Actions/Teams/CreateDailyList.action")
 let attendance_list_actions_teams_createentityteam_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CreateEntityTeam.action */ "./build.definitions/Attendance_List/Actions/Teams/CreateEntityTeam.action")
 let attendance_list_actions_teams_createpresencelist_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/CreatePresenceList.action */ "./build.definitions/Attendance_List/Actions/Teams/CreatePresenceList.action")
 let attendance_list_actions_teams_deleteteam_action = __webpack_require__(/*! ./Attendance_List/Actions/Teams/DeleteTeam.action */ "./build.definitions/Attendance_List/Actions/Teams/DeleteTeam.action")
@@ -2067,6 +2147,7 @@ module.exports = {
 	attendance_list_actions_teams_closepresencelist_action : attendance_list_actions_teams_closepresencelist_action,
 	attendance_list_actions_teams_closeteam_action : attendance_list_actions_teams_closeteam_action,
 	attendance_list_actions_teams_closeteammessage_action : attendance_list_actions_teams_closeteammessage_action,
+	attendance_list_actions_teams_createdailylist_action : attendance_list_actions_teams_createdailylist_action,
 	attendance_list_actions_teams_createentityteam_action : attendance_list_actions_teams_createentityteam_action,
 	attendance_list_actions_teams_createpresencelist_action : attendance_list_actions_teams_createpresencelist_action,
 	attendance_list_actions_teams_deleteteam_action : attendance_list_actions_teams_deleteteam_action,
@@ -3224,7 +3305,7 @@ module.exports = {"Message":"Data service closed successfully","NumberOfLines":1
   \*****************************************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.OfflineOData.Download","ActionResult":{"_Name":"sync"},"OnFailure":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncFailureMessage.action","OnSuccess":"/Attendance_List/Rules/CAP_SERVICE_SF_LMS/ErrorArchive_CheckForSyncError.js","Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","DefiningRequests":[{"Name":"cust_Alunos","Query":"cust_Alunos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Cursos","Query":"cust_Cursos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Instrutores","Query":"cust_Instrutores","AutomaticallyRetrievesStreams":false},{"Name":"cust_Locais","Query":"cust_Locais","AutomaticallyRetrievesStreams":false},{"Name":"cust_Turmas","Query":"cust_Turmas?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav&$filter=cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null","AutomaticallyRetrievesStreams":false},{"Name":"cust_ListadePresenca","Query":"cust_ListadePresenca?$expand=cust_AlunosNav","AutomaticallyRetrievesStreams":false}]}
+module.exports = {"_Type":"Action.Type.OfflineOData.Download","ActionResult":{"_Name":"sync"},"OnFailure":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncFailureMessage.action","OnSuccess":"/Attendance_List/Rules/CAP_SERVICE_SF_LMS/ErrorArchive_CheckForSyncError.js","Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","DefiningRequests":[{"Name":"cust_Alunos","Query":"cust_Alunos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Cursos","Query":"cust_Cursos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Instrutores","Query":"cust_Instrutores","AutomaticallyRetrievesStreams":false},{"Name":"cust_Locais","Query":"cust_Locais","AutomaticallyRetrievesStreams":false},{"Name":"cust_Turmas","Query":"cust_Turmas?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav&$filter=cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null","AutomaticallyRetrievesStreams":false},{"Name":"cust_ListadePresenca","Query":"cust_ListadePresenca?$expand=cust_AlunosNav","AutomaticallyRetrievesStreams":false},{"Name":"cust_listadiaria","Query":"cust_listadiaria","AutomaticallyRetrievesStreams":false}]}
 
 /***/ }),
 
@@ -3244,7 +3325,7 @@ module.exports = {"Message":"Download in progress...","CompletionMessage":"Downl
   \*******************************************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.ODataService.Initialize","ActionResult":{"_Name":"init"},"OnFailure":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/InitializeOfflineFailureMessage.action","ShowActivityIndicator":true,"ActivityIndicatorText":"Downloading...","Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","DefiningRequests":[{"Name":"cust_Alunos","Query":"cust_Alunos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Cursos","Query":"cust_Cursos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Instrutores","Query":"cust_Instrutores","AutomaticallyRetrievesStreams":false},{"Name":"cust_Locais","Query":"cust_Locais","AutomaticallyRetrievesStreams":false},{"Name":"cust_Turmas","Query":"cust_Turmas?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav&$filter=cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null","AutomaticallyRetrievesStreams":false},{"Name":"cust_ListadePresenca","Query":"cust_ListadePresenca?$expand=cust_AlunosNav","AutomaticallyRetrievesStreams":false}]}
+module.exports = {"_Type":"Action.Type.ODataService.Initialize","ActionResult":{"_Name":"init"},"OnFailure":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/InitializeOfflineFailureMessage.action","ShowActivityIndicator":true,"ActivityIndicatorText":"Downloading...","Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","DefiningRequests":[{"Name":"cust_Alunos","Query":"cust_Alunos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Cursos","Query":"cust_Cursos","AutomaticallyRetrievesStreams":false},{"Name":"cust_Instrutores","Query":"cust_Instrutores","AutomaticallyRetrievesStreams":false},{"Name":"cust_Locais","Query":"cust_Locais","AutomaticallyRetrievesStreams":false},{"Name":"cust_Turmas","Query":"cust_Turmas?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_CursosNav,cust_Inst1Nav,cust_Inst2Nav&$filter=cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null","AutomaticallyRetrievesStreams":false},{"Name":"cust_ListadePresenca","Query":"cust_ListadePresenca?$expand=cust_AlunosNav","AutomaticallyRetrievesStreams":false},{"Name":"cust_listadiaria","Query":"cust_listadiaria","AutomaticallyRetrievesStreams":false}]}
 
 /***/ }),
 
@@ -3495,6 +3576,16 @@ module.exports = {"_Type":"Action.Type.ODataService.UpdateEntity","ActionResult"
 /***/ ((module) => {
 
 module.exports = {"_Type":"Action.Type.Message","ActionResult":{"_Name":"CloseTeamMessage"},"Message":"Lembre-se de verificar as notas da turma","Title":"Deseja ENCERRAR a turma?","OKCaption":"Confirmar","OnOK":"/Attendance_List/Rules/Teams/Update/CloseTeam.js","CancelCaption":"Voltar"}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Actions/Teams/CreateDailyList.action":
+/*!********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Actions/Teams/CreateDailyList.action ***!
+  \********************************************************************************/
+/***/ ((module) => {
+
+module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult":{"_Name":"CreateDailyList"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_listadiaria"},"Properties":{"externalCode":""}}
 
 /***/ }),
 

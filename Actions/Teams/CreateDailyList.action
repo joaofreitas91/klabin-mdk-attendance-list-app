@@ -1,0 +1,13 @@
+{
+	"_Type": "Action.Type.ODataService.CreateEntity",
+	"ActionResult": {
+		"_Name": "CreateDailyList"
+	},
+	"Target": {
+		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+		"EntitySet": "cust_listadiaria"
+	},
+	"Properties": {
+		"externalCode": ""
+	}
+}
