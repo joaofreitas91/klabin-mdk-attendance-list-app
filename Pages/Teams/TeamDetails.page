@@ -93,10 +93,11 @@
 						"ControlSeparator": true
 					},
 					"_Type": "Section.Type.ObjectCollection",
+					"DataSubscriptions": [],
 					"Target": {
 						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-						"EntitySet": "cust_ListadePresenca",
-						"QueryOptions": "$expand=cust_AlunosNav&$filter=cust_Turma eq '{externalCode}'"
+						"EntitySet": "cust_listadiaria",
+						"QueryOptions": "$filter=cust_turma eq '{externalCode}'&$orderby=cust_startdate"
 					},
 					"_Name": "SectionObjectCollection0",
 					"Header": {
@@ -104,11 +105,11 @@
 						"_Name": "SectionCommonTypeHeader0",
 						"AccessoryType": "None",
 						"UseTopPadding": true,
-						"Caption": "Lista de presença"
+						"Caption": "Dias de aula"
 					},
 					"Visible": true,
 					"EmptySection": {
-						"Caption": "Sem participantes até o momento",
+						"Caption": "Sem aulas na turma",
 						"FooterVisible": true
 					},
 					"DataPaging": {
@@ -116,24 +117,12 @@
 						"PageSize": 50
 					},
 					"ObjectCell": {
-						"Title": "/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js",
-						"Tags": [
-							{
-								"Color": "Green",
-								"Text": "/Attendance_List/Rules/Teams/Details/GetTeamStatus.js"
-							},
-							{
-								"Color": "Green",
-								"Text": "/Attendance_List/Rules/Teams/Details/GetPartnerNote.js"
-							}
-						],
-						"Subhead": "/Attendance_List/Rules/Teams/Details/GetAlunoName.js",
+						"Title": "/Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js",
+						"Subhead": "/Attendance_List/Rules/Teams/Details/FormatDate.js",
 						"DisplayDescriptionInMobile": true,
-						"AccessoryButtonIcon": "sap-icon://user-settings",
 						"AccessoryType": "DisclosureIndicator",
 						"PreserveIconStackSpacing": false,
-						"OnPress": "/Attendance_List/Actions/Teams/NavToBePresence.action",
-						"OnAccessoryButtonPress": "/Attendance_List/Actions/Teams/NavToBePresence.action",
+						"OnPress": "/Attendance_List/Actions/Teams/NavToDailyAttendanceList.action",
 						"Styles": {
 							"Title": "letter-color",
 							"Subhead": "letter-black-color"
@@ -141,11 +130,11 @@
 						"AvatarStack": {
 							"Avatars": [
 								{
-									"Image": "sap-icon://customer",
+									"Image": "sap-icon://date-time",
 									"Style": "avatar"
 								}
 							],
-							"ImageIsCircular": true,
+							"ImageIsCircular": false,
 							"ImageHasBorder": false
 						},
 						"AvatarGrid": {

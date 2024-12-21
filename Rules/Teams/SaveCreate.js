@@ -64,7 +64,6 @@ export default async function SaveCreate(clientAPI) {
         const lastDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerEndDate/#Value')
 
         const courseDays = gerarPresencaCurso(new Date(firstDay).toISOString(), new Date(lastDay).toISOString())
-        alert(JSON.stringify(courseDays, null, 2))
         /* const userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId'); */
         const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue')
 

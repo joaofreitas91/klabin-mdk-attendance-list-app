@@ -5,6 +5,5 @@
 	},
 	"PageToOpen": "/Attendance_List/Pages/Teams/BePresence.page",
 	"BackStackVisible": true,
-	"ModalPage": true,
 	"NavigationType": "Inner"
 }

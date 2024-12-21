@@ -1,0 +1,7 @@
+{
+	"_Type": "Action.Type.Navigation",
+	"ActionResult": {
+		"_Name": "NavToDailyAttendanceList"
+	},
+	"PageToOpen": "/Attendance_List/Pages/Teams/DailyAttendanceList.page"
+}
