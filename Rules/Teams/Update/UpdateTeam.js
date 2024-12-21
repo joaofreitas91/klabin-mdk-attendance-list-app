@@ -9,8 +9,11 @@ export default async function UpdateTeam(clientAPI) {
 
         var fieldSwitch = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSwitch0/#Value")
         var fieldNote = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSimpleProperty0/#Value")
+        let appSettings = clientAPI.nativescript.appSettingsModule
+        var dayExternalCode = appSettings.getString('day');
+        alert(dayExternalCode)
 
-        alert(JSON.stringify(clientAPI.binding, null, 2))
+        // Fazer um read para verificar se a lista de presença (cust_listapresencalms) ja existe, filtrando por idturma, idlistadiaria e idficha.
 
         // await clientAPI.executeAction({
         //     "Name": "/Attendance_List/Actions/Teams/UpdatePresenceList.action",

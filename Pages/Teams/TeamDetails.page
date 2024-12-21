@@ -122,7 +122,7 @@
 						"DisplayDescriptionInMobile": true,
 						"AccessoryType": "DisclosureIndicator",
 						"PreserveIconStackSpacing": false,
-						"OnPress": "/Attendance_List/Actions/Teams/NavToDailyAttendanceList.action",
+						"OnPress": "/Attendance_List/Rules/Teams/Details/SetStorageVariable.js",
 						"Styles": {
 							"Title": "letter-color",
 							"Subhead": "letter-black-color"
