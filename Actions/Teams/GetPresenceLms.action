@@ -1,0 +1,11 @@
+{
+	"_Type": "Action.Type.ODataService.Read",
+	"ActionResult": {
+		"_Name": "GetPresenceLmsById"
+	},
+	"Target": {
+		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+		"EntitySet": "cust_presencalms",
+		"QueryOptions": "$filter=cust_ficha eq 'cm4ys333tkv06fxzm'"
+	}
+}

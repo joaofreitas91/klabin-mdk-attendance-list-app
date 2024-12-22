@@ -23,18 +23,28 @@
                     <NavigationPropertyBinding Path="cust_Inst1Nav" Target="cust_Instrutores"/>
                     <NavigationPropertyBinding Path="cust_Inst2Nav" Target="cust_Instrutores"/>
                     <NavigationPropertyBinding Path="cust_ListaNav" Target="cust_ListadePresenca"/>
+                    <NavigationPropertyBinding Path="cust_SegmentoNav" Target="cust_listadiaria"/>
                     <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
                 </EntitySet>
                 <EntitySet Name="cust_ListadePresenca" EntityType="SFSFService.cust_ListadePresenca">
                     <NavigationPropertyBinding Path="createdByNav" Target="User"/>
                     <NavigationPropertyBinding Path="cust_AlunosNav" Target="cust_Alunos"/>
+                    <NavigationPropertyBinding Path="cust_SegmentoNav" Target="cust_listadiaria"/>
                     <NavigationPropertyBinding Path="cust_TurmaNav" Target="cust_Turmas"/>
                     <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
                 </EntitySet>
                 <EntitySet Name="cust_listadiaria" EntityType="SFSFService.cust_listadiaria">
                     <NavigationPropertyBinding Path="createdByNav" Target="User"/>
                     <NavigationPropertyBinding Path="cust_listaNav" Target="cust_ListadePresenca"/>
+                    <NavigationPropertyBinding Path="cust_presencaNav" Target="cust_presencalms"/>
                     <NavigationPropertyBinding Path="cust_turmanav" Target="cust_Turmas"/>
+                    <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
+                </EntitySet>
+                <EntitySet Name="cust_presencalms" EntityType="SFSFService.cust_presencalms">
+                    <NavigationPropertyBinding Path="createdByNav" Target="User"/>
+                    <NavigationPropertyBinding Path="cust_FichaNav" Target="cust_ListadePresenca"/>
+                    <NavigationPropertyBinding Path="cust_SegmentoNav" Target="cust_listadiaria"/>
+                    <NavigationPropertyBinding Path="cust_TurmaNav" Target="cust_Turmas"/>
                     <NavigationPropertyBinding Path="lastModifiedByNav" Target="User"/>
                 </EntitySet>
                 <EntitySet Name="cust_Cursos" EntityType="SFSFService.cust_Cursos">
@@ -86,6 +96,7 @@
                 <NavigationProperty Name="cust_ListaNav" Type="Collection(SFSFService.cust_ListadePresenca)">
                     <OnDelete Action="Cascade"/>
                 </NavigationProperty>
+                <NavigationProperty Name="cust_SegmentoNav" Type="Collection(SFSFService.cust_listadiaria)"/>
                 <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
             </EntityType>
             <EntityType Name="cust_ListadePresenca">
@@ -109,6 +120,7 @@
                 <Property Name="mdfSystemRecordStatus" Type="Edm.String" MaxLength="255"/>
                 <NavigationProperty Name="createdByNav" Type="SFSFService.User"/>
                 <NavigationProperty Name="cust_AlunosNav" Type="SFSFService.cust_Alunos"/>
+                <NavigationProperty Name="cust_SegmentoNav" Type="Collection(SFSFService.cust_listadiaria)"/>
                 <NavigationProperty Name="cust_TurmaNav" Type="SFSFService.cust_Turmas"/>
                 <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
             </EntityType>
@@ -125,6 +137,7 @@
                 <Property Name="cust_presenca" Type="Edm.String" MaxLength="1"/>
                 <Property Name="cust_segCode" Type="Edm.String" MaxLength="255"/>
                 <Property Name="cust_startdate" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_status" Type="Edm.String" MaxLength="10"/>
                 <Property Name="cust_totalhoras" Type="Edm.String" MaxLength="3"/>
                 <Property Name="cust_turma" Type="Edm.String" MaxLength="255"/>
                 <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
@@ -135,7 +148,31 @@
                 <NavigationProperty Name="cust_listaNav" Type="Collection(SFSFService.cust_ListadePresenca)">
                     <OnDelete Action="Cascade"/>
                 </NavigationProperty>
+                <NavigationProperty Name="cust_presencaNav" Type="Collection(SFSFService.cust_presencalms)"/>
                 <NavigationProperty Name="cust_turmanav" Type="SFSFService.cust_Turmas"/>
+                <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
+            </EntityType>
+            <EntityType Name="cust_presencalms">
+                <Key>
+                    <PropertyRef Name="externalCode"/>
+                </Key>
+                <Property Name="externalCode" Type="Edm.String" MaxLength="128" Nullable="false"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_enddate" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_ficha" Type="Edm.String" MaxLength="255"/>
+                <Property Name="cust_presenca" Type="Edm.String" MaxLength="10"/>
+                <Property Name="cust_segmento" Type="Edm.String" MaxLength="255"/>
+                <Property Name="cust_startdate" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_turma" Type="Edm.String" MaxLength="255"/>
+                <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
+                <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
+                <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
+                <Property Name="mdfSystemRecordStatus" Type="Edm.String" MaxLength="255"/>
+                <NavigationProperty Name="createdByNav" Type="SFSFService.User"/>
+                <NavigationProperty Name="cust_FichaNav" Type="SFSFService.cust_ListadePresenca"/>
+                <NavigationProperty Name="cust_SegmentoNav" Type="SFSFService.cust_listadiaria"/>
+                <NavigationProperty Name="cust_TurmaNav" Type="SFSFService.cust_Turmas"/>
                 <NavigationProperty Name="lastModifiedByNav" Type="SFSFService.User"/>
             </EntityType>
             <EntityType Name="cust_Cursos">

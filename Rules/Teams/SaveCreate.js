@@ -9,49 +9,49 @@ export default async function SaveCreate(clientAPI) {
     function gerarPresencaCurso(dataHoraInicio, dataHoraFim) {
         const inicio = new Date(dataHoraInicio);
         const fim = new Date(dataHoraFim);
-    
+
         // Extrair o horário inicial e final
         const horarioInicial = {
             horas: inicio.getHours(),
             minutos: inicio.getMinutes()
         };
-    
+
         const horarioFinal = {
             horas: fim.getHours(),
             minutos: fim.getMinutes()
         };
-    
+
         // Normalizar as datas para o horário fixo
         inicio.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
         fim.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
-    
+
         const listaPresenca = [];
         let dataAtual = new Date(inicio);
-    
+
         // Gerar lista de presença
         while (dataAtual <= fim) {
             const dataInicioDia = new Date(dataAtual);
             const dataFimDia = new Date(dataAtual);
-    
+
             // Configurar o horário inicial e final do dia
             dataInicioDia.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
             dataFimDia.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
-    
+
             // Garantir que o último dia não ultrapasse a data final
             if (dataFimDia > fim) {
                 dataFimDia.setTime(fim.getTime());
             }
-    
+
             // Adicionar o dia à lista de presença
             listaPresenca.push({
                 inicio: dataInicioDia,
                 fim: dataFimDia
             });
-    
+
             // Avançar para o próximo dia
             dataAtual.setDate(dataAtual.getDate() + 1);
         }
-    
+
         return listaPresenca;
     }
 
@@ -99,6 +99,18 @@ export default async function SaveCreate(clientAPI) {
             return props
         })
 
+        const presencalmsList = dailyList.flatMap((d) =>
+            partnerList.map((p) => ({
+                "externalCode": Cuid(),
+                "cust_enddate": new Date(d.cust_enddate).toISOString(),
+                "cust_startdate": new Date(d.cust_startdate).toISOString(),
+                "cust_ficha": p.externalCode,
+                "cust_segmento": d.externalCode,
+                "cust_turma": d.cust_turma,
+                "cust_presenca": "ausente"
+            }))
+        )
+
         /* 
         Validação do Datepicker da data inicial
         Regra: Não pode criar turma iniciando com data diferente da data atual
@@ -118,9 +130,9 @@ export default async function SaveCreate(clientAPI) {
                 },
             });
         }
-        
+
         // Final da validação da data inicial
-        
+
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
             "Properties": {
@@ -151,6 +163,17 @@ export default async function SaveCreate(clientAPI) {
                 }
             })
         }))
+
+        await Promise.all(presencalmsList.map(prop => {
+
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/Teams/CreatePresencalmsEntity.action",
+                "Properties": {
+                    "Properties": prop,
+                }
+            })
+        }))
+
 
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",

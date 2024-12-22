@@ -41,6 +41,11 @@
 			"Name": "cust_listadiaria",
 			"Query": "cust_listadiaria",
 			"AutomaticallyRetrievesStreams": false
+		},
+		{
+			"Name": "cust_presencalms",
+			"Query": "cust_presencalms",
+			"AutomaticallyRetrievesStreams": false
 		}
 	]
 }

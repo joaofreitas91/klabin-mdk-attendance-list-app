@@ -41,7 +41,7 @@
 							"IsVisible": true,
 							"Separator": true,
 							"Caption": "Inserir a nota",
-							"KeyboardType": "Number",
+							"KeyboardType": "Default",
 							"AlternateInput": "None",
 							"Enabled": true,
 							"IsEditable": true

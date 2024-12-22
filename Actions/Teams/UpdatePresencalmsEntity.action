@@ -1,0 +1,11 @@
+{
+	"_Type": "Action.Type.ODataService.UpdateEntity",
+	"ActionResult": {
+		"_Name": "UpdatePresencalmsEntity"
+	},
+	"Target": {
+		"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+		"EntitySet": "cust_presencalms",
+		"ReadLink": "/Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js"
+	}
+}

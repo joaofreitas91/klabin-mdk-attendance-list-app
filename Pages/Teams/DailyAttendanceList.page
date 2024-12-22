@@ -89,7 +89,7 @@
 	"_Name": "Page0",
 	"ActionBar": {
 		"Items": [],
-		"_Name": "ActionBar4",
+		"_Name": "ActionBar8",
 		"_Type": "Control.Type.ActionBar",
 		"Caption": " ",
 		"PrefersLargeCaption": false
