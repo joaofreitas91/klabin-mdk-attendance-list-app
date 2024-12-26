@@ -1331,68 +1331,6 @@ function OnPartnerPress(clientAPI) {
 
 /***/ }),
 
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/SetDateVariable.js":
-/*!**********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/SetDateVariable.js ***!
-  \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SetDateVariable)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function SetDateVariable(clientAPI) {
-    try {
-        let appSettings = clientAPI.nativescript.appSettingsModule;
-        let item2 = clientAPI.getPageProxy().getActionBinding().cust_startdate
-        appSettings.setString('cust_startdate', String(item2));
-
-        await clientAPI.executeAction("/Attendance_List/Actions/Teams/NavToDailyAttendanceList.action")
-
-    }catch(e){
-        alert(e)
-    }
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/SetFichaVariable.js":
-/*!***********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/SetFichaVariable.js ***!
-  \***********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SetFichaVariable)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function SetFichaVariable(clientAPI) {
-    try {
-        let appSettings = clientAPI.nativescript.appSettingsModule;
-        let item = clientAPI.getPageProxy().getActionBinding().externalCode
-        appSettings.setString('day', String(item));
-
-        await clientAPI.executeAction("/Attendance_List/Actions/Teams/NavToBePresence.action")
-
-    }catch(e){
-        alert(e)
-    }
-}
-
-
-/***/ }),
-
 /***/ "./build.definitions/Attendance_List/Rules/Teams/Details/SetStorageVariable.js":
 /*!*************************************************************************************!*\
   !*** ./build.definitions/Attendance_List/Rules/Teams/Details/SetStorageVariable.js ***!
@@ -2025,31 +1963,6 @@ async function CloseTeam(clientAPI) {
 
 /***/ }),
 
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/GetGlobalFichaValue.js":
-/*!*************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/GetGlobalFichaValue.js ***!
-  \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetGlobalFichaValue)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function GetGlobalFichaValue(clientAPI) {
-    let appSettings = clientAPI.nativescript.appSettingsModule
-    var cust_ficha = appSettings.getString('cust_ficha');
-
-    return cust_ficha
-}
-
-
-/***/ }),
-
 /***/ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js":
 /*!************************************************************************************!*\
   !*** ./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js ***!
@@ -2197,10 +2110,19 @@ __webpack_require__.r(__webpack_exports__);
  * Describe this function...
  * @param {IClientAPI} clientAPI
  */
-function ValidatePresenceSwitch(clientAPI) {
+async function ValidatePresenceSwitch(clientAPI) {
+    let appSettings = clientAPI.nativescript.appSettingsModule
+    var listDay = appSettings.getString('day');
+
+    const query = `$filter=externalCode eq '${listDay}'`
+    const cust_enddate_array = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_listadiaria', ['cust_enddate'], query)
+
+    const cust_enddate = cust_enddate_array.find(i => i.cust_enddate).cust_enddate
+
     var today = new Date().getTime()
-    var endDate = new Date(clientAPI.binding.cust_enddate).getTime()   
-    return today <= endDate
+    var endDate = new Date(cust_enddate)
+    endDate.setHours(23, 59, 59, 999)
+    return today <= endDate.getTime()
 }
 
 
@@ -2335,8 +2257,6 @@ let attendance_list_rules_teams_details_getpartnernote_js = __webpack_require__(
 let attendance_list_rules_teams_details_getteamdetailsday_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js */ "./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js")
 let attendance_list_rules_teams_details_getteamstatus_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Details/GetTeamStatus.js */ "./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamStatus.js")
 let attendance_list_rules_teams_details_onpartnerpress_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Details/OnPartnerPress.js */ "./build.definitions/Attendance_List/Rules/Teams/Details/OnPartnerPress.js")
-let attendance_list_rules_teams_details_setdatevariable_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Details/SetDateVariable.js */ "./build.definitions/Attendance_List/Rules/Teams/Details/SetDateVariable.js")
-let attendance_list_rules_teams_details_setfichavariable_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Details/SetFichaVariable.js */ "./build.definitions/Attendance_List/Rules/Teams/Details/SetFichaVariable.js")
 let attendance_list_rules_teams_details_setstoragevariable_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Details/SetStorageVariable.js */ "./build.definitions/Attendance_List/Rules/Teams/Details/SetStorageVariable.js")
 let attendance_list_rules_teams_formatenddate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/FormatEndDate.js */ "./build.definitions/Attendance_List/Rules/Teams/FormatEndDate.js")
 let attendance_list_rules_teams_formatstartdate_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/FormatStartDate.js */ "./build.definitions/Attendance_List/Rules/Teams/FormatStartDate.js")
@@ -2349,7 +2269,6 @@ let attendance_list_rules_teams_teamdescription_js = __webpack_require__(/*! ./A
 let attendance_list_rules_teams_teamduration_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/TeamDuration.js */ "./build.definitions/Attendance_List/Rules/Teams/TeamDuration.js")
 let attendance_list_rules_teams_update_cancelteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/CancelTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/CancelTeam.js")
 let attendance_list_rules_teams_update_closeteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/CloseTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/CloseTeam.js")
-let attendance_list_rules_teams_update_getglobalfichavalue_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/GetGlobalFichaValue.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/GetGlobalFichaValue.js")
 let attendance_list_rules_teams_update_getpresencelmscode_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js")
 let attendance_list_rules_teams_update_getpresencevalue_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/GetPresenceValue.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceValue.js")
 let attendance_list_rules_teams_update_updateteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/UpdateTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/UpdateTeam.js")
@@ -2494,8 +2413,6 @@ module.exports = {
 	attendance_list_rules_teams_details_getteamdetailsday_js : attendance_list_rules_teams_details_getteamdetailsday_js,
 	attendance_list_rules_teams_details_getteamstatus_js : attendance_list_rules_teams_details_getteamstatus_js,
 	attendance_list_rules_teams_details_onpartnerpress_js : attendance_list_rules_teams_details_onpartnerpress_js,
-	attendance_list_rules_teams_details_setdatevariable_js : attendance_list_rules_teams_details_setdatevariable_js,
-	attendance_list_rules_teams_details_setfichavariable_js : attendance_list_rules_teams_details_setfichavariable_js,
 	attendance_list_rules_teams_details_setstoragevariable_js : attendance_list_rules_teams_details_setstoragevariable_js,
 	attendance_list_rules_teams_formatenddate_js : attendance_list_rules_teams_formatenddate_js,
 	attendance_list_rules_teams_formatstartdate_js : attendance_list_rules_teams_formatstartdate_js,
@@ -2508,7 +2425,6 @@ module.exports = {
 	attendance_list_rules_teams_teamduration_js : attendance_list_rules_teams_teamduration_js,
 	attendance_list_rules_teams_update_cancelteam_js : attendance_list_rules_teams_update_cancelteam_js,
 	attendance_list_rules_teams_update_closeteam_js : attendance_list_rules_teams_update_closeteam_js,
-	attendance_list_rules_teams_update_getglobalfichavalue_js : attendance_list_rules_teams_update_getglobalfichavalue_js,
 	attendance_list_rules_teams_update_getpresencelmscode_js : attendance_list_rules_teams_update_getpresencelmscode_js,
 	attendance_list_rules_teams_update_getpresencevalue_js : attendance_list_rules_teams_update_getpresencevalue_js,
 	attendance_list_rules_teams_update_updateteam_js : attendance_list_rules_teams_update_updateteam_js,

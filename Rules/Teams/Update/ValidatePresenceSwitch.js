@@ -2,8 +2,17 @@
  * Describe this function...
  * @param {IClientAPI} clientAPI
  */
-export default function ValidatePresenceSwitch(clientAPI) {
+export default async function ValidatePresenceSwitch(clientAPI) {
+    let appSettings = clientAPI.nativescript.appSettingsModule
+    var listDay = appSettings.getString('day');
+
+    const query = `$filter=externalCode eq '${listDay}'`
+    const cust_enddate_array = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_listadiaria', ['cust_enddate'], query)
+
+    const cust_enddate = cust_enddate_array.find(i => i.cust_enddate).cust_enddate
+
     var today = new Date().getTime()
-    var endDate = new Date(clientAPI.binding.cust_enddate).getTime()   
-    return today <= endDate
+    var endDate = new Date(cust_enddate)
+    endDate.setHours(23, 59, 59, 999)
+    return today <= endDate.getTime()
 }
