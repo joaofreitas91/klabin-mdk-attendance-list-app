@@ -133,7 +133,27 @@ export default async function SaveCreate(clientAPI) {
 
         // Final da validação da data inicial
 
-        await clientAPI.executeAction({
+        await Promise.all(partnerList.map(prop => { // criar lista de presença (ficha)
+
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/Teams/CreatePresenceList.action",
+                "Properties": {
+                    "Properties": prop,
+                }
+            })
+        }))
+
+        await Promise.all(dailyList.map(prop => { // criar lista diaria
+
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/Teams/CreateDailyList.action",
+                "Properties": {
+                    "Properties": prop,
+                }
+            })
+        }))
+
+        await clientAPI.executeAction({ // criar turma
             "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
             "Properties": {
                 "Properties": {
@@ -144,27 +164,7 @@ export default async function SaveCreate(clientAPI) {
             }
         })
 
-        await Promise.all(partnerList.map(prop => {
-
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/Teams/CreatePresenceList.action",
-                "Properties": {
-                    "Properties": prop,
-                }
-            })
-        }))
-
-        await Promise.all(dailyList.map(prop => {
-
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/Teams/CreateDailyList.action",
-                "Properties": {
-                    "Properties": prop,
-                }
-            })
-        }))
-
-        await Promise.all(presencalmsList.map(prop => {
+        await Promise.all(presencalmsList.map(prop => { // criar presença lms
 
             return clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/Teams/CreatePresencalmsEntity.action",

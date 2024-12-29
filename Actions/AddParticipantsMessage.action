@@ -1,0 +1,11 @@
+{
+	"_Type": "Action.Type.Message",
+	"ActionResult": {
+		"_Name": "AddParticipantsMessage"
+	},
+	"Message": "Os participantes selecionados serão adicionados a lista de participantes da turma.",
+	"Title": "Adicionar participantes",
+	"OKCaption": "Ok",
+	"OnOK": "/Attendance_List/Rules/Teams/AddParticipantsToList.js",
+	"CancelCaption": "Cancelar"
+}
