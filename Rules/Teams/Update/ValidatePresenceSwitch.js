@@ -11,8 +11,17 @@ export default async function ValidatePresenceSwitch(clientAPI) {
 
     const cust_enddate = cust_enddate_array.find(i => i.cust_enddate).cust_enddate
 
-    var today = new Date().getTime()
+    var today = new Date()
     var endDate = new Date(cust_enddate)
+
+    if (
+        today.getFullYear() !== endDate.getFullYear() ||
+        today.getMonth() !== endDate.getMonth() ||
+        today.getDate() !== endDate.getDate()
+    ) {
+        return false;
+    }
+
     endDate.setHours(23, 59, 59, 999)
-    return today <= endDate.getTime()
+    return today.getTime() <= endDate.getTime()
 }
