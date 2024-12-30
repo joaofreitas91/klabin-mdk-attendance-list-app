@@ -1121,8 +1121,7 @@ __webpack_require__.r(__webpack_exports__);
  * @param {IClientAPI} clientAPI
  */
 async function QueryCursos(clientAPI) {
-    //const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-    const IASUser = 'SRMELLO'
+    const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
     const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
     const response = await clientAPI.read(
         "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
