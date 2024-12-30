@@ -15,7 +15,7 @@
 		},
 		{
 			"Name": "cust_Cursos",
-			"Query": "cust_Cursos",
+			"Query": "cust_Cursos?$expand=cust_InstrutorNav",
 			"AutomaticallyRetrievesStreams": false
 		},
 		{
