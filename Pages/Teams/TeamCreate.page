@@ -52,7 +52,7 @@
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 									"EntitySet": "cust_Cursos",
-									"QueryOptions": "$expand=cust_InstrutorNav&$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '{userId}') or cust_InstrutorNav/any(z: z/externalCode eq '{username}')"
+									"QueryOptions": "/Attendance_List/Rules/Teams/Create/QueryCursos.js"
 								},
 								"DisplayValue": "{externalCode} {cust_CPNT_TITLE}",
 								"ReturnValue": "{externalCode}"
@@ -64,7 +64,6 @@
 							"IsVisible": true,
 							"Separator": true,
 							"Caption": "Carga horária",
-							"OnValueChange": "/Attendance_List/Rules/Teams/Create/SetIsIntervalIsVisible.js",
 							"KeyboardType": "Number",
 							"AlternateInput": "None",
 							"Enabled": true,
