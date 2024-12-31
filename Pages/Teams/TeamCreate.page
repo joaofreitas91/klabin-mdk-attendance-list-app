@@ -75,11 +75,10 @@
 							"IsVisible": true,
 							"Separator": true,
 							"Caption": "Intervalo",
-							"PlaceHolder": "Esse campo não esta funcionando ainda",
 							"KeyboardType": "Number",
 							"AlternateInput": "None",
 							"Enabled": true,
-							"IsEditable": false
+							"IsEditable": true
 						},
 						{
 							"_Type": "Control.Type.FormCell.ListPicker",

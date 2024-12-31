@@ -59,6 +59,8 @@ export default async function SaveCreate(clientAPI) {
 
         const teamId = Cuid()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
+        const workload = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyWorkload/#Value')
+        const interval = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyInterval/#Value')
 
         const firstDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerStartDate/#Value')
         const lastDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerEndDate/#Value')
@@ -94,7 +96,8 @@ export default async function SaveCreate(clientAPI) {
                 "cust_turma": teamId,
                 "cust_startdate": new Date(i.inicio).toISOString(),
                 "cust_enddate": new Date(i.fim).toISOString(),
-                "cust_totalhoras": clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyWorkload/#Value')
+                "cust_totalhoras": `${Number(String(workload).replaceAll('-', ''))}`,
+                // "cust_intervalo": `${Number(String(interval).replaceAll('-', ''))}`,
             }
             return props
         })
@@ -110,6 +113,36 @@ export default async function SaveCreate(clientAPI) {
                 "cust_presenca": "ausente"
             }))
         )
+
+        if (!workload) {
+            return await clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": "O campo carga horária obrigatório para a criação de turma!"
+                },
+            });
+        }
+
+        if (workload > 8) {
+            return await clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": "Turmas não podem ter mais de 8 horas!"
+                },
+            });
+        }
+        if (workload > 4 && !interval) {
+            return await clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": "Turmas com mais de 4 horas precisam ter intervalo!"
+                },
+            });
+        }
+
 
         /* 
         Validação do Datepicker da data inicial
