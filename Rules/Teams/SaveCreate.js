@@ -193,6 +193,7 @@ export default async function SaveCreate(clientAPI) {
                     "externalCode": teamId,
                     "externalName": curse.cust_CPNT_TITLE,
                     "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
+                    "cust_intervalo": `${Number(String(interval).replaceAll('-', ''))}`,
                 }
             }
         })

@@ -78,6 +78,16 @@
 								"AccessoryType": "None",
 								"Visible": true
 							}
+						},
+						{
+							"SimplePropertyCell": {
+								"Value": "/Attendance_List/Rules/Teams/GetIntervalo.js",
+								"_Name": "SectionSimplePropertyCell4",
+								"_Type": "SimplePropertyCollection.Type.Cell",
+								"KeyName": "Intervalo",
+								"AccessoryType": "None",
+								"Visible": true
+							}
 						}
 					],
 					"Layout": {
