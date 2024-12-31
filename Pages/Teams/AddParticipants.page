@@ -42,7 +42,8 @@
 							"PickerItems": {
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-									"EntitySet": "cust_Alunos"
+									"EntitySet": "cust_Alunos",
+									"QueryOptions": "$filter=cust_matricula ne '{cust_INST_ID1}' and cust_matricula ne '{cust_INST_ID2}'"
 								},
 								"ObjectCell": {
 									"AvatarStack": {
