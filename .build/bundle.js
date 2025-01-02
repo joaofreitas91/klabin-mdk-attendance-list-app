@@ -3890,7 +3890,7 @@ module.exports = {"_Type":"Action.Type.PopoverMenu","PopoverItems":[{"Enabled":t
   \**************************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.PopoverMenu","PopoverItems":[{"Title":"Sincronizar","Icon":"sap-icon://synchronize","OnPress":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncStartedMessage.action","Visible":true,"Enabled":true,"Styles.Title":""},{"Title":"Suporte","Icon":"sap-icon://headset","OnPress":"/Attendance_List/Actions/Application/SupportMenuPopover.action","Visible":true,"Enabled":true,"Styles.Title":""},{"Title":"Incluir Turma","Icon":"sap-icon://add","Visible":true,"Enabled":true,"OnPress":"/Attendance_List/Actions/Teams/NavToTeamCreate.action","Styles.Title":""},{"Title":"Upload","Icon":"sap-icon://upload","Visible":true,"Enabled":true,"Styles.Title":"","OnPress":"/Attendance_List/Rules/Teams/Create/GetUserId.js"}]}
+module.exports = {"_Type":"Action.Type.PopoverMenu","PopoverItems":[{"Title":"Sincronizar","Icon":"sap-icon://synchronize","OnPress":"/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/SyncStartedMessage.action","Visible":true,"Enabled":true,"Styles.Title":""},{"Title":"Suporte","Icon":"sap-icon://headset","OnPress":"/Attendance_List/Actions/Application/SupportMenuPopover.action","Visible":true,"Enabled":true,"Styles.Title":""},{"Title":"Incluir Turma","Icon":"sap-icon://add","Visible":true,"Enabled":true,"OnPress":"/Attendance_List/Actions/Teams/NavToTeamCreate.action","Styles.Title":""}]}
 
 /***/ }),
 

@@ -24,14 +24,6 @@
 			"Enabled": true,
 			"OnPress": "/Attendance_List/Actions/Teams/NavToTeamCreate.action",
 			"Styles.Title": ""
-		},
-		{
-			"Title": "Upload",
-			"Icon": "sap-icon://upload",
-			"Visible": true,
-			"Enabled": true,
-			"Styles.Title": "",
-			"OnPress": "/Attendance_List/Rules/Teams/Create/GetUserId.js"
 		}
 	]
 }
