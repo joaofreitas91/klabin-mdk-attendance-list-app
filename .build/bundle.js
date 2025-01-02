@@ -642,21 +642,42 @@ __webpack_require__.r(__webpack_exports__);
  * Describe this function...
  * @param {IClientAPI} clientAPI
  */
-function CalendarQuery(context) {
-    return defaultQuery(context)
-}
 
 function defaultQuery(context) {
     var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
     var dDate = new Date();
     var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
-    let cFilter = "$filter=cust_LMS ne 'S' and cust_Status ne 'cancelada' and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
+    // let cFilter = "cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
+    let dfilter = `$filter=(cust_START_TME ge 2025-01-02T00:00:00Z and cust_START_TME le 2025-01-02T23:59:59Z) and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq 'SRMELLO')`
+    dfilter += cExpand
 
-    cFilter += cExpand
-
-    return cFilter;
+    return dfilter;
 }
 
+async function CalendarQuery(context) {
+    var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
+    var dDate = new Date();
+    var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
+    // let cFilter = "cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
+    
+    const IASUser = context.evaluateTargetPath("#Application/#AppData/UserId");
+    // const IASUser = 'SRMELLO'
+
+    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+
+    const response = await context.read(
+        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+        "cust_Instrutores",
+        ["externalCode", "cust_RELATED_USER"],
+        query
+    );
+    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+
+    let cFilter = `$filter=(cust_START_TME ge ${cDate}T00:00:00Z and cust_START_TME le ${cDate}T23:59:59Z) and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`
+    cFilter += cExpand
+    return cFilter
+}
 
 /***/ }),
 
@@ -695,17 +716,46 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ GetThreeTeams)
 /* harmony export */ });
-function GetThreeTeams(context) {    
+async function GetThreeTeams(context) {
+    const IASUser = context.evaluateTargetPath("#Application/#AppData/UserId");
+    // const IASUser = 'SRMELLO'
+
+    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+
+    const response = await context.read(
+        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+        "cust_Instrutores",
+        ["externalCode", "cust_RELATED_USER"],
+        query
+    );
+    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+
     var cTop = "&$top=3"
     var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
     var dDate = new Date();
     var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
-    var cFilter =  "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'";
+    // var cFilter = "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'";
+    var cFilter = `$filter=cust_END_TME ge ${cDate}T00:00:00Z and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`
     var cFilter
+
     cFilter += cTop + cExpand
 
     return cFilter;
 }
+
+// export default function GetThreeTeams(context) {    
+//     var cTop = "&$top=3"
+//     var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
+//     var dDate = new Date();
+//     var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
+//     var cFilter =  "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'";
+//     var cFilter
+//     cFilter += cTop + cExpand
+
+//     return cFilter;
+// }
+
 
 /***/ }),
 
@@ -777,16 +827,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ UpdateQueryWithSelectedDate)
 /* harmony export */ });
-function UpdateQueryWithSelectedDate(clientAPI) {
+
+async function UpdateQueryWithSelectedDate(clientAPI) {
     try {
+        const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
+        // const IASUser = 'SRMELLO'
+
+        const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+
+        const response = await clientAPI.read(
+            "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+            "cust_Instrutores",
+            ["externalCode", "cust_RELATED_USER"],
+            query
+        );
+        const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+        const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+
         let selectedDate = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionCalendar1").getSelectedDate();
         let year = selectedDate.getFullYear();
         let month = ("0" + (selectedDate.getMonth() + 1)).slice(-2);
         let day = ("0" + selectedDate.getDate()).slice(-2);
         let formattedDate = year + '-' + month + '-' + day;
         var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
-        let filterQuery = "$filter=cust_LMS ne 'S' and cust_Status ne 'cancelada' and externalName ne null and cust_START_TME ge " + formattedDate + "T00:00:00Z and cust_START_TME le " + formattedDate + "T23:59:59Z";
+        let filterQuery = `$filter=(cust_START_TME ge ${formattedDate}T00:00:00Z and cust_START_TME le ${formattedDate}T23:59:59Z) and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`;
+
         filterQuery += cExpand
+
+        alert(JSON.stringify(filterQuery, null, 2))
         let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
         let oTarget = oCardObj.getTargetSpecifier();
         oTarget.setQueryOptions(filterQuery);
@@ -795,6 +863,25 @@ function UpdateQueryWithSelectedDate(clientAPI) {
         alert("An error occurred: " + error.message);
     }
 }
+
+// export default function UpdateQueryWithSelectedDate(clientAPI) {
+//     try {
+//         let selectedDate = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionCalendar1").getSelectedDate();
+//         let year = selectedDate.getFullYear();
+//         let month = ("0" + (selectedDate.getMonth() + 1)).slice(-2);
+//         let day = ("0" + selectedDate.getDate()).slice(-2);
+//         let formattedDate = year + '-' + month + '-' + day;
+//         var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
+//         let filterQuery = "$filter=cust_LMS ne 'S' and cust_Status ne 'cancelada' and externalName ne null and cust_START_TME ge " + formattedDate + "T00:00:00Z and cust_START_TME le " + formattedDate + "T23:59:59Z";
+//         filterQuery += cExpand
+//         let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
+//         let oTarget = oCardObj.getTargetSpecifier();
+//         oTarget.setQueryOptions(filterQuery);
+//         oCardObj.setTargetSpecifier(oTarget);
+//     } catch (error) {
+//         alert("An error occurred: " + error.message);
+//     }
+// }
 
 
 /***/ }),
@@ -1718,10 +1805,33 @@ __webpack_require__.r(__webpack_exports__);
  * Describe this function...
  * @param {IClientAPI} clientAPI
  */
-function QueryShowAllTeams(clientAPI) {
-    return "?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'&$orderby=cust_START_TME"
-}
 
+async function QueryShowAllTeams(clientAPI) {
+    const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
+    // const IASUser = 'SRMELLO'
+
+    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+
+    const response = await clientAPI.read(
+        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
+        "cust_Instrutores",
+        ["externalCode", "cust_RELATED_USER"],
+        query
+    );
+    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+    // const userFilter = ` and cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}' `;
+
+    var cFilter = `$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=(cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`
+    // let cFilter = "?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada' "
+    // cFilter += userFilter
+    cFilter += "&$orderby=cust_START_TME"
+    return cFilter
+}
+// export default function QueryShowAllTeams(clientAPI) {
+//     return "?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'&$orderby=cust_START_TME"
+
+// }
 
 /***/ }),
 
