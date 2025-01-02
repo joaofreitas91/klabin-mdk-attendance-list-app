@@ -854,7 +854,6 @@ async function UpdateQueryWithSelectedDate(clientAPI) {
 
         filterQuery += cExpand
 
-        alert(JSON.stringify(filterQuery, null, 2))
         let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
         let oTarget = oCardObj.getTargetSpecifier();
         oTarget.setQueryOptions(filterQuery);

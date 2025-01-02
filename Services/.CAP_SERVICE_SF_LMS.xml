@@ -76,8 +76,8 @@
                 <Property Name="cust_ACT_CPNT_ID" Type="Edm.String" MaxLength="15"/>
                 <Property Name="cust_CPNT_TYP_ID" Type="Edm.String" MaxLength="100"/>
                 <Property Name="cust_END_TME" Type="Edm.DateTimeOffset"/>
-                <Property Name="cust_INST_ID1" Type="Edm.String" MaxLength="15"/>
-                <Property Name="cust_INST_ID2" Type="Edm.String" MaxLength="15"/>
+                <Property Name="cust_INST_ID1" Type="Edm.String" MaxLength="50"/>
+                <Property Name="cust_INST_ID2" Type="Edm.String" MaxLength="50"/>
                 <Property Name="cust_LMS" Type="Edm.String" MaxLength="1"/>
                 <Property Name="cust_LOCN_DESC" Type="Edm.String" MaxLength="900"/>
                 <Property Name="cust_LOCN_ID1" Type="Edm.String" MaxLength="255"/>
@@ -191,7 +191,7 @@
                 <Property Name="cust_CPNT_TYP_ID" Type="Edm.String" MaxLength="100"/>
                 <Property Name="cust_NOTACTIVE" Type="Edm.String" MaxLength="1"/>
                 <Property Name="cust_desc" Type="Edm.String" MaxLength="4000"/>
-                <Property Name="cust_instrutor" Type="Edm.String" MaxLength="8"/>
+                <Property Name="cust_instrutor" Type="Edm.String" MaxLength="50"/>
                 <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
                 <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
                 <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
