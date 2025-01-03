@@ -267,12 +267,6 @@
 									"DisplayDescriptionInMobile": false,
 									"PreserveIconStackSpacing": false,
 									"Selected": true,
-									"Tags": [
-										{
-											"Color": "Grey",
-											"Text": "{externalCode}"
-										}
-									],
 									"Title": "{externalName}",
 									"Visible": true
 								},
