@@ -1217,7 +1217,8 @@ async function QueryCursos(clientAPI) {
     );
     const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
     const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-    let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null`
+    // let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null`
+    let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${ExtCode}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${SFUser}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null`
     return cFilter
 }
 
