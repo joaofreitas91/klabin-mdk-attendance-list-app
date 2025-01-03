@@ -171,8 +171,7 @@
 							"PickerItems": {
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-									"EntitySet": "cust_Instrutores",
-									"QueryOptions": "/Attendance_List/Rules/Teams/Create/QueryInstructorList.js"
+									"EntitySet": "cust_Instrutores"
 								},
 								"DisplayValue": "{externalName}",
 								"ReturnValue": "{externalCode}"
@@ -201,8 +200,7 @@
 							"PickerItems": {
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-									"EntitySet": "cust_Instrutores",
-									"QueryOptions": "/Attendance_List/Rules/Teams/Create/QueryInstructorList.js"
+									"EntitySet": "cust_Instrutores"
 								},
 								"DisplayValue": "{externalName}",
 								"ReturnValue": "{externalCode}"
@@ -234,7 +232,7 @@
 							"IsVisible": true,
 							"Separator": true,
 							"AllowMultipleSelection": true,
-							"AllowEmptySelection": true,
+							"AllowEmptySelection": false,
 							"Caption": "Participantes",
 							"DataPaging": {
 								"ShowLoadingIndicator": false,
@@ -253,7 +251,8 @@
 							"PickerItems": {
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-									"EntitySet": "cust_Alunos"
+									"EntitySet": "cust_Alunos",
+									"QueryOptions": "$filter=externalCode ne '{userId}'"
 								},
 								"ObjectCell": {
 									"AvatarStack": {
