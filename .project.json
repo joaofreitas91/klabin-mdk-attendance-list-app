@@ -7,12 +7,12 @@
 	},
 	"CF": {
 		"Target": "https://api.cf.br10.hana.ondemand.com",
-		"Organization": "458ad1b7-0e72-4dcd-a6b1-87cc6cd62df7",
-		"Space": "19430568-4d89-4666-b4cc-251e2bbe380f"
+		"Organization": "2dbbc9a6-81d3-4a38-9f4c-dba6c2c8c53a",
+		"Space": "6b81515d-24b0-4536-a1a9-8c4717a6c918"
 	},
 	"MobileService": {
 		"Type": "standard",
-		"AdminAPI": "https://mobile-service-cockpit-api.cfapps.br10.hana.ondemand.com/cockpit/v1/org/458ad1b7-0e72-4dcd-a6b1-87cc6cd62df7/space/19430568-4d89-4666-b4cc-251e2bbe380f",
+		"AdminAPI": "https://mobile-service-cockpit-api.cfapps.br10.hana.ondemand.com/cockpit/v1/org/2dbbc9a6-81d3-4a38-9f4c-dba6c2c8c53a/space/6b81515d-24b0-4536-a1a9-8c4717a6c918",
 		"AppId": "CAP-SERVICE-SF-LMS",
 		"Destination": [
 			"CAP-SERVICE-SF-LMS"

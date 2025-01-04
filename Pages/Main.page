@@ -222,6 +222,7 @@
 	},
 	"_Type": "Page",
 	"_Name": "Main",
+	"OnLoaded": "/Attendance_List/Rules/Main/SetUserIds.js",
 	"ActionBar": {
 		"Items": [
 			{
