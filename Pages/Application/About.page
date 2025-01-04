@@ -7,32 +7,46 @@
 				{
 					"KeyAndValues": [
 						{
+							"Value": "#Application/#AppData/UserId",
+							"_Type": "KeyValue.Type.Item",
 							"_Name": "KeyValue0",
 							"KeyName": "User ID",
-							"Value": "#Application/#AppData/UserId",
-							"Visible": true,
-							"_Type": "KeyValue.Type.Item"
+							"Visible": true
+						},
+						{
+							"Value": "/Attendance_List/Rules/Main/GetSFUser.js",
+							"_Type": "KeyValue.Type.Item",
+							"_Name": "KeyValue6",
+							"KeyName": "SFUser",
+							"Visible": true
+						},
+						{
+							"Value": "/Attendance_List/Rules/Main/GetExtCode.js",
+							"_Type": "KeyValue.Type.Item",
+							"_Name": "KeyValue7",
+							"KeyName": "ExtCode",
+							"Visible": true
 						},
 						{
 							"Value": "#Application/#AppData/DeviceId",
+							"_Type": "KeyValue.Type.Item",
 							"_Name": "KeyValue1",
 							"KeyName": "Device ID",
-							"Visible": true,
-							"_Type": "KeyValue.Type.Item"
+							"Visible": true
 						},
 						{
 							"Value": "/Attendance_List/Globals/Application/ApplicationName.global",
+							"_Type": "KeyValue.Type.Item",
 							"_Name": "KeyValue2",
 							"KeyName": "Application",
-							"Visible": true,
-							"_Type": "KeyValue.Type.Item"
+							"Visible": true
 						},
 						{
 							"Value": "/Attendance_List/Globals/Application/AppDefinition_Version.global",
+							"_Type": "KeyValue.Type.Item",
 							"_Name": "KeyValue3",
 							"KeyName": "Application Metadata Version",
-							"Visible": true,
-							"_Type": "KeyValue.Type.Item"
+							"Visible": true
 						}
 					],
 					"MaxItemCount": 1,
@@ -42,6 +56,13 @@
 					"EmptySection": {
 						"FooterVisible": false
 					},
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
 					"Layout": {
 						"NumberOfColumns": 1
 					}
@@ -50,17 +71,17 @@
 					"KeyAndValues": [
 						{
 							"Value": "/Attendance_List/Rules/Application/GetClientVersion.js",
+							"_Type": "KeyValue.Type.Item",
 							"_Name": "KeyValue4",
 							"KeyName": "Client Version",
-							"Visible": "$(PLT,true,true,false)",
-							"_Type": "KeyValue.Type.Item"
+							"Visible": "$(PLT,true,true,false)"
 						},
 						{
 							"Value": "/Attendance_List/Rules/Application/GetClientSupportVersions.js",
+							"_Type": "KeyValue.Type.Item",
 							"_Name": "KeyValue5",
 							"KeyName": "Client Support Versions",
-							"Visible": true,
-							"_Type": "KeyValue.Type.Item"
+							"Visible": true
 						}
 					],
 					"MaxItemCount": 1,
@@ -70,11 +91,22 @@
 					"EmptySection": {
 						"FooterVisible": false
 					},
+					"Separators": {
+						"TopSectionSeparator": false,
+						"BottomSectionSeparator": true,
+						"HeaderSeparator": true,
+						"FooterSeparator": true,
+						"ControlSeparator": true
+					},
 					"Layout": {
 						"NumberOfColumns": 1
 					}
 				}
-			]
+			],
+			"FilterFeedbackBar": {
+				"ShowAllFilters": false,
+				"_Type": "Control.Type.FilterFeedbackBar"
+			}
 		}
 	],
 	"_Type": "Page",
@@ -82,19 +114,19 @@
 	"ActionBar": {
 		"Items": [
 			{
+				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem0",
 				"Caption": "Done",
 				"SystemItem": "Done",
 				"Position": "Right",
 				"IsIconCircular": false,
 				"Visible": true,
-				"OnPress": "/Attendance_List/Actions/CloseModalPage_Complete.action",
-				"_Type": "Control.Type.ActionBarItem"
+				"OnPress": "/Attendance_List/Actions/CloseModalPage_Complete.action"
 			}
 		],
 		"_Name": "ActionBar1",
+		"_Type": "Control.Type.ActionBar",
 		"Caption": "About",
-		"PrefersLargeCaption": true,
-		"_Type": "Control.Type.ActionBar"
+		"PrefersLargeCaption": true
 	}
 }

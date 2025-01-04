@@ -3,5 +3,6 @@
 	"ActionResult": {
 		"_Name": "NavToTeamCreate"
 	},
+	"OnSuccess": "/Attendance_List/Rules/Main/SetUserIds.js",
 	"PageToOpen": "/Attendance_List/Pages/Teams/TeamCreate.page"
 }
