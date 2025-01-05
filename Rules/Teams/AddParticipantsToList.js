@@ -53,7 +53,7 @@ export default async function AddParticipantsToList(clientAPI) {
                 "cust_ficha": p.externalCode,
                 "cust_segmento": d.externalCode,
                 "cust_turma": d.cust_turma,
-                "cust_presenca": "ausente"
+                "cust_presenca": "presente"
             }))
         ).reduce((acc, current) => acc.concat(current), [])
 
