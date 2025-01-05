@@ -1111,7 +1111,7 @@ async function AddParticipantsToList(clientAPI) {
                 "cust_ficha": p.externalCode,
                 "cust_segmento": d.externalCode,
                 "cust_turma": d.cust_turma,
-                "cust_presenca": "ausente"
+                "cust_presenca": "presente"
             }))
         ).reduce((acc, current) => acc.concat(current), [])
 
@@ -2029,7 +2029,6 @@ async function SaveCreate(clientAPI) {
                 "cust_startdate": new Date(i.inicio).toISOString(),
                 "cust_enddate": new Date(i.fim).toISOString(),
                 "cust_totalhoras": `${Number(String(workload).replaceAll('-', ''))}`,
-                // "cust_intervalo": `${Number(String(interval).replaceAll('-', ''))}`,
             }
             return props
         })
@@ -2042,7 +2041,7 @@ async function SaveCreate(clientAPI) {
                 "cust_ficha": p.externalCode,
                 "cust_segmento": d.externalCode,
                 "cust_turma": d.cust_turma,
-                "cust_presenca": "ausente"
+                "cust_presenca": "presente"
             }))
         )
 
@@ -2509,6 +2508,37 @@ async function UpdateTeam(clientAPI) {
         var fieldSwitch = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSwitch0/#Value")
         var fieldNote = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSimpleProperty0/#Value")
 
+        if (Number(fieldNote) !== 0) { 
+        if (!Number(fieldNote)) {
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Valor inválido",
+                    "Message": `O campo nota está com valor inválido.`
+                }
+            });
+        }}
+
+        if (fieldNote > 100) {
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Valor inválido",
+                    "Message": `O campo nota não pode ser superior a 100.`
+                }
+            });
+        }
+
+        if (fieldNote < 0) {
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Valor inválido",
+                    "Message": `O campo nota não pode ser negativo.`
+                }
+            });
+        }
+
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/Teams/UpdatePresencalmsEntity.action",
             "Properties": {
@@ -2522,7 +2552,7 @@ async function UpdateTeam(clientAPI) {
             "Name": "/Attendance_List/Actions/Teams/UpdatePresenceList.action",
             "Properties": {
                 "Properties": {
-                    "cust_nota": fieldNote
+                    "cust_nota": `${fieldNote === '' ? fieldNote : Number(fieldNote)}`
                 }
             }
         })
@@ -3780,7 +3810,7 @@ module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Typ
   \***********************************************************************/
 /***/ ((module) => {
 
-module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"Value":"/Attendance_List/Rules/Teams/Update/GetPresenceValue.js","_Type":"Control.Type.FormCell.Switch","_Name":"FormCellSwitch0","IsVisible":true,"Separator":true,"Styles":{"Switch":"letter-green-color"},"Caption":"Marcar presença","IsEditable":"/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js"},{"Validation":{"Styles":{"Message":"l"}},"Value":"{cust_nota}","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FormCellSimpleProperty0","IsVisible":true,"Separator":true,"Caption":"Inserir a nota","KeyboardType":"Default","AlternateInput":"None","Enabled":true,"IsEditable":true}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"}]}],"_Type":"Page","_Name":"BePresence","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem0","Caption":"Salvar","SystemItem":"Save","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Rules/Teams/Update/UpdateTeam.js"}],"_Name":"ActionBar0","_Type":"Control.Type.ActionBar"}}
+module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Controls":[{"Value":"/Attendance_List/Rules/Teams/Update/GetPresenceValue.js","_Type":"Control.Type.FormCell.Switch","_Name":"FormCellSwitch0","IsVisible":true,"Separator":true,"Styles":{"Switch":"letter-green-color"},"Caption":"Marcar presença","IsEditable":"/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js"},{"Validation":{"Styles":{"Message":"l"}},"Value":"{cust_nota}","_Type":"Control.Type.FormCell.SimpleProperty","_Name":"FormCellSimpleProperty0","IsVisible":true,"Separator":true,"Caption":"Inserir a nota","KeyboardType":"Number","AlternateInput":"None","HelperText":"Notas de 0 a 100","Enabled":true,"IsEditable":true}],"Layout":{"NumberOfColumns":1},"Visible":true,"EmptySection":{"FooterVisible":false},"_Type":"Section.Type.FormCell","_Name":"SectionFormCell0"}]}],"_Type":"Page","_Name":"BePresence","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem0","Caption":"Salvar","SystemItem":"Save","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Rules/Teams/Update/UpdateTeam.js"}],"_Name":"ActionBar0","_Type":"Control.Type.ActionBar"}}
 
 /***/ }),
 

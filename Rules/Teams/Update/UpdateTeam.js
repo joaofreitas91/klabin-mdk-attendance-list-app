@@ -9,6 +9,37 @@ export default async function UpdateTeam(clientAPI) {
         var fieldSwitch = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSwitch0/#Value")
         var fieldNote = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSimpleProperty0/#Value")
 
+        if (Number(fieldNote) !== 0) { 
+        if (!Number(fieldNote)) {
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Valor inválido",
+                    "Message": `O campo nota está com valor inválido.`
+                }
+            });
+        }}
+
+        if (fieldNote > 100) {
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Valor inválido",
+                    "Message": `O campo nota não pode ser superior a 100.`
+                }
+            });
+        }
+
+        if (fieldNote < 0) {
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Valor inválido",
+                    "Message": `O campo nota não pode ser negativo.`
+                }
+            });
+        }
+
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/Teams/UpdatePresencalmsEntity.action",
             "Properties": {
@@ -22,7 +53,7 @@ export default async function UpdateTeam(clientAPI) {
             "Name": "/Attendance_List/Actions/Teams/UpdatePresenceList.action",
             "Properties": {
                 "Properties": {
-                    "cust_nota": fieldNote
+                    "cust_nota": `${fieldNote === '' ? fieldNote : Number(fieldNote)}`
                 }
             }
         })

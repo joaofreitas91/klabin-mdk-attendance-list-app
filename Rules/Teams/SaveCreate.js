@@ -97,7 +97,6 @@ export default async function SaveCreate(clientAPI) {
                 "cust_startdate": new Date(i.inicio).toISOString(),
                 "cust_enddate": new Date(i.fim).toISOString(),
                 "cust_totalhoras": `${Number(String(workload).replaceAll('-', ''))}`,
-                // "cust_intervalo": `${Number(String(interval).replaceAll('-', ''))}`,
             }
             return props
         })
@@ -110,7 +109,7 @@ export default async function SaveCreate(clientAPI) {
                 "cust_ficha": p.externalCode,
                 "cust_segmento": d.externalCode,
                 "cust_turma": d.cust_turma,
-                "cust_presenca": "ausente"
+                "cust_presenca": "presente"
             }))
         )
 
