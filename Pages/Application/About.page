@@ -1,6 +1,10 @@
 {
 	"Controls": [
 		{
+			"FilterFeedbackBar": {
+				"ShowAllFilters": false,
+				"_Type": "Control.Type.FilterFeedbackBar"
+			},
 			"_Type": "Control.Type.SectionedTable",
 			"_Name": "SectionedTable0",
 			"Sections": [
@@ -11,20 +15,6 @@
 							"_Type": "KeyValue.Type.Item",
 							"_Name": "KeyValue0",
 							"KeyName": "User ID",
-							"Visible": true
-						},
-						{
-							"Value": "/Attendance_List/Rules/Main/GetSFUser.js",
-							"_Type": "KeyValue.Type.Item",
-							"_Name": "KeyValue6",
-							"KeyName": "SFUser",
-							"Visible": true
-						},
-						{
-							"Value": "/Attendance_List/Rules/Main/GetExtCode.js",
-							"_Type": "KeyValue.Type.Item",
-							"_Name": "KeyValue7",
-							"KeyName": "ExtCode",
 							"Visible": true
 						},
 						{
@@ -50,18 +40,18 @@
 						}
 					],
 					"MaxItemCount": 1,
-					"_Type": "Section.Type.KeyValue",
-					"_Name": "SectionKeyValue0",
-					"Visible": true,
-					"EmptySection": {
-						"FooterVisible": false
-					},
 					"Separators": {
 						"TopSectionSeparator": false,
 						"BottomSectionSeparator": true,
 						"HeaderSeparator": true,
 						"FooterSeparator": true,
 						"ControlSeparator": true
+					},
+					"_Type": "Section.Type.KeyValue",
+					"_Name": "SectionKeyValue0",
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
 					},
 					"Layout": {
 						"NumberOfColumns": 1
@@ -85,12 +75,6 @@
 						}
 					],
 					"MaxItemCount": 1,
-					"_Type": "Section.Type.KeyValue",
-					"_Name": "SectionKeyValue1",
-					"Visible": true,
-					"EmptySection": {
-						"FooterVisible": false
-					},
 					"Separators": {
 						"TopSectionSeparator": false,
 						"BottomSectionSeparator": true,
@@ -98,15 +82,17 @@
 						"FooterSeparator": true,
 						"ControlSeparator": true
 					},
+					"_Type": "Section.Type.KeyValue",
+					"_Name": "SectionKeyValue1",
+					"Visible": true,
+					"EmptySection": {
+						"FooterVisible": false
+					},
 					"Layout": {
 						"NumberOfColumns": 1
 					}
 				}
-			],
-			"FilterFeedbackBar": {
-				"ShowAllFilters": false,
-				"_Type": "Control.Type.FilterFeedbackBar"
-			}
+			]
 		}
 	],
 	"_Type": "Page",
