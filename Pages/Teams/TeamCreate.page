@@ -46,13 +46,22 @@
 							"AllowDefaultValueIfOneItem": false,
 							"IsEditable": true,
 							"Search": {
-								"Enabled": true
+								"Enabled": true,
+								"Options": {
+									"CaseSensitive": false,
+									"NumberSearch": {
+										"Enabled": false
+									},
+									"UseSearchOverFilter": {
+										"Enabled": false
+									}
+								}
 							},
 							"PickerItems": {
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 									"EntitySet": "cust_Cursos",
-									"QueryOptions": "$expand=cust_InstrutorNav&$filter=cust_InstrutorNav/any(z: z/externalCode eq '{{/Attendance_List/Rules/Main/GetExtCode.js}}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '{{/Attendance_List/Rules/Main/GetExtCode.js}}') or cust_InstrutorNav/any(z: z/externalCode eq '{{/Attendance_List/Rules/Main/GetSFUser.js}}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '{{/Attendance_List/Rules/Main/GetSFUser.js}}') or cust_instrutor eq null"
+									"QueryOptions": "/Attendance_List/Rules/Teams/Create/QueryCursos.js"
 								},
 								"DisplayValue": "{externalCode} {cust_CPNT_TITLE}",
 								"ReturnValue": "{externalCode}"
