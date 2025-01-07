@@ -30,6 +30,18 @@
 							"IsEditable": "/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js"
 						},
 						{
+							"Value": "/Attendance_List/Rules/Teams/Update/GetReprovedValue.js",
+							"_Type": "Control.Type.FormCell.Switch",
+							"_Name": "FormCellSwitch1",
+							"IsVisible": true,
+							"Separator": true,
+							"Styles": {
+								"Switch": "letter-green-color"
+							},
+							"Caption": "Marcar reprovação",
+							"IsEditable": true
+						},
+						{
 							"Validation": {
 								"Styles": {
 									"Message": "l"

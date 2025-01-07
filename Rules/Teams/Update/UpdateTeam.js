@@ -7,6 +7,7 @@ export default async function UpdateTeam(clientAPI) {
 
     try {
         var fieldSwitch = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSwitch0/#Value")
+        var reprovedSwitch = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSwitch1/#Value")
         var fieldNote = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSimpleProperty0/#Value")
 
         if (Number(fieldNote) !== 0) { 
@@ -53,7 +54,8 @@ export default async function UpdateTeam(clientAPI) {
             "Name": "/Attendance_List/Actions/Teams/UpdatePresenceList.action",
             "Properties": {
                 "Properties": {
-                    "cust_nota": `${fieldNote === '' ? fieldNote : Number(fieldNote)}`
+                    "cust_nota": `${fieldNote === '' ? fieldNote : Number(fieldNote)}`,
+                    "cust_resultado": reprovedSwitch ? "reprovado" : null
                 }
             }
         })
