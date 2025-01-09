@@ -2,13 +2,28 @@
  * Describe this function...
  * @param {IClientAPI} clientAPI
  */
-export default function GetIntervalo(clientAPI) {
-    const interval = clientAPI.binding.cust_intervalo.toString()
-    var cRet = interval
-    if (Number(interval) > 1){
-        cRet += ' Horas'
-    }else{
-        cRet += ' Hora'
+
+function formatarHoras(valor) {
+    if (!valor || isNaN(valor) || valor <= 0) {
+        return "0";
     }
-    return(cRet)
+    
+    const horas = Math.floor(valor);
+    const minutos = Math.round((valor - horas) * 60);
+    
+    if (horas > 0 && minutos > 0) {
+        return `${horas}h ${minutos}m`;
+    } else if (horas > 0) {
+        return `${horas}h`;
+    } else if (minutos > 0) {
+        return `${minutos}m`;
+    } else {
+        return "0";
+    }
+}
+
+export default function GetIntervalo(clientAPI) {
+    const interval = String(Number(clientAPI.binding.cust_intervalo) / 60)
+
+    return formatarHoras(interval)
 }

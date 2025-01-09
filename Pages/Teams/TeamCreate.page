@@ -46,7 +46,6 @@
 							"AllowDefaultValueIfOneItem": false,
 							"IsEditable": true,
 							"Search": {
-								"Enabled": true,
 								"Options": {
 									"CaseSensitive": false,
 									"NumberSearch": {
@@ -55,7 +54,8 @@
 									"UseSearchOverFilter": {
 										"Enabled": false
 									}
-								}
+								},
+								"Enabled": true
 							},
 							"PickerItems": {
 								"Target": {
@@ -70,7 +70,7 @@
 						{
 							"_Type": "Control.Type.FormCell.SimpleProperty",
 							"_Name": "FormCellSimplePropertyWorkload",
-							"IsVisible": true,
+							"IsVisible": false,
 							"Separator": true,
 							"Caption": "Carga horária",
 							"KeyboardType": "Number",
@@ -81,11 +81,12 @@
 						{
 							"_Type": "Control.Type.FormCell.SimpleProperty",
 							"_Name": "FormCellSimplePropertyInterval",
-							"IsVisible": true,
+							"IsVisible": false,
 							"Separator": true,
 							"Caption": "Intervalo",
 							"KeyboardType": "Number",
 							"AlternateInput": "None",
+							"HelperText": "Inserir tempo de intervalo em minutos",
 							"Enabled": true,
 							"IsEditable": true
 						},
@@ -159,6 +160,46 @@
 					"Controls": [
 						{
 							"_Type": "Control.Type.FormCell.ListPicker",
+							"_Name": "FormCellListPicker1",
+							"IsVisible": true,
+							"Separator": true,
+							"AllowMultipleSelection": false,
+							"AllowEmptySelection": false,
+							"Caption": "Intervalo",
+							"DataPaging": {
+								"ShowLoadingIndicator": false,
+								"PageSize": 50
+							},
+							"PickerPrompt": "Selecionar intervalo da turma",
+							"IsSelectedSectionEnabled": false,
+							"IsPickerDismissedOnSelection": true,
+							"AllowDefaultValueIfOneItem": false,
+							"IsEditable": true,
+							"PickerItems": [
+								{
+									"DisplayValue": "1h",
+									"ReturnValue": "60"
+								},
+								{
+									"DisplayValue": "1h30",
+									"ReturnValue": "90"
+								},
+								{
+									"DisplayValue": "2h",
+									"ReturnValue": "120"
+								},
+								{
+									"DisplayValue": "2h30",
+									"ReturnValue": "150"
+								},
+								{
+									"DisplayValue": "3h",
+									"ReturnValue": "180"
+								}
+							]
+						},
+						{
+							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPickerInstructor1",
 							"IsVisible": true,
 							"Separator": true,
@@ -170,7 +211,7 @@
 								"PageSize": 50
 							},
 							"PickerPrompt": "Informe o instrutor(a)",
-							"IsSelectedSectionEnabled": true,
+							"IsSelectedSectionEnabled": false,
 							"AllowDefaultValueIfOneItem": false,
 							"IsEditable": true,
 							"Search": {

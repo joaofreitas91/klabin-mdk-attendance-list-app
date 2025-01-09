@@ -59,19 +59,97 @@ export default async function SaveCreate(clientAPI) {
 
         const teamId = Cuid()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
-        const workload = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyWorkload/#Value')
-        const interval = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyInterval/#Value')
+        // const workload = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyWorkload/#Value')
+        const intervalValue = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPicker1/#Value').find(i => i)
+
+        const interval = intervalValue ? intervalValue.ReturnValue : null
 
         const firstDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerStartDate/#Value')
         const lastDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerEndDate/#Value')
 
         const courseDays = gerarPresencaCurso(new Date(firstDay).toISOString(), new Date(lastDay).toISOString())
         /* const userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId'); */
-        const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue')
+        const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#Value').find(i => i)
 
-        const query = `$filter=externalCode eq '${cust_cursos_id}'`
+        if (!cust_cursos_id) {
+            return await clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": "O curso é obrigatório para realizar a criação da turma!"
+                },
+            });
+        }
+
+        const query = `$filter=externalCode eq '${cust_cursos_id.ReturnValue}'`
         const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID", "cust_CPNT_TITLE"], query)
 
+        function calculateHoursDiff(inicio, fim) {
+            const init = new Date(inicio);
+            const end = new Date(fim);
+
+            const horarioInicial = {
+                horas: init.getHours(),
+                minutos: init.getMinutes()
+            };
+
+            const horarioFinal = {
+                horas: end.getHours(),
+                minutos: end.getMinutes()
+            };
+
+            const newInitDate = new Date(inicio)
+            const newEndDate = new Date(inicio)
+
+            newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
+            newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
+
+            const diffMs = newEndDate - newInitDate;
+            return diffMs / (1000 * 60 * 60);
+        }
+
+        const diferencaHoras = calculateHoursDiff(firstDay, lastDay);
+        const workload = !interval ? diferencaHoras : diferencaHoras - (Number(interval) / 60);
+
+        if (diferencaHoras < (Number(interval) / 60)) {
+            return await clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": "O intervalo não pode ser maior que o total de horas da turma!"
+                },
+            });
+        }
+
+        if (diferencaHoras < 0) {
+            return await clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": "A hora inicial não pode ser maior que a hora final!"
+                },
+            });
+        }
+
+        if (workload > 8) {
+            return await clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": "A carga horária não pode passar as 8 horas!"
+                },
+            });
+        }
+
+        if (diferencaHoras > 4 && !interval) {
+            return await clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": "Turma com mais de 4 horas de carga horária precisa ter intervalo!"
+                },
+            });
+        }
         /* const queryInst = `$filter=cust_RELATED_USER eq '${userId}'`
         const instructors = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode"], queryInst)
 
@@ -96,7 +174,8 @@ export default async function SaveCreate(clientAPI) {
                 "cust_turma": teamId,
                 "cust_startdate": new Date(i.inicio).toISOString(),
                 "cust_enddate": new Date(i.fim).toISOString(),
-                "cust_totalhoras": `${Number(String(workload).replaceAll('-', ''))}`,
+                "cust_totalhoras": String(Number(workload.toFixed(2))),
+                "cust_intervalo": interval
             }
             return props
         })
@@ -113,34 +192,34 @@ export default async function SaveCreate(clientAPI) {
             }))
         )
 
-        if (!workload) {
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao criar turma",
-                    "Message": "O campo carga horária obrigatório para a criação de turma!"
-                },
-            });
-        }
+        // if (!workload) {
+        //     return await clientAPI.executeAction({
+        //         "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        //         "Properties": {
+        //             "Title": "Erro ao criar turma",
+        //             "Message": "O campo carga horária obrigatório para a criação de turma!"
+        //         },
+        //     });
+        // }
 
-        if (workload > 8) {
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao criar turma",
-                    "Message": "Turmas não podem ter mais de 8 horas!"
-                },
-            });
-        }
-        if (workload > 4 && !interval) {
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao criar turma",
-                    "Message": "Turmas com mais de 4 horas precisam ter intervalo!"
-                },
-            });
-        }
+        // if (workload > 8) {
+        //     return await clientAPI.executeAction({
+        //         "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        //         "Properties": {
+        //             "Title": "Erro ao criar turma",
+        //             "Message": "Turmas não podem ter mais de 8 horas!"
+        //         },
+        //     });
+        // }
+        // if (workload > 4 && !interval) {
+        //     return await clientAPI.executeAction({
+        //         "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        //         "Properties": {
+        //             "Title": "Erro ao criar turma",
+        //             "Message": "Turmas com mais de 4 horas precisam ter intervalo!"
+        //         },
+        //     });
+        // }
 
 
         /* 
@@ -174,9 +253,8 @@ export default async function SaveCreate(clientAPI) {
                 }
             })
         }))
-
+        
         await Promise.all(dailyList.map(prop => { // criar lista diaria
-
             return clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/Teams/CreateDailyList.action",
                 "Properties": {
@@ -184,7 +262,7 @@ export default async function SaveCreate(clientAPI) {
                 }
             })
         }))
-
+        
         await clientAPI.executeAction({ // criar turma
             "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
             "Properties": {
@@ -192,11 +270,12 @@ export default async function SaveCreate(clientAPI) {
                     "externalCode": teamId,
                     "externalName": curse.cust_CPNT_TITLE,
                     "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
-                    "cust_intervalo": `${Number(String(interval).replaceAll('-', ''))}`,
+                    "cust_SSG_SEG_NUM": String(Number(workload.toFixed(2))),
+                    "cust_intervalo": interval
                 }
             }
         })
-
+        
         await Promise.all(presencalmsList.map(prop => { // criar presença lms
 
             return clientAPI.executeAction({
@@ -206,7 +285,6 @@ export default async function SaveCreate(clientAPI) {
                 }
             })
         }))
-
 
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",

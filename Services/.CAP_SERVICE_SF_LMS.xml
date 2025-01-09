@@ -134,7 +134,7 @@
                 <Property Name="createdBy" Type="Edm.String" MaxLength="100"/>
                 <Property Name="createdDateTime" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_enddate" Type="Edm.DateTimeOffset"/>
-                <Property Name="cust_intervalo" Type="Edm.String" MaxLength="3"/>
+                <Property Name="cust_intervalo" Type="Edm.String" MaxLength="5"/>
                 <Property Name="cust_lista" Type="Edm.String" MaxLength="255"/>
                 <Property Name="cust_lms" Type="Edm.String" MaxLength="1"/>
                 <Property Name="cust_presenca" Type="Edm.String" MaxLength="1"/>
