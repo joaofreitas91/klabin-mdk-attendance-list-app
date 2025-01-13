@@ -13,8 +13,8 @@ export default async function GetPresenceValue(clientAPI) {
     
     const presenceListItem = presenceList.find(i => i.externalCode)
 
-    if(presenceListItem.cust_presenca){
-        return presenceListItem.cust_presenca == "ausente" ? false : true
+    if(presenceListItem.cust_presenca == "ausente"){
+        return false
     }
-    return false
+    return true
 }   

@@ -16,5 +16,5 @@ export default async function GetTeamStatus(clientAPI) {
     if(presenceListItem.cust_presenca){
         return presenceListItem.cust_presenca
     }
-    return "ausente"
+    return "presente"
 }

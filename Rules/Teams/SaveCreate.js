@@ -175,7 +175,8 @@ export default async function SaveCreate(clientAPI) {
                 "cust_startdate": new Date(i.inicio).toISOString(),
                 "cust_enddate": new Date(i.fim).toISOString(),
                 "cust_totalhoras": String(Number(workload.toFixed(2))),
-                "cust_intervalo": interval
+                "cust_intervalo": interval,
+                "cust_segCode": String(index + 1)
             }
             return props
         })

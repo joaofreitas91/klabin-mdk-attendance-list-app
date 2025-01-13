@@ -1631,7 +1631,7 @@ async function GetTeamStatus(clientAPI) {
     if(presenceListItem.cust_presenca){
         return presenceListItem.cust_presenca
     }
-    return "ausente"
+    return "presente"
 }
 
 
@@ -2142,7 +2142,8 @@ async function SaveCreate(clientAPI) {
                 "cust_startdate": new Date(i.inicio).toISOString(),
                 "cust_enddate": new Date(i.fim).toISOString(),
                 "cust_totalhoras": String(Number(workload.toFixed(2))),
-                "cust_intervalo": interval
+                "cust_intervalo": interval,
+                "cust_segCode": String(index + 1)
             }
             return props
         })
@@ -2155,7 +2156,7 @@ async function SaveCreate(clientAPI) {
                 "cust_ficha": p.externalCode,
                 "cust_segmento": d.externalCode,
                 "cust_turma": d.cust_turma,
-                "cust_presenca": "presente"
+                // "cust_presenca": "presente"
             }))
         )
 
@@ -2605,10 +2606,10 @@ async function GetPresenceValue(clientAPI) {
     
     const presenceListItem = presenceList.find(i => i.externalCode)
 
-    if(presenceListItem.cust_presenca){
-        return presenceListItem.cust_presenca == "ausente" ? false : true
+    if(presenceListItem.cust_presenca == "ausente"){
+        return false
     }
-    return false
+    return true
 }   
 
 
