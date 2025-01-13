@@ -162,7 +162,7 @@ export default async function SaveCreate(clientAPI) {
                 "externalCode": externalCode,
                 "cust_Turma": teamId,
                 "cust_Aluno": i.ReturnValue,
-                "externalName": `Dia ${index + 1}`
+                "externalName": i.BindingObject.cust_fname + ' ' + (i.BindingObject.cust_mname ? (i.BindingObject.cust_mname + ' ') : '') + (i.BindingObject.cust_lname ? i.BindingObject.cust_lname : '')
             }
             return props
         })

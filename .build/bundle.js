@@ -2129,7 +2129,7 @@ async function SaveCreate(clientAPI) {
                 "externalCode": externalCode,
                 "cust_Turma": teamId,
                 "cust_Aluno": i.ReturnValue,
-                "externalName": `Dia ${index + 1}`
+                "externalName": i.BindingObject.cust_fname + ' ' + (i.BindingObject.cust_mname ? (i.BindingObject.cust_mname + ' ') : '') + (i.BindingObject.cust_lname ? i.BindingObject.cust_lname : '')
             }
             return props
         })
@@ -2156,7 +2156,7 @@ async function SaveCreate(clientAPI) {
                 "cust_ficha": p.externalCode,
                 "cust_segmento": d.externalCode,
                 "cust_turma": d.cust_turma,
-                // "cust_presenca": "presente"
+                "cust_presenca": "presente"
             }))
         )
 
