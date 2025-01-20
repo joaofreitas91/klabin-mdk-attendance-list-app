@@ -159,6 +159,7 @@
 					},
 					"Controls": [
 						{
+							"Value": "/Attendance_List/Rules/Teams/Create/GetDefaultInstructor.js",
 							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPicker1",
 							"IsVisible": true,
@@ -199,9 +200,10 @@
 							]
 						},
 						{
+							"Value": "/Attendance_List/Rules/Teams/Create/GetDefaultInstructor.js",
 							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPickerInstructor1",
-							"IsVisible": true,
+							"IsVisible": false,
 							"Separator": true,
 							"AllowMultipleSelection": false,
 							"AllowEmptySelection": false,

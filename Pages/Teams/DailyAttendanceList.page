@@ -23,13 +23,6 @@
 						"QueryOptions": "$expand=cust_AlunosNav&$filter=cust_Turma eq '{cust_turma}'"
 					},
 					"_Name": "SectionObjectCollection0",
-					"Header": {
-						"_Type": "SectionCommon.Type.Header",
-						"_Name": "SectionCommonTypeHeader0",
-						"AccessoryType": "None",
-						"UseTopPadding": true,
-						"Caption": "Lista de presença"
-					},
 					"Visible": true,
 					"EmptySection": {
 						"Caption": "Sem participantes até o momento",
@@ -86,12 +79,12 @@
 		}
 	],
 	"_Type": "Page",
-	"_Name": "Page0",
+	"_Name": "PresenceList",
 	"ActionBar": {
 		"Items": [],
-		"_Name": "ActionBar9",
+		"_Name": "ActionBar11",
 		"_Type": "Control.Type.ActionBar",
-		"Caption": " ",
+		"Caption": "Lista de presença",
 		"PrefersLargeCaption": false
 	}
 }
