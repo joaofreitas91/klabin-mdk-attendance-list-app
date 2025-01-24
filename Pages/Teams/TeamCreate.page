@@ -252,7 +252,8 @@
 							"PickerItems": {
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-									"EntitySet": "cust_Instrutores"
+									"EntitySet": "cust_Instrutores",
+									"QueryOptions": "/Attendance_List/Rules/Teams/Create/QuerySecondaryInstructor.js"
 								},
 								"DisplayValue": "{externalName}",
 								"ReturnValue": "{externalCode}"
@@ -360,7 +361,6 @@
 		],
 		"_Name": "Salvar",
 		"_Type": "Control.Type.ActionBar",
-		"Caption": "Criar turma",
-		"PrefersLargeCaption": true
+		"Caption": "Criar turma"
 	}
 }

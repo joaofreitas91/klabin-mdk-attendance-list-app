@@ -13,8 +13,8 @@ export default async function GetTeamStatus(clientAPI) {
     
     const presenceListItem = presenceList.find(i => i.externalCode)
 
-    if(presenceListItem.cust_presenca){
-        return presenceListItem.cust_presenca
+    if(presenceListItem.cust_presenca == 'ausente'){
+        return " ausente"
     }
     return "presente"
 }

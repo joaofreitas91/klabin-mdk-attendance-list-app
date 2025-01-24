@@ -9,25 +9,6 @@
 			"_Name": "SectionedTable0",
 			"Sections": [
 				{
-					"ObjectHeader": {
-						"DetailImageIsCircular": false,
-						"HeadlineText": "Lista de turmas",
-						"StatusPosition": "Stacked",
-						"StatusImagePosition": "Leading",
-						"SubstatusImagePosition": "Leading",
-						"Target": {
-							"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-							"EntitySet": "cust_Turmas"
-						},
-						"Styles": {
-							"ObjectHeader": "background-100"
-						}
-					},
-					"_Type": "Section.Type.ObjectHeader",
-					"_Name": "SectionObjectHeader0",
-					"Visible": true
-				},
-				{
 					"Separators": {
 						"TopSectionSeparator": false,
 						"BottomSectionSeparator": true,
@@ -84,9 +65,5 @@
 	],
 	"_Type": "Page",
 	"_Name": "TeamList",
-	"ActionBar": {
-		"Caption": " ",
-		"PrefersLargeCaption": true,
-		"_Type": "Control.Type.ActionBar"
-	}
+	"Caption": "Lista de turmas"
 }
