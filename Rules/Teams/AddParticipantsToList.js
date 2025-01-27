@@ -28,7 +28,7 @@ export default async function AddParticipantsToList(clientAPI) {
                 "externalCode": externalCode,
                 "cust_Turma": clientAPI.binding.externalCode,
                 "cust_Aluno": i.ReturnValue,
-                "externalName": `Dia ${index + 1}`,
+                "externalName": i.BindingObject.cust_fname + ' ' + (i.BindingObject.cust_mname ? (i.BindingObject.cust_mname + ' ') : '') + (i.BindingObject.cust_lname ? i.BindingObject.cust_lname : ''),
                 "cust_startdate": new Date(firstDay).toISOString(),
                 "cust_enddate": new Date(lastDay).toISOString(),
             }
@@ -46,15 +46,22 @@ export default async function AddParticipantsToList(clientAPI) {
             ], query)
 
         const presencalmsList = dailyList.map((d) =>
-            partnerList.map((p) => ({
-                "externalCode": Cuid(),
-                "cust_enddate": new Date(d.cust_enddate).toISOString(),
-                "cust_startdate": new Date(d.cust_startdate).toISOString(),
-                "cust_ficha": p.externalCode,
-                "cust_segmento": d.externalCode,
-                "cust_turma": d.cust_turma,
-                "cust_presenca": "presente"
-            }))
+            partnerList.map((p) => {
+                const endDate = new Date(d.cust_enddate)
+                endDate.setHours(0, 0, 0, 0)
+                const today = new Date()
+                today.setHours(0, 0, 0, 0)
+
+                return ({
+                    "externalCode": Cuid(),
+                    "cust_enddate": new Date(d.cust_enddate).toISOString(),
+                    "cust_startdate": new Date(d.cust_startdate).toISOString(),
+                    "cust_ficha": p.externalCode,
+                    "cust_segmento": d.externalCode,
+                    "cust_turma": d.cust_turma,
+                    "cust_presenca": (today.getTime() <= endDate.getTime()) ? "presente" : "ausente"
+                })
+            })
         ).reduce((acc, current) => acc.concat(current), [])
 
         await Promise.all(partnerList.map(prop => { // criar lista de presença (ficha)

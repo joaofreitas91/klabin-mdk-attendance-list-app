@@ -73,8 +73,8 @@ export default async function UpdateTeam(clientAPI) {
         return clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
             "Properties": {
-                "Title": "Criação de turma",
-                "Message": `Erro: ${error.message}`
+                "Title": "Atualização de turma",
+                "Message": `Não foi possível concluir a ação no momento. Por favor, tente novamente mais tarde e certifique-se de realizar a sincronização.`
             }
         });
     }

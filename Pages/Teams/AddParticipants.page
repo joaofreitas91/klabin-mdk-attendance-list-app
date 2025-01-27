@@ -43,7 +43,7 @@
 								"Target": {
 									"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 									"EntitySet": "cust_Alunos",
-									"QueryOptions": "$filter=cust_matricula ne '{cust_INST_ID1}' and cust_matricula ne '{cust_INST_ID2}'"
+									"QueryOptions": "/Attendance_List/Rules/Teams/QueryParticipantsAddition.js"
 								},
 								"ObjectCell": {
 									"AvatarStack": {
@@ -84,7 +84,7 @@
 					"Target": {
 						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 						"EntitySet": "cust_ListadePresenca",
-						"QueryOptions": "$filter=cust_Turma eq '{externalCode}'"
+						"QueryOptions": "/Attendance_List/Rules/Teams/QueryFichaAddParticipants.js"
 					},
 					"_Name": "SectionObjectCollection0",
 					"Header": {

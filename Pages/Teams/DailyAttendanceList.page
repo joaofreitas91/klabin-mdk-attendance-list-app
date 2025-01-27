@@ -20,7 +20,7 @@
 					"Target": {
 						"Service": "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
 						"EntitySet": "cust_ListadePresenca",
-						"QueryOptions": "$expand=cust_AlunosNav&$filter=cust_Turma eq '{cust_turma}'"
+						"QueryOptions": "/Attendance_List/Rules/Teams/QueryFicha.js"
 					},
 					"_Name": "SectionObjectCollection0",
 					"Visible": true,
@@ -82,7 +82,7 @@
 	"_Name": "PresenceList",
 	"ActionBar": {
 		"Items": [],
-		"_Name": "ActionBar11",
+		"_Name": "ActionBar12",
 		"_Type": "Control.Type.ActionBar",
 		"Caption": "Lista de presença",
 		"PrefersLargeCaption": false
