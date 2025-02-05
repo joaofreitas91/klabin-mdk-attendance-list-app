@@ -272,7 +272,8 @@ export default async function SaveCreate(clientAPI) {
                     "externalName": curse.cust_CPNT_TITLE,
                     "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
                     "cust_SSG_SEG_NUM": String(Number(workload.toFixed(2))),
-                    "cust_intervalo": interval
+                    "cust_intervalo": interval,
+                    "cust_fromApp": true,
                 }
             }
         })

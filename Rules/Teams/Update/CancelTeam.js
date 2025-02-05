@@ -3,16 +3,23 @@
  * @param {IClientAPI} clientAPI
  */
 export default async function CancelTeam(clientAPI) {
+
+    const ComeFromApp = {
+        "cust_Status": "cancelada",
+    }
+    const ComeFromLMS = {
+        "cust_Status": "cancelada",
+        "cust_LMS": "S"
+    }
+
     try {
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/Teams/CancelTeam.action",
             "Properties": {
-                "Properties": {
-                    "cust_Status": "cancelada"
-                }
+                "Properties": clientAPI.binding.cust_fromApp ? ComeFromApp : ComeFromLMS
             }
         })
-        
+
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
             "Properties": {

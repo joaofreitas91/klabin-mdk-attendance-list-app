@@ -246,7 +246,16 @@
 							"IsEditable": true,
 							"Search": {
 								"Enabled": true,
-								"BarcodeScanner": true
+								"BarcodeScanner": true,
+								"Options": {
+									"CaseSensitive": false,
+									"NumberSearch": {
+										"Enabled": false
+									},
+									"UseSearchOverFilter": {
+										"Enabled": false
+									}
+								}
 							},
 							"PickerItems": {
 								"Target": {
@@ -298,7 +307,16 @@
 							"IsEditable": true,
 							"Search": {
 								"Enabled": true,
-								"BarcodeScanner": true
+								"BarcodeScanner": true,
+								"Options": {
+									"CaseSensitive": false,
+									"NumberSearch": {
+										"Enabled": false
+									},
+									"UseSearchOverFilter": {
+										"Enabled": false
+									}
+								}
 							},
 							"PickerItems": {
 								"Target": {

@@ -79,6 +79,7 @@
                 <Property Name="cust_END_TME_LMS" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_INST_ID1" Type="Edm.String" MaxLength="50"/>
                 <Property Name="cust_INST_ID2" Type="Edm.String" MaxLength="50"/>
+                <Property Name="cust_LEGACY_ID" Type="Edm.String" MaxLength="255"/>
                 <Property Name="cust_LMS" Type="Edm.String" MaxLength="1"/>
                 <Property Name="cust_LOCN_DESC" Type="Edm.String" MaxLength="900"/>
                 <Property Name="cust_LOCN_ID1" Type="Edm.String" MaxLength="255"/>
@@ -87,6 +88,7 @@
                 <Property Name="cust_START_TME" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_START_TME_LMS" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_Status" Type="Edm.String" MaxLength="255"/>
+                <Property Name="cust_fromApp" Type="Edm.Boolean"/>
                 <Property Name="cust_intervalo" Type="Edm.String" MaxLength="3"/>
                 <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
                 <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
@@ -117,6 +119,7 @@
                 <Property Name="cust_Turma" Type="Edm.String" MaxLength="255"/>
                 <Property Name="cust_enddate" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_enddate_LMS" Type="Edm.DateTimeOffset"/>
+                <Property Name="cust_enviado_LMS" Type="Edm.Boolean"/>
                 <Property Name="cust_nota" Type="Edm.String"/>
                 <Property Name="cust_resultado" Type="Edm.String" MaxLength="10"/>
                 <Property Name="cust_sequencia" Type="Edm.String" MaxLength="10"/>
