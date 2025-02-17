@@ -2346,6 +2346,8 @@ async function SaveCreate(clientAPI) {
 
     try {
 
+        clientAPI.showActivityIndicator()
+
         const teamId = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
         // const workload = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyWorkload/#Value')
@@ -2361,6 +2363,7 @@ async function SaveCreate(clientAPI) {
         const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#Value').find(i => i)
 
         if (!cust_cursos_id) {
+            clientAPI.dismissActivityIndicator();
             return await clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
@@ -2401,6 +2404,7 @@ async function SaveCreate(clientAPI) {
         const workload = !interval ? diferencaHoras : diferencaHoras - (Number(interval) / 60);
 
         if (diferencaHoras < (Number(interval) / 60)) {
+            clientAPI.dismissActivityIndicator();
             return await clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
@@ -2411,6 +2415,7 @@ async function SaveCreate(clientAPI) {
         }
 
         if (diferencaHoras < 0) {
+            clientAPI.dismissActivityIndicator();
             return await clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
@@ -2421,6 +2426,7 @@ async function SaveCreate(clientAPI) {
         }
 
         if (workload > 8) {
+            clientAPI.dismissActivityIndicator();
             return await clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
@@ -2431,6 +2437,7 @@ async function SaveCreate(clientAPI) {
         }
 
         if (diferencaHoras > 4 && !interval) {
+            clientAPI.dismissActivityIndicator();
             return await clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
@@ -2523,6 +2530,7 @@ async function SaveCreate(clientAPI) {
         currentDate.setHours(0, 0, 0, 0) // Setando o tempo igual a zero pois será comparado apenas a data
 
         if (inputDate.getTime() !== currentDate.getTime()) { // Se a data inicial for diferente da data atual retorna mensagem de erro
+            clientAPI.dismissActivityIndicator();
             return await clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
                 "Properties": {
@@ -2576,6 +2584,8 @@ async function SaveCreate(clientAPI) {
                 }
             })
         }))
+
+        clientAPI.dismissActivityIndicator();
 
         await clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
@@ -2815,7 +2825,7 @@ async function CancelTeam(clientAPI) {
             },
         });
 
-    } catch (e) {
+    }catch(e){
         return clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
             "Properties": {
