@@ -113,6 +113,7 @@ export default async function SaveCreate(clientAPI) {
 
         const diferencaHoras = calculateHoursDiff(firstDay, lastDay);
         const workload = !interval ? diferencaHoras : diferencaHoras - (Number(interval) / 60);
+        const validateDate = new Date(firstDay) > new Date(lastDay)
 
         if (diferencaHoras < (Number(interval) / 60)) {
             clientAPI.dismissActivityIndicator();
@@ -125,7 +126,7 @@ export default async function SaveCreate(clientAPI) {
             });
         }
 
-        if (diferencaHoras < 0) {
+        if (diferencaHoras < 0 || validateDate) {
             clientAPI.dismissActivityIndicator();
             return await clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/GenericMessageBox.action",
@@ -279,7 +280,7 @@ export default async function SaveCreate(clientAPI) {
                     "externalCode": teamId,
                     "externalName": curse.cust_CPNT_TITLE,
                     "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
-                    "cust_SSG_SEG_NUM": String(Number(workload.toFixed(2))),
+                    "cust_SSG_SEG_NUM": String(Number((workload * dailyList.length).toFixed(2))),
                     "cust_intervalo": interval,
                     "cust_fromApp": true,
                 }

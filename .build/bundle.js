@@ -11,3149 +11,6 @@ module.exports = ""
 
 /***/ }),
 
-/***/ "./build.definitions/Attendance_List/Rules/Application/AppUpdateFailure.js":
-/*!*********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Application/AppUpdateFailure.js ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ AppUpdateFailure)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function AppUpdateFailure(clientAPI) {
-    let result = clientAPI.actionResults.AppUpdate.error.toString();
-    var message;
-    console.log(result);
-    if (result.startsWith('Error: Uncaught app extraction failure:')) {
-        result = 'Error: Uncaught app extraction failure:';
-    }
-    if (result.startsWith('Error: LCMS GET Version Response Error Response Status: 404 | Body: 404 Not Found: Requested route')) {
-        result = 'Application instance is not up or running';
-    }
-    if (result.startsWith('Error: LCMS GET Version Response Error Response Status: 404 | Body')) {
-        result = 'Service instance not found.';
-    }
-
-    switch (result) {
-        case 'Service instance not found.':
-            message = 'Mobile App Update feature is not assigned or not running for your application. Please add the Mobile App Update feature, deploy your application, and try again.';
-            break;
-        case 'Error: LCMS GET Version Response Error Response Status: 404 | Body: Failed to find a matched endpoint':
-            message = 'Mobile App Update feature is not assigned to your application. Please add the Mobile App Update feature, deploy your application, and try again.';
-            break;
-        case 'Error: LCMS GET Version Response failed: Error: Optional(OAuth2Error.tokenRejected: The newly acquired or refreshed token got rejected.)':
-            message = 'The Mobile App Update feature is not assigned to your application or there is no Application metadata deployed. Please check your application in Mobile Services and try again.';
-            break;
-        case 'Error: Uncaught app extraction failure:':
-            message = 'Error extracting metadata. Please redeploy and try again.';
-            break;
-        case 'Application instance is not up or running':
-            message = 'Communication failure. Verify that the BindMobileApplicationRoutesToME Application route is running in your BTP space cockpit.';
-            break;
-        default:
-            message = result;
-            break;
-    }
-    return clientAPI.getPageProxy().executeAction({
-        "Name": "/Attendance_List/Actions/Application/AppUpdateFailureMessage.action",
-        "Properties": {
-            "Duration": 0,
-            "Message": message
-        }
-    });
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Application/AppUpdateSuccess.js":
-/*!*********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Application/AppUpdateSuccess.js ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ AppUpdateSuccess)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function sleep(ms) {
-    return (new Promise(function(resolve, reject) {
-        setTimeout(function() {
-            resolve();
-        }, ms);
-    }));
-}
-function AppUpdateSuccess(clientAPI) {
-    var message;
-    // Force a small pause to let the progress banner show in case there is no new version available
-    return sleep(500).then(function() {
-        let result = clientAPI.actionResults.AppUpdate.data;
-        console.log(result);
-
-        let versionNum = result.split(': ')[1];
-        if (result.startsWith('Current version is already up to date')) {
-            return clientAPI.getPageProxy().executeAction({
-                "Name": "/Attendance_List/Actions/Application/AppUpdateSuccessMessage.action",
-                "Properties": {
-                    "Message": `You are already using the latest version: ${versionNum}`,
-                    "NumberOfLines": 2
-                }
-            });
-        } else if (result === 'AppUpdate feature is not enabled or no new revision found.') {
-            message = 'No Application metadata found. Please deploy your application and try again.';
-            return clientAPI.getPageProxy().executeAction({
-                "Name": "/Attendance_List/Actions/Application/AppUpdateSuccessMessage.action",
-                "Properties": {
-                    "Duration": 5,
-                    "Message": message,
-                    "NumberOfLines": 2
-                }
-            });
-        }
-    });
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Application/ClientIsMultiUserMode.js":
-/*!**************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Application/ClientIsMultiUserMode.js ***!
-  \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ClientIsMultiUserMode)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function ClientIsMultiUserMode(clientAPI) {
-    return clientAPI.isAppInMultiUserMode();
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Application/Cuid.js":
-/*!*********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Application/Cuid.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Cuid)
-/* harmony export */ });
-function Cuid(context) {
-    const cuidPrefix = 'c';
-    const timestamp = Date.now().toString(36);
-    const randomPart = Math.random().toString(36).substring(2, 10);
-    const uniqueID = cuidPrefix + timestamp + randomPart;
-    return uniqueID;
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Application/GetClientSupportVersions.js":
-/*!*****************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Application/GetClientSupportVersions.js ***!
-  \*****************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetClientSupportVersions)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function GetClientSupportVersions(clientAPI) {
-    let versionInfo = clientAPI.getVersionInfo();
-    let versionStr = '';
-    Object.keys(versionInfo).forEach(function(key, index) {
-        // key: the name of the object key
-        // index: the ordinal position of the key within the object
-        //console.log(`Key: ${key}   Index: ${index}`);
-        if (key != 'Application Version') {
-            versionStr += `${key}: ${versionInfo[key]}\n`;
-        }
-    });
-    return versionStr;
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Application/GetClientVersion.js":
-/*!*********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Application/GetClientVersion.js ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetClientVersion)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function GetClientVersion(clientAPI) {
-    let versionInfo = clientAPI.getVersionInfo();
-    if (versionInfo.hasOwnProperty('Application Version')) {
-        return versionInfo['Application Version'];
-    }
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Application/OnWillUpdate.js":
-/*!*****************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Application/OnWillUpdate.js ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ OnWillUpdate)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function OnWillUpdate(clientAPI) {
-    return clientAPI.executeAction('/Attendance_List/Actions/Application/OnWillUpdate.action').then((result) => {
-        if (result.data) {
-            return clientAPI.executeAction('/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/CloseOffline.action').then(
-                (success) => Promise.resolve(success),
-                (failure) => Promise.reject('Offline Odata Close Failed ' + failure));
-        } else {
-            return Promise.reject('User Deferred');
-        }
-    });
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Application/ResetAppSettingsAndLogout.js":
-/*!******************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Application/ResetAppSettingsAndLogout.js ***!
-  \******************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ResetAppSettingsAndLogout)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function ResetAppSettingsAndLogout(clientAPI) {
-    let logger = clientAPI.getLogger();
-    let platform = clientAPI.nativescript.platformModule;
-    let appSettings = clientAPI.nativescript.appSettingsModule;
-    var appId;
-    if (platform && (platform.isIOS || platform.isAndroid)) {
-        appId = clientAPI.evaluateTargetPath('#Application/#AppData/MobileServiceAppId');
-    } else {
-        appId = 'WindowsClient';
-    }
-    try {
-        // Remove any other app specific settings
-        appSettings.getAllKeys().forEach(key => {
-            if (key.substring(0, appId.length) === appId) {
-                appSettings.remove(key);
-            }
-        });
-    } catch (err) {
-        logger.log(`ERROR: AppSettings cleanup failure - ${err}`, 'ERROR');
-    } finally {
-        // Logout 
-        return clientAPI.getPageProxy().executeAction('/Attendance_List/Actions/Application/Reset.action');
-    }
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Application/Uuidv4.js":
-/*!***********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Application/Uuidv4.js ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Uuidv4)
-/* harmony export */ });
-
-function Uuidv4(context) {
-    function uuidv4() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = (Math.random() * 16) | 0;
-            const v = c === 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        });
-    }
-
-    const uuidV4 = uuidv4();
-    return uuidV4
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/CAP_SERVICE_SF_LMS/ErrorArchive_CheckForSyncError.js":
-/*!******************************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/CAP_SERVICE_SF_LMS/ErrorArchive_CheckForSyncError.js ***!
-  \******************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ CheckForSyncError)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} context
- */
-function CheckForSyncError(context) {
-    context.count('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'ErrorArchive', '').then(errorCount => {
-        if (errorCount > 0) {
-            return context.getPageProxy().executeAction('/Attendance_List/Actions/ErrorArchive/ErrorArchive_SyncFailure.action').then(function() {
-                return Promise.reject(false);
-            });
-        }
-    });
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Logging/LogLevels.js":
-/*!**********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Logging/LogLevels.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ LogLevels)
-/* harmony export */ });
-function LogLevels(clientAPI) {
-    var levels = [];
-    levels.push({
-        'DisplayValue': 'Error',
-        'ReturnValue': 'Error',
-    });
-    levels.push({
-        'DisplayValue': 'Warning',
-        'ReturnValue': 'Warn',
-    });
-    levels.push({
-        'DisplayValue': 'Info',
-        'ReturnValue': 'Info',
-    });
-    levels.push({
-        'DisplayValue': 'Debug',
-        'ReturnValue': 'Debug',
-    });
-    levels.push({
-        'DisplayValue': 'Trace',
-        'ReturnValue': 'Trace',
-    });
-    return levels;
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Logging/SetTraceCategories.js":
-/*!*******************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Logging/SetTraceCategories.js ***!
-  \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SetTraceCategories)
-/* harmony export */ });
-function SetTraceCategories(clientAPI) {
-    var logger = clientAPI.getLogger();
-    const sectionedTable = clientAPI.getPageProxy().getControl('SectionedTable');
-    const fcsection = sectionedTable.getSection('FormCellSection0');
-    const traceCategory = fcsection.getControl('TracingCategoriesListPicker');
-    const odataTrace = fcsection.getControl('odataTrace');
-
-    try {
-        if (traceCategory.getValue()) {
-            var values = traceCategory.getValue();
-            var categories = [];
-
-            if (values && values.length) {
-                categories = values.map((value) => {
-                    return 'mdk.trace.' + value.ReturnValue;
-                });
-            }
-            clientAPI.setDebugSettings(odataTrace.getValue(), true, categories);
-        }
-    } catch (exception) {
-        logger.log(String(exception), 'Error');
-        return undefined;
-    }
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Logging/SetUserLogLevel.js":
-/*!****************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Logging/SetUserLogLevel.js ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SetUserLogLevel)
-/* harmony export */ });
-function SetUserLogLevel(clientAPI) {
-    try {
-        if (clientAPI.getValue() && clientAPI.getValue()[0]) {
-            var logger = clientAPI.getLogger();
-            var listPickerValue = clientAPI.getValue()[0].ReturnValue;
-            if (listPickerValue) {
-                switch (listPickerValue) {
-                    case 'Debug':
-                        logger.setLevel('Debug');
-                        ShowTraceOptions(clientAPI, false);
-                        break;
-                    case 'Error':
-                        logger.setLevel('Error');
-                        ShowTraceOptions(clientAPI, false);
-                        break;
-                    case 'Warn':
-                        logger.setLevel('Warn');
-                        ShowTraceOptions(clientAPI, false);
-                        break;
-                    case 'Info':
-                        logger.setLevel('Info');
-                        ShowTraceOptions(clientAPI, false);
-                        break;
-                    case 'Trace':
-                        logger.setLevel('Trace');
-                        ShowTraceOptions(clientAPI, true);
-                        break;
-                    default:
-                        // eslint-disable-next-line no-console
-                        console.log(`unrecognized key ${listPickerValue}`);
-                }
-                return listPickerValue;
-            }
-        }
-    } catch (exception) {
-        logger.log(String(exception), 'Error');
-        return undefined;
-    }
-}
-
-function ShowTraceOptions(clientAPI, tracingEnabled) {
-    let categories = clientAPI.getPageProxy().getControl('SectionedTable').getControl('TracingCategoriesListPicker');
-    let odataTrace = clientAPI.getPageProxy().getControl('SectionedTable').getControl('odataTrace');
-
-    categories.setVisible(tracingEnabled);
-    odataTrace.setVisible(tracingEnabled);
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Logging/ToggleLogging.js":
-/*!**************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Logging/ToggleLogging.js ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ToggleLogging)
-/* harmony export */ });
-function ToggleLogging(clientAPI) {
-    try {
-        var logger = clientAPI.getLogger();
-        const sectionedTable = clientAPI.getPageProxy().getControl('SectionedTable');
-        const fcsection = sectionedTable.getSection('FormCellSection0');
-        const enableLogSwitch = fcsection.getControl('EnableLogSwitch');
-        const logLevelListPicker = fcsection.getControl('LogLevelListPicker');
-        let switchValue = enableLogSwitch.getValue();
-        if (switchValue) {
-            logger.on();
-            logLevelListPicker.setVisible(true);
-            logLevelListPicker.setEditable(true);
-            logLevelListPicker.redraw();
-        } else {
-            logger.off();
-            logLevelListPicker.setEditable(false);
-            logLevelListPicker.setVisible(false);
-            logLevelListPicker.redraw();
-        }
-        return switchValue;
-    } catch (exception) {
-        logger.log(String(exception), 'Error');
-        return undefined;
-    }
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Logging/TraceCategories.js":
-/*!****************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Logging/TraceCategories.js ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ TraceCategories)
-/* harmony export */ });
-function TraceCategories(clientAPI) {
-    var categories = ['action', 'api', 'app', 'binding', 'branding',
-        'core', 'i18n', 'lcms', 'logging', 'odata', 'onboarding', 'profiling', 'push',
-        'restservice', 'settings', 'targetpath', 'ui'
-    ];
-
-    var values = [];
-    categories.forEach((category) => {
-        values.push({
-            'DisplayValue': category,
-            'ReturnValue': category,
-        });
-    });
-
-    return values;
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Logging/UserLogSetting.js":
-/*!***************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Logging/UserLogSetting.js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ UserLogSetting)
-/* harmony export */ });
-function UserLogSetting(clientAPI) {
-
-    try {
-        var logger = clientAPI.getLogger();
-
-        const sectionedTable = clientAPI.getControl('SectionedTable');
-        const fcsection = sectionedTable.getSection('FormCellSection0');
-        const enableLogSwitch = fcsection.getControl('EnableLogSwitch');
-        const logLevelListPicker = fcsection.getControl('LogLevelListPicker');
-        const traceCategory = fcsection.getControl('TracingCategoriesListPicker');
-        const odataTrace = fcsection.getControl('odataTrace');
-
-
-        //Persist the user logging preferences
-        if (logger) {
-            console.log("in logger state");
-            if (logger.isTurnedOn()) {
-                if (enableLogSwitch) {
-                    enableLogSwitch.setValue(true);
-                }
-                if (logLevelListPicker) {
-                    logLevelListPicker.setEditable(true);
-                }
-            } else {
-                if (enableLogSwitch) {
-                    enableLogSwitch.setValue(false);
-                }
-                if (logLevelListPicker) {
-                    logLevelListPicker.setEditable(false);
-                }
-            }
-            var logLevel = logger.getLevel();
-            if (logLevel) {
-                if (logLevelListPicker) {
-                    logLevelListPicker.setValue([logLevel]);
-                }
-            }
-            if (logLevel === 'Trace') {
-                traceCategory.setVisible(true);
-                odataTrace.setVisible(true);
-            }
-
-            //Upon selecting a value in the List picker and clicking the back button 
-            //will enable the onload page rule. This will set the selected value
-            //in the control
-            if (logLevelListPicker.getValue()[0]) {
-                var returnValue = logLevelListPicker.getValue()[0].ReturnValue;
-                if (returnValue) {
-                    logLevelListPicker.setValue([returnValue]);
-                    logger.setLevel(returnValue);
-                }
-            }
-        }
-    } catch (exception) {
-        // eslint-disable-next-line no-console
-        console.log(String(exception), 'Error User Logger could not be set');
-    }
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/CalendarQuery.js":
-/*!***********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/CalendarQuery.js ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ CalendarQuery)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-
-function defaultQuery(context) {
-    var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
-    var dDate = new Date();
-    var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
-    // let cFilter = "cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
-    let dfilter = `$filter=(cust_START_TME ge 2025-01-02T00:00:00Z and cust_START_TME le 2025-01-02T23:59:59Z) and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq 'SRMELLO')`
-    dfilter += cExpand
-
-    return dfilter;
-}
-
-async function CalendarQuery(context) {
-    var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
-    var dDate = new Date();
-    var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
-    // let cFilter = "cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
-    
-    const IASUser = context.evaluateTargetPath("#Application/#AppData/UserId");
-    // const IASUser = 'SRMELLO'
-
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
-
-    const response = await context.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ["externalCode", "cust_RELATED_USER"],
-        query
-    );
-    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
-    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-
-    let cFilter = `$filter=(cust_START_TME ge ${cDate}T00:00:00Z and cust_START_TME le ${cDate}T23:59:59Z) and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`
-    cFilter += cExpand
-    return cFilter
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/EndTeam.js":
-/*!*****************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/EndTeam.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ fimTurma)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function fimTurma(clientAPI) {
-    var dDate = new Date(clientAPI.binding.cust_END_TME)
-    var cRet = "Término: " + dDate.getDate().toString().padStart(2, "0") + "/" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "/" + dDate.getFullYear().toString()
-    cRet += " às " + dDate.getHours().toString().padStart(2,"0") +":"+ dDate.getMinutes().toString().padStart(2,"0") + "h"
-   return(cRet)
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/GetExtCode.js":
-/*!********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/GetExtCode.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetExtCode)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function GetExtCode(clientAPI) {
-    let clientData = clientAPI.getAppClientData();
-    
-    alert(clientData.ExtCode)
-    return clientData.ExtCode || ""
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/GetSFUser.js":
-/*!*******************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/GetSFUser.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetSFUser)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function GetSFUser(clientAPI) {
-    let clientData = clientAPI.getAppClientData();
-
-    alert(clientData.SFUser)
-    return clientData.SFUser || ""
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/GetThreeTeams.js":
-/*!***********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/GetThreeTeams.js ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetThreeTeams)
-/* harmony export */ });
-async function GetThreeTeams(context) {
-    const IASUser = context.evaluateTargetPath("#Application/#AppData/UserId");
-    // const IASUser = 'SRMELLO'
-
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
-
-    const response = await context.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ["externalCode", "cust_RELATED_USER"],
-        query
-    );
-    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
-    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-
-    var cTop = "&$top=3"
-    var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
-    var dDate = new Date();
-    var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
-    // var cFilter = "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'";
-    var cFilter = `$filter=cust_END_TME ge ${cDate}T00:00:00Z and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`
-    var cFilter
-
-    cFilter += cTop + cExpand
-
-    return cFilter;
-}
-
-// export default function GetThreeTeams(context) {    
-//     var cTop = "&$top=3"
-//     var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
-//     var dDate = new Date();
-//     var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
-//     var cFilter =  "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'";
-//     var cFilter
-//     cFilter += cTop + cExpand
-
-//     return cFilter;
-// }
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/SetUserIds.js":
-/*!********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/SetUserIds.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SetUserIds)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function SetUserIds(clientAPI) {
-     const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-    //  const IASUser = "ABILIK"
-     const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
-     const response = await clientAPI.read(
-         "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-         "cust_Instrutores",
-         ["externalCode", "cust_RELATED_USER"],
-         query
-     );
- 
-     const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
-     const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-
-     let clientData = clientAPI.getAppClientData();
-     clientData.SFUser = SFUser;
-     clientData.ExtCode = ExtCode;
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/StartTeam.js":
-/*!*******************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/StartTeam.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ InicioTurma)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function InicioTurma(clientAPI) {
-    var dDate = new Date(clientAPI.binding.cust_START_TME) 
-    var cRet  = 'Início: ' + dDate.getDate().toString().padStart(2,"0") + "/" + (dDate.getMonth()+1).toString().padStart(2,"0") + "/" + dDate.getFullYear().toString()
-    cRet += " às " + dDate.getHours().toString().padStart(2,"0") +":"+ dDate.getMinutes().toString().padStart(2,"0") + "h"
-    return(cRet)
-}
- 
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/TeamDescription.js":
-/*!*************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/TeamDescription.js ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ TeamDescription)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function TeamDescription(clientAPI) {
-    var dDate = new Date(clientAPI.binding.cust_START_TME) 
-    var cRet  = 'Início: ' + dDate.getDate().toString().padStart(2,"0") + "/" + (dDate.getMonth()+1).toString().padStart(2,"0") + "/" + dDate.getFullYear().toString()
-    cRet += " às " + dDate.getHours().toString().padStart(2,"0") +":"+ dDate.getMinutes().toString().padStart(2,"0") + "h"
-    
-    cRet += "\n"
-
-    dDate = new Date(clientAPI.binding.cust_END_TME) 
-    cRet += 'Fim: ' + dDate.getDate().toString().padStart(2,"0") + "/" + (dDate.getMonth()+1).toString().padStart(2,"0") + "/" + dDate.getFullYear().toString()
-    cRet += " às " + dDate.getHours().toString().padStart(2,"0") +":"+ dDate.getMinutes().toString().padStart(2,"0") + "h"
-
-    return(cRet)
-}
- 
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js":
-/*!*************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js ***!
-  \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ UpdateQueryWithSelectedDate)
-/* harmony export */ });
-
-async function UpdateQueryWithSelectedDate(clientAPI) {
-    try {
-        const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-        // const IASUser = 'SRMELLO'
-
-        const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
-
-        const response = await clientAPI.read(
-            "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-            "cust_Instrutores",
-            ["externalCode", "cust_RELATED_USER"],
-            query
-        );
-        const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
-        const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-
-        let selectedDate = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionCalendar1").getSelectedDate();
-        let year = selectedDate.getFullYear();
-        let month = ("0" + (selectedDate.getMonth() + 1)).slice(-2);
-        let day = ("0" + selectedDate.getDate()).slice(-2);
-        let formattedDate = year + '-' + month + '-' + day;
-        var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
-        let filterQuery = `$filter=(cust_START_TME ge ${formattedDate}T00:00:00Z and cust_START_TME le ${formattedDate}T23:59:59Z) and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`;
-
-        filterQuery += cExpand
-
-        let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
-        let oTarget = oCardObj.getTargetSpecifier();
-        oTarget.setQueryOptions(filterQuery);
-        oCardObj.setTargetSpecifier(oTarget);
-    } catch (error) {
-        alert("An error occurred: " + error.message);
-    }
-}
-
-// export default function UpdateQueryWithSelectedDate(clientAPI) {
-//     try {
-//         let selectedDate = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionCalendar1").getSelectedDate();
-//         let year = selectedDate.getFullYear();
-//         let month = ("0" + (selectedDate.getMonth() + 1)).slice(-2);
-//         let day = ("0" + selectedDate.getDate()).slice(-2);
-//         let formattedDate = year + '-' + month + '-' + day;
-//         var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
-//         let filterQuery = "$filter=cust_LMS ne 'S' and cust_Status ne 'cancelada' and externalName ne null and cust_START_TME ge " + formattedDate + "T00:00:00Z and cust_START_TME le " + formattedDate + "T23:59:59Z";
-//         filterQuery += cExpand
-//         let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
-//         let oTarget = oCardObj.getTargetSpecifier();
-//         oTarget.setQueryOptions(filterQuery);
-//         oCardObj.setTargetSpecifier(oTarget);
-//     } catch (error) {
-//         alert("An error occurred: " + error.message);
-//     }
-// }
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Main/WelcomeMessage.js":
-/*!************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Main/WelcomeMessage.js ***!
-  \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ WelcomeMessage)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-
-function WelcomeMessage(context) {
-    var dToday = new Date()
-    var cRet   = ''
-
-    if (dToday.getHours() >= 12 && dToday.getHours() < 18 ){
-        cRet = "Boa tarde, "
-    }else if(dToday.getHours() >= 18 && dToday.getHours() < 24 ){
-        cRet = "Boa noite, "
-    }else{
-        cRet = "Bom dia, "
-    }
-        
-    cRet += context.evaluateTargetPath("#Application/#AppData/UserId");
-    return (cRet);
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Service/Initialize.js":
-/*!***********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Service/Initialize.js ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Initialize)
-/* harmony export */ });
-function Initialize(context) {
-
-    // Perform pre data initialization task
-
-    // Initialize all your Data sources
-    let _CAP_SERVICE_SF_LMS = context.executeAction('/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/InitializeOffline.action');
-
-    //You can add more service initialize actions here
-
-    return Promise.all([_CAP_SERVICE_SF_LMS]).then(() => {
-        // After Initializing the DB connections
-
-        // Display successful initialization  message to the user
-        return context.executeAction({
-
-            "Name": "/Attendance_List/Actions/GenericToastMessage.action",
-            "Properties": {
-                "Message": "Application Services Initialized",
-                "Animated": true,
-                "Duration": 1,
-                "IsIconHidden": true,
-                "NumberOfLines": 1
-            }
-        });
-    }).catch(() => {
-        return false;
-    });
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/AddParticipantsToList.js":
-/*!********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/AddParticipantsToList.js ***!
-  \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ AddParticipantsToList)
-/* harmony export */ });
-/* harmony import */ var _Application_Cuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Application/Cuid */ "./build.definitions/Attendance_List/Rules/Application/Cuid.js");
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-
-
-async function AddParticipantsToList(clientAPI) {
-
-    try {
-        const custAlunosQuery = `$filter=cust_Turma eq '${clientAPI.binding.externalCode}'`
-        const custAlunos = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_ListadePresenca', ['cust_Aluno'], custAlunosQuery)
-        const alunosList = custAlunos.map(i => i.cust_Aluno)
-
-        const partners = clientAPI.evaluateTargetPath('#Control:FormCellListPicker0/#Value/')
-
-        if (partners.length === 0) {
-            return alert("nenhum participante selecionado")
-        }
-
-        const firstDay = clientAPI.binding.cust_START_TME
-        const lastDay = clientAPI.binding.cust_END_TME
-
-        const partnerList = partners.map((i, index) => {
-            if (alunosList.includes(i.ReturnValue)) return
-
-            const externalCode = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
-            const props = {
-                "externalCode": externalCode,
-                "cust_Turma": clientAPI.binding.externalCode,
-                "cust_Aluno": i.ReturnValue,
-                "externalName": i.BindingObject.cust_fname + ' ' + (i.BindingObject.cust_mname ? (i.BindingObject.cust_mname + ' ') : '') + (i.BindingObject.cust_lname ? i.BindingObject.cust_lname : ''),
-                "cust_startdate": new Date(firstDay).toISOString(),
-                "cust_enddate": new Date(lastDay).toISOString(),
-            }
-            return props
-        }).filter(i => i)
-
-        const query = `$filter=cust_turma eq '${clientAPI.binding.externalCode}'`
-        const dailyList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_listadiaria",
-            [
-                "externalCode",
-                "cust_turma",
-                "cust_startdate",
-                "cust_enddate",
-                "cust_totalhoras"
-            ], query)
-
-        const presencalmsList = dailyList.map((d) =>
-            partnerList.map((p) => {
-                const endDate = new Date(d.cust_enddate)
-                endDate.setHours(0, 0, 0, 0)
-                const today = new Date()
-                today.setHours(0, 0, 0, 0)
-
-                return ({
-                    "externalCode": (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])(),
-                    "cust_enddate": new Date(d.cust_enddate).toISOString(),
-                    "cust_startdate": new Date(d.cust_startdate).toISOString(),
-                    "cust_ficha": p.externalCode,
-                    "cust_segmento": d.externalCode,
-                    "cust_turma": d.cust_turma,
-                    "cust_presenca": (today.getTime() <= endDate.getTime()) ? "presente" : "ausente"
-                })
-            })
-        ).reduce((acc, current) => acc.concat(current), [])
-
-        await Promise.all(partnerList.map(prop => { // criar lista de presença (ficha)
-
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/Teams/CreatePresenceList.action",
-                "Properties": {
-                    "Properties": prop,
-                }
-            })
-        }))
-
-        // await Promise.all(dailyList.map(prop => { // criar lista diaria
-
-        //     return clientAPI.executeAction({
-        //         "Name": "/Attendance_List/Actions/Teams/CreateDailyList.action",
-        //         "Properties": {
-        //             "Properties": prop,
-        //         }
-        //     })
-        // }))
-
-        await Promise.all(presencalmsList.map(prop => { // criar presença lms
-
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/Teams/CreatePresencalmsEntity.action",
-                "Properties": {
-                    "Properties": prop,
-                }
-            })
-        }))
-
-        clientAPI.executeAction("/Attendance_List/Actions/ClosePage.action")
-
-    } catch (error) {
-
-        return clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Adição de participante",
-                "Message": `Erro: ${error.message}`
-            }
-        });
-    }
-
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/FormatEndDate.js":
-/*!*******************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/FormatEndDate.js ***!
-  \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetEndDate)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function GetEndDate(clientAPI) {
-    const endDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePickerEndDate/#Value")
-
-    return `/Date(${new Date(endDate).getTime()})/`
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/FormatStartDate.js":
-/*!*********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/FormatStartDate.js ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ FormatStartDate)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function FormatStartDate(clientAPI) {
-    const startDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePickerStartDate/#Value")
-
-    return `/Date(${new Date(startDate).getTime()})/`
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/GenerateId/GenerateId.js":
-/*!***************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/GenerateId/GenerateId.js ***!
-  \***************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GenerateId)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GenerateId(clientAPI) {
-    try {
-        const entity = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_Turmas', ['externalCode'])
-        const onlyExternalCodes = entity
-            .map(i => i.externalCode)
-
-        alert(onlyExternalCodes)
-
-        const externalCodes = onlyExternalCodes  
-            .filter(i => String(i) != 'NaN')
-            .sort((a, b) => a - b);
-
-        const onlyExternalCode = externalCodes.find((_, index) => index == (externalCodes.length - 1))
-        
-        return String(onlyExternalCode + 1)
-        
-    } catch (error) {
-        alert(error)
-    }
-    
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/GetDefaultInstructor.js":
-/*!**************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/GetDefaultInstructor.js ***!
-  \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetDefaultInstructor)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetDefaultInstructor(clientAPI) {
-    const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
-    const response = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ["externalCode"],
-        query
-    );
-    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
-
-    return ExtCode
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/GetUserId.js":
-/*!***************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/GetUserId.js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ getUserId)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function getUserId(clientAPI) {
-    let userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId');
-    alert(userId);
-
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/QueryCursos.js":
-/*!*****************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/QueryCursos.js ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ QueryCursos)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function QueryCursos(clientAPI) {
-    const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-    // const IASUser = "ABILIK"
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
-    const response = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ["externalCode", "cust_RELATED_USER"],
-        query
-    );
-    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
-    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-
-    const search = clientAPI.searchString || ''
-
-    let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${ExtCode}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${SFUser}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null&$search='${search}'`
-    return cFilter
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/QueryInstructorList.js":
-/*!*************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/QueryInstructorList.js ***!
-  \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ QueryInstructorList)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function QueryInstructorList(clientAPI) {
-    let userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId');
-
-    return `$filter=cust_RELATED_USER ne '${userId}'`
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/QueryParticipants.js":
-/*!***********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/QueryParticipants.js ***!
-  \***********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ QueryParticipants)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function QueryParticipants(clientAPI) {
-    const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-    // const IASUser = "ABILIK"
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
-    const response = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ["externalCode", "cust_RELATED_USER"],
-        query
-    );
-    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
-    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-
-    const search = clientAPI.searchString || ''
-
-    let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}'&$search='${search}'`
-    return cFilter
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/QuerySecondaryInstructor.js":
-/*!******************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/QuerySecondaryInstructor.js ***!
-  \******************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ QuerySecondaryInstructor)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function QuerySecondaryInstructor(clientAPI) {
-    const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
-    const response = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ["externalCode", "cust_RELATED_USER"],
-        query
-    );
-    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
-    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-
-    const search = clientAPI.searchString || ''
-
-    let cFilter = `$filter=cust_RELATED_USER ne '${ExtCode}' and cust_RELATED_USER ne '${SFUser}' and externalCode ne '${SFUser}' and externalCode ne '${ExtCode}'&$search='${search}'`
-
-    return cFilter
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/SetInitialBinding.js":
-/*!***********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/SetInitialBinding.js ***!
-  \***********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SetInitialBinding)
-/* harmony export */ });
-function SetInitialBinding(context) {
-
-    function uuidv4() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = (Math.random() * 16) | 0; // Gera um número aleatório de 0-15
-            const v = c === 'x' ? r : (r & 0x3) | 0x8; // Ajusta os bits para conformidade com UUID v4
-            return v.toString(16); // Retorna o valor em hexadecimal
-        });
-    }
-
-    // Retorna o UUID gerado
-    return uuidv4();
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Delete.js":
-/*!*****************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Delete.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Delete)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function Delete(clientAPI) {
-    try {
-        clientAPI.executeAction("/Attendance_List/Actions/Teams/DeleteTeam.action").then(() => {
-            clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Exclusão de turma",
-                    "Message": "Turma excluida com sucesso!",
-                    "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
-                },
-            });
-        })
-            .catch((e) => {
-                clientAPI.executeAction({
-                    "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                    "Properties": {
-                        "Title": "Exclusão de turma",
-                        "Message": `Erro: ${e}`
-                    }
-                });
-            })
-
-    } catch (error) {
-
-        return clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Exclusão de turma",
-                "Message": `Erro: ${error.message}`
-            }
-        });
-    }
-
-}
-
-
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/FormatDate.js":
-/*!*****************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/FormatDate.js ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ FormatDate)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function FormatDate(clientAPI) {
-    const date = new Date(clientAPI.binding.cust_startdate)
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    
-    return `${day}/${month}/${year}`;
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js":
-/*!************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js ***!
-  \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetAlunoFirstName)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetAlunoFirstName(clientAPI) {
-    const query = `$filter=externalCode eq '${clientAPI.binding.cust_Aluno}'`
-    const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Alunos", ["cust_fname"], query)
-    const partner = response.find(i => i.cust_fname)
-    return `${partner.cust_fname}`
-
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetAlunoName.js":
-/*!*******************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetAlunoName.js ***!
-  \*******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetAlunoName)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetAlunoName(clientAPI) {
-    const query = `$filter=externalCode eq '${clientAPI.binding.cust_Aluno}'`
-    const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Alunos", ["cust_lname"], query)
-    const partner = response.find(i => i.cust_lname)
-    return `${partner.cust_lname}`
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetInstNav1.js":
-/*!******************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetInstNav1.js ***!
-  \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetInstNav1)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetInstNav1(clientAPI) {
-    const query = `$filter=externalCode eq '${clientAPI.binding.cust_INST_ID1}'`
-    const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["cust_fname", "cust_lname"], query)
-    const item = entity.find(i => Boolean(i.cust_fname) && Boolean(i.cust_lname))
-    const label = `${item.cust_fname} ${item.cust_lname}`
-
-    return item ? label : '-' 
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetInstNav2.js":
-/*!******************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetInstNav2.js ***!
-  \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetInstNav1)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetInstNav1(clientAPI) {
-    const query = `$filter=externalCode eq '${clientAPI.binding.cust_INST_ID2}'`
-    const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["cust_fname", "cust_lname"], query)
-    const item = entity.find(i => Boolean(i.cust_fname) && Boolean(i.cust_lname))
-    const label = `${item.cust_fname} ${item.cust_lname}`
-
-    return item ? label : '-' 
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetPartnerNote.js":
-/*!*********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetPartnerNote.js ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetPartnerNote)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-
-function format (value) {
-    if (value.length === 1) {
-        return `  ${value}`
-    }
-    if (value.length === 2) {
-        return ` ${value}`
-    }
-    if (value.length === 3) {
-        return value
-    }
-    return ` - `
-}
-
-function GetPartnerNote(clientAPI) {
-    const note = clientAPI.binding.cust_nota
-
-    return clientAPI.binding.cust_nota ? `Nota:${format(note)}` : 'Nota: - '
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js":
-/*!************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js ***!
-  \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetTeamDetailsDay)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetTeamDetailsDay(clientAPI) {
-    const query = `$filter=cust_turma eq '${clientAPI.binding.cust_turma}'&$orderby=cust_startdate`
-    const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_listadiaria", ["cust_startdate"], query)
-
-    const dayIndex = entity.map(i => i.cust_startdate).indexOf(clientAPI.binding.cust_startdate)
-
-    return `Dia ${dayIndex + 1}`
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamStatus.js":
-/*!********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamStatus.js ***!
-  \********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetTeamStatus)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetTeamStatus(clientAPI) {
-    let appSettings = clientAPI.nativescript.appSettingsModule
-    var listDay = appSettings.getString('day');
-    var ficha = clientAPI.binding.externalCode
-
-    var query = `$filter=cust_ficha eq '${ficha}' and cust_segmento eq '${listDay}'`
-
-    const presenceList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_presencalms", ["externalCode", "cust_presenca"], query)
-    
-    const presenceListItem = presenceList.find(i => i.externalCode)
-
-    if(presenceListItem.cust_presenca == 'ausente'){
-        return " ausente"
-    }
-    return "presente"
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/IsAddParticipantsButtonEnable.js":
-/*!************************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/IsAddParticipantsButtonEnable.js ***!
-  \************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ IsAddParticipantsButtonEnable)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function IsAddParticipantsButtonEnable(clientAPI) {
-
-    // const date1 = new Date(clientAPI.binding.cust_START_TME);
-    const date2 = new Date(clientAPI.binding.cust_END_TME);
-
-    // const year = date1.getFullYear();
-    // const month = date1.getMonth();
-    // const day = date1.getDate();
-
-    // const hours = date2.getHours();
-    // const minutes = date2.getMinutes();
-
-    // const combinedDate = new Date(year, month, day, hours, minutes);
-
-    // const startTeam = new Date(combinedDate).getTime()
-    // const today = new Date().getTime()
-    // if (startTeam < today) return false
-    // return true
-
-    const endTeam = new Date(date2).getTime()
-    const today = new Date().getTime()
-
-    if (endTeam < today) return false
-    return true
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/OnPartnerPress.js":
-/*!*********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/OnPartnerPress.js ***!
-  \*********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ OnPartnerPress)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function OnPartnerPress(clientAPI) {
-    alert(JSON.stringify(clientAPI.binding))
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/SetStorageVariable.js":
-/*!*************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/SetStorageVariable.js ***!
-  \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SetStorageVariable)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function SetStorageVariable(clientAPI) {
-    try {
-
-        let appSettings = clientAPI.nativescript.appSettingsModule;
-        let item = clientAPI.getPageProxy().getActionBinding().externalCode
-        let actionBinding = clientAPI.getPageProxy().getActionBinding()
-        appSettings.setString('day', String(item));
-
-        await clientAPI.executeAction("/Attendance_List/Actions/Teams/NavToDailyAttendanceList.action")
-
-    } catch (e) {
-        alert(e)
-    }
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/FormatEndDate.js":
-/*!************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/FormatEndDate.js ***!
-  \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ FormatEndDate)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function FormatEndDate(clientAPI) {
-    const endDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePicker1/#Value")
-
-    return `/Date(${new Date(endDate).getTime()})/`
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/FormatStartDate.js":
-/*!**************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/FormatStartDate.js ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ FormatStartDate)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function FormatStartDate(clientAPI) {
-    
-    const startDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePicker0/#Value")
-
-    return `/Date(${new Date(startDate).getTime()})/`
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/GetAluno.js":
-/*!*******************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/GetAluno.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetAluno)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetAluno(clientAPI) {
-    const query = `$filter=externalCode eq '${clientAPI.binding.cust_Aluno}'`
-    const value = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Alunos", ["externalName"], query)
-    const externalName = value.find(i => i.externalName)
-    return externalName.externalName
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/GetFullName.js":
-/*!**********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/GetFullName.js ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetFullName)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function GetFullName(clientAPI) {
-    var cRet = ''
-    
-    cRet = clientAPI.binding.externalCode + ' ' + clientAPI.binding.cust_fname + ' ' + (clientAPI.binding.cust_mname ? (clientAPI.binding.cust_mname + ' ') : '') + (clientAPI.binding.cust_lname ? clientAPI.binding.cust_lname : '')
-    
-    return cRet
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/GetIntervalo.js":
-/*!***********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/GetIntervalo.js ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetIntervalo)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-
-function formatarHoras(valor) {
-    if (!valor || isNaN(valor) || valor <= 0) {
-        return "0";
-    }
-    
-    const horas = Math.floor(valor);
-    const minutos = Math.round((valor - horas) * 60);
-    
-    if (horas > 0 && minutos > 0) {
-        return `${horas}h ${minutos}m`;
-    } else if (horas > 0) {
-        return `${horas}h`;
-    } else if (minutos > 0) {
-        return `${minutos}m`;
-    } else {
-        return "0";
-    }
-}
-
-function GetIntervalo(clientAPI) {
-    const interval = String(Number(clientAPI.binding.cust_intervalo) / 60)
-
-    return formatarHoras(interval)
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/ProcessReturnValue.js":
-/*!*****************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/ProcessReturnValue.js ***!
-  \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ProcessReturnValue)
-/* harmony export */ });
-function ProcessReturnValue(context) {
-    // Retrieve selected employees (cust_matricula) from the list picker
-    // let selectedEmployees = context.evaluateTargetPath("#Control:FormCellListPicker0/#SelectedItems");
-
-    // Retrieve externalCode from the page binding for cust_Turma
-    // let cust_Turma = context.evaluateTargetPath("#Page:TurmaEdit/#Binding/externalCode");
-
-    // Map each selected employee to the required properties
-    /* return selectedEmployees.map(employee => {
-        let cust_Aluno = employee.cust_matricula;
-        let externalCode = `${cust_Turma}${cust_Aluno}`;
-        let cust_AlunosNav = `$filter=externalCode eq '${cust_Aluno}'`;
-
-        return {
-            cust_Aluno,
-            externalCode,
-            cust_AlunosNav
-        };
-    }); */
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/QueryFicha.js":
-/*!*********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/QueryFicha.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ QueryFicha)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function QueryFicha(clientAPI) {
-    const queryTeam = `$filter=externalCode eq '${clientAPI.binding.cust_turma}'`;
-    const responseTeam = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Turmas",
-        ['cust_INST_ID1', 'cust_INST_ID2'],
-        queryTeam
-    );
-    const InstCode1 = responseTeam.find(i => i.cust_INST_ID1)?.cust_INST_ID1 || '';
-    const queryInst1 = `$filter=externalCode eq '${InstCode1}' or cust_RELATED_USER eq '${InstCode1}'`;
-    const responseInst1 = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ['externalCode', 'cust_RELATED_USER'],
-        queryInst1
-    );
-
-    const InstCode2 = responseTeam.find(i => i.cust_INST_ID2)?.cust_INST_ID2 || '';
-    const queryInst2 = `$filter=externalCode eq '${InstCode2}' or cust_RELATED_USER eq '${InstCode2}'`;
-    const responseInst2 = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ['externalCode', 'cust_RELATED_USER'],
-        queryInst2
-    );
-
-    const Inst1 = responseInst1.find(i => i.externalCode)
-
-    const Inst2 = responseInst2.find(i => i.externalCode)
-
-    let AlunoFilter = ''
-
-    if (Inst1 && Inst1.externalCode) {
-        AlunoFilter += ` and cust_Aluno ne '${Inst1.externalCode}'`
-    }
-    
-    if (Inst1 && Inst1.cust_RELATED_USER) {
-        AlunoFilter += ` and cust_Aluno ne '${Inst1.cust_RELATED_USER}'`
-    }
-
-    if (Inst2 && Inst2.externalCode) {
-        AlunoFilter += ` and cust_Aluno ne '${Inst2.externalCode}'`
-    }
-    
-    if (Inst2 && Inst2.cust_RELATED_USER) {
-        AlunoFilter += ` and cust_Aluno ne '${Inst2.cust_RELATED_USER}'`
-    }
-
-    const cFilter = `$filter=cust_Turma eq '${clientAPI.binding.cust_turma}'${AlunoFilter}`
-
-    return cFilter
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/QueryFichaAddParticipants.js":
-/*!************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/QueryFichaAddParticipants.js ***!
-  \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ QueryFichaAddParticipants)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function QueryFichaAddParticipants(clientAPI) {
-    const InstCode1 = clientAPI.binding.cust_INST_ID1 || '';
-    const queryInst1 = `$filter=externalCode eq '${InstCode1}' or cust_RELATED_USER eq '${InstCode1}'`;
-    const responseInst1 = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ['externalCode', 'cust_RELATED_USER'],
-        queryInst1
-    );
-
-    const InstCode2 = clientAPI.binding.cust_INST_ID2 || '';
-    const queryInst2 = `$filter=externalCode eq '${InstCode2}' or cust_RELATED_USER eq '${InstCode2}'`;
-    const responseInst2 = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ['externalCode', 'cust_RELATED_USER'],
-        queryInst2
-    );
-
-    const Inst1 = responseInst1.find(i => i.externalCode)
-
-    const Inst2 = responseInst2.find(i => i.externalCode)
-
-    let AlunoFilter = ''
-
-    if (Inst1 && Inst1.externalCode) {
-        AlunoFilter += ` and cust_Aluno ne '${Inst1.externalCode}'`
-    }
-    
-    if (Inst1 && Inst1.cust_RELATED_USER) {
-        AlunoFilter += ` and cust_Aluno ne '${Inst1.cust_RELATED_USER}'`
-    }
-
-    if (Inst2 && Inst2.externalCode) {
-        AlunoFilter += ` and cust_Aluno ne '${Inst2.externalCode}'`
-    }
-    
-    if (Inst2 && Inst2.cust_RELATED_USER) {
-        AlunoFilter += ` and cust_Aluno ne '${Inst2.cust_RELATED_USER}'`
-    }
-
-    const cFilter = `$filter=cust_Turma eq '${clientAPI.binding.externalCode}'${AlunoFilter}`
-
-    return cFilter
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/QueryParticipantsAddition.js":
-/*!************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/QueryParticipantsAddition.js ***!
-  \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ QueryParticipantsAddition)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function QueryParticipantsAddition(clientAPI) {
-    const queryInst1 = `$filter=externalCode eq '${clientAPI.binding.cust_INST_ID1}' or cust_RELATED_USER eq '${clientAPI.binding.cust_INST_ID1}'`;
-    const responseInst1 = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ["externalCode", "cust_RELATED_USER"],
-        queryInst1
-    );
-    const ExtCodeInst1 = responseInst1.find(i => i.externalCode)?.externalCode || '';
-    const SFUserInst1 = responseInst1.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-
-    let filterInst1 = `cust_matricula ne '${ExtCodeInst1}' and externalCode ne '${ExtCodeInst1}' and cust_matricula ne '${SFUserInst1}' and externalCode ne '${SFUserInst1}'`
-
-    const queryInst2 = `$filter=externalCode eq '${clientAPI.binding.cust_INST_ID2}' or cust_RELATED_USER eq '${clientAPI.binding.cust_INST_ID2}'`;
-    const responseInst2 = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ["externalCode", "cust_RELATED_USER"],
-        queryInst2
-    );
-    const ExtCodeInst2 = responseInst2.find(i => i.externalCode)?.externalCode || '';
-    const SFUserInst2 = responseInst2.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-
-    let filterInst2 = `cust_matricula ne '${ExtCodeInst2}' and externalCode ne '${ExtCodeInst2}' and cust_matricula ne '${SFUserInst2}' and externalCode ne '${SFUserInst2}'`
-
-    const search = clientAPI.searchString || ''
-
-    let cFilter = `$filter=${filterInst1} and ${filterInst2}&$search='${search}'`
-
-    return cFilter
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/QueryShowAllTeams.js":
-/*!****************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/QueryShowAllTeams.js ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ QueryShowAllTeams)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-
-async function QueryShowAllTeams(clientAPI) {
-    const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-    // const IASUser = 'SRMELLO'
-
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
-
-    const response = await clientAPI.read(
-        "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
-        "cust_Instrutores",
-        ["externalCode", "cust_RELATED_USER"],
-        query
-    );
-    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
-    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
-    // const userFilter = ` and cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}' `;
-
-    var cFilter = `$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=(cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`
-    // let cFilter = "?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada' "
-    // cFilter += userFilter
-    cFilter += "&$orderby=cust_START_TME"
-    return cFilter
-}
-// export default function QueryShowAllTeams(clientAPI) {
-//     return "?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'&$orderby=cust_START_TME"
-
-// }
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/SaveCreate.js":
-/*!*********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/SaveCreate.js ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SaveCreate)
-/* harmony export */ });
-/* harmony import */ var _Application_Cuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Application/Cuid */ "./build.definitions/Attendance_List/Rules/Application/Cuid.js");
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-
-
-async function SaveCreate(clientAPI) {
-
-    function gerarPresencaCurso(dataHoraInicio, dataHoraFim) {
-        const inicio = new Date(dataHoraInicio);
-        const fim = new Date(dataHoraFim);
-
-        // Extrair o horário inicial e final
-        const horarioInicial = {
-            horas: inicio.getHours(),
-            minutos: inicio.getMinutes()
-        };
-
-        const horarioFinal = {
-            horas: fim.getHours(),
-            minutos: fim.getMinutes()
-        };
-
-        // Normalizar as datas para o horário fixo
-        inicio.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
-        fim.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
-
-        const listaPresenca = [];
-        let dataAtual = new Date(inicio);
-
-        // Gerar lista de presença
-        while (dataAtual <= fim) {
-            const dataInicioDia = new Date(dataAtual);
-            const dataFimDia = new Date(dataAtual);
-
-            // Configurar o horário inicial e final do dia
-            dataInicioDia.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
-            dataFimDia.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
-
-            // Garantir que o último dia não ultrapasse a data final
-            if (dataFimDia > fim) {
-                dataFimDia.setTime(fim.getTime());
-            }
-
-            // Adicionar o dia à lista de presença
-            listaPresenca.push({
-                inicio: dataInicioDia,
-                fim: dataFimDia
-            });
-
-            // Avançar para o próximo dia
-            dataAtual.setDate(dataAtual.getDate() + 1);
-        }
-
-        return listaPresenca;
-    }
-
-    try {
-
-        clientAPI.showActivityIndicator()
-
-        const teamId = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
-        const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
-        // const workload = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyWorkload/#Value')
-        const intervalValue = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPicker1/#Value').find(i => i)
-
-        const interval = intervalValue ? intervalValue.ReturnValue : null
-
-        const firstDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerStartDate/#Value')
-        const lastDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerEndDate/#Value')
-
-        const courseDays = gerarPresencaCurso(new Date(firstDay).toISOString(), new Date(lastDay).toISOString())
-        /* const userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId'); */
-        const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#Value').find(i => i)
-
-        if (!cust_cursos_id) {
-            clientAPI.dismissActivityIndicator();
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao criar turma",
-                    "Message": "O curso é obrigatório para realizar a criação da turma!"
-                },
-            });
-        }
-
-        const query = `$filter=externalCode eq '${cust_cursos_id.ReturnValue}'`
-        const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID", "cust_CPNT_TITLE"], query)
-
-        function calculateHoursDiff(inicio, fim) {
-            const init = new Date(inicio);
-            const end = new Date(fim);
-
-            const horarioInicial = {
-                horas: init.getHours(),
-                minutos: init.getMinutes()
-            };
-
-            const horarioFinal = {
-                horas: end.getHours(),
-                minutos: end.getMinutes()
-            };
-
-            const newInitDate = new Date(inicio)
-            const newEndDate = new Date(inicio)
-
-            newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
-            newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
-
-            const diffMs = newEndDate - newInitDate;
-            return diffMs / (1000 * 60 * 60);
-        }
-
-        const diferencaHoras = calculateHoursDiff(firstDay, lastDay);
-        const workload = !interval ? diferencaHoras : diferencaHoras - (Number(interval) / 60);
-
-        if (diferencaHoras < (Number(interval) / 60)) {
-            clientAPI.dismissActivityIndicator();
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao criar turma",
-                    "Message": "O intervalo não pode ser maior que o total de horas da turma!"
-                },
-            });
-        }
-
-        if (diferencaHoras < 0) {
-            clientAPI.dismissActivityIndicator();
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao criar turma",
-                    "Message": "A hora inicial não pode ser maior que a hora final!"
-                },
-            });
-        }
-
-        if (workload > 8) {
-            clientAPI.dismissActivityIndicator();
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao criar turma",
-                    "Message": "A carga horária não pode passar as 8 horas!"
-                },
-            });
-        }
-
-        if (diferencaHoras > 4 && !interval) {
-            clientAPI.dismissActivityIndicator();
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao criar turma",
-                    "Message": "Turma com mais de 4 horas de carga horária precisa ter intervalo!"
-                },
-            });
-        }
-        /* const queryInst = `$filter=cust_RELATED_USER eq '${userId}'`
-        const instructors = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode"], queryInst)
-
-        const inst1 = instructors.find(i => i.externalCode) */
-        const curse = entity.find(i => i.cust_CPNT_TYP_ID)
-
-        const partnerList = partners.map((i, index) => {
-            const externalCode = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
-            const props = {
-                "externalCode": externalCode,
-                "cust_Turma": teamId,
-                "cust_Aluno": i.ReturnValue,
-                "externalName": i.BindingObject.cust_fname + ' ' + (i.BindingObject.cust_mname ? (i.BindingObject.cust_mname + ' ') : '') + (i.BindingObject.cust_lname ? i.BindingObject.cust_lname : '')
-            }
-            return props
-        })
-
-        const dailyList = courseDays.map((i, index) => {
-            const externalCode = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
-            const props = {
-                "externalCode": externalCode,
-                "cust_turma": teamId,
-                "cust_startdate": new Date(i.inicio).toISOString(),
-                "cust_enddate": new Date(i.fim).toISOString(),
-                "cust_totalhoras": String(Number(workload.toFixed(2))),
-                "cust_intervalo": interval,
-                "cust_segCode": String(index + 1)
-            }
-            return props
-        })
-
-        const presencalmsList = dailyList.flatMap((d) =>
-            partnerList.map((p) => ({
-                "externalCode": (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])(),
-                "cust_enddate": new Date(d.cust_enddate).toISOString(),
-                "cust_startdate": new Date(d.cust_startdate).toISOString(),
-                "cust_ficha": p.externalCode,
-                "cust_segmento": d.externalCode,
-                "cust_turma": d.cust_turma,
-                "cust_presenca": "presente"
-            }))
-        )
-
-        // if (!workload) {
-        //     return await clientAPI.executeAction({
-        //         "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-        //         "Properties": {
-        //             "Title": "Erro ao criar turma",
-        //             "Message": "O campo carga horária obrigatório para a criação de turma!"
-        //         },
-        //     });
-        // }
-
-        // if (workload > 8) {
-        //     return await clientAPI.executeAction({
-        //         "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-        //         "Properties": {
-        //             "Title": "Erro ao criar turma",
-        //             "Message": "Turmas não podem ter mais de 8 horas!"
-        //         },
-        //     });
-        // }
-        // if (workload > 4 && !interval) {
-        //     return await clientAPI.executeAction({
-        //         "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-        //         "Properties": {
-        //             "Title": "Erro ao criar turma",
-        //             "Message": "Turmas com mais de 4 horas precisam ter intervalo!"
-        //         },
-        //     });
-        // }
-
-
-        /* 
-        Validação do Datepicker da data inicial
-        Regra: Não pode criar turma iniciando com data diferente da data atual
-        */
-        const startDateTime = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerStartDate/#Value') // Valor do DatePicker
-        const inputDate = new Date(startDateTime) // Valor do DatePicker formatado no new Date
-        inputDate.setHours(0, 0, 0, 0) // Setando o tempo igual a zero pois será comparado apenas a data
-        const currentDate = new Date() // Data atual
-        currentDate.setHours(0, 0, 0, 0) // Setando o tempo igual a zero pois será comparado apenas a data
-
-        if (inputDate.getTime() !== currentDate.getTime()) { // Se a data inicial for diferente da data atual retorna mensagem de erro
-            clientAPI.dismissActivityIndicator();
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao criar turma",
-                    "Message": "A data inicial não pode ser diferente da data atual!"
-                },
-            });
-        }
-
-        // Final da validação da data inicial
-
-        await Promise.all(partnerList.map(prop => { // criar lista de presença (ficha)
-
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/Teams/CreatePresenceList.action",
-                "Properties": {
-                    "Properties": prop,
-                }
-            })
-        }))
-        
-        await Promise.all(dailyList.map(prop => { // criar lista diaria
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/Teams/CreateDailyList.action",
-                "Properties": {
-                    "Properties": prop,
-                }
-            })
-        }))
-        
-        await clientAPI.executeAction({ // criar turma
-            "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
-            "Properties": {
-                "Properties": {
-                    "externalCode": teamId,
-                    "externalName": curse.cust_CPNT_TITLE,
-                    "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
-                    "cust_SSG_SEG_NUM": String(Number(workload.toFixed(2))),
-                    "cust_intervalo": interval,
-                    "cust_fromApp": true,
-                }
-            }
-        })
-        
-        await Promise.all(presencalmsList.map(prop => { // criar presença lms
-
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/Teams/CreatePresencalmsEntity.action",
-                "Properties": {
-                    "Properties": prop,
-                }
-            })
-        }))
-
-        clientAPI.dismissActivityIndicator();
-
-        await clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Criação de turma",
-                "Message": "Turma criada com sucesso!",
-                "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
-            },
-        });
-
-    } catch (error) {
-
-        return clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Criação de turma",
-                "Message": `Erro: ${error.message}`
-            }
-        });
-    }
-
-}
-
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/SaveEdit.js":
-/*!*******************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/SaveEdit.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ SaveEdit)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function SaveEdit(clientAPI) {
-
-    try {
-        /* let pageProxy = context.getPageProxy();
-        let actionBinding = pageProxy.getActionBinding();
-        alert(actionBinding) */
-        // let value = clientAPI.evaluateTargetPath('#Page:TeamEdit/#Control:SectionedTable0/#ClientData')
-        /* let cRet = clientAPI.evaluateTargetPath('#Control:FormCellListPicker2/#SelectedValue')
-        alert(cRet) */
-
-        // const  cust_INST_ID2 = clientAPI.evaluateTargetPath('#Control:FormCellListPicker2/#SelectedValue')
-        // #Page:TeamEdit/#Control:FormCellListPicker0/#ClientData/?
-        const values = clientAPI.evaluateTargetPath('#Control:FormCellListPicker0/#Value/')
-
-        const valuesWithObj = values.map(i => i.ReturnValue)
-
-        alert(`${JSON.stringify(valuesWithObj)}`)
-
-        let properties = {
-            createdBy: clientAPI.binding.createdBy || "",
-            createdDateTime: clientAPI.binding.createdDateTime || null,
-            cust_ACT_CPNT_ID: clientAPI.binding.cust_ACT_CPNT_ID || "",
-            cust_CPNT_TYP_ID: clientAPI.binding.cust_CPNT_TYP_ID || "",
-            cust_END_TME: clientAPI.binding.cust_END_TME || null,
-            cust_INST_ID1: clientAPI.binding.cust_INST_ID1 || "",
-            cust_INST_ID2: cust_INST_ID2 || "", // Novo valor do ListPicker
-            cust_LMS: clientAPI.binding.cust_LMS || "",
-            cust_LOCN_DESC: clientAPI.binding.cust_LOCN_DESC || "",
-            cust_LOCN_ID1: clientAPI.binding.cust_LOCN_ID1 || "",
-            cust_NOTACTIVE: clientAPI.binding.cust_NOTACTIVE || false,
-            cust_SSG_SEG_NUM: clientAPI.binding.cust_SSG_SEG_NUM || "",
-            cust_START_TME: clientAPI.binding.cust_START_TME || null,
-            cust_Status: clientAPI.binding.cust_Status || "",
-            externalCode: clientAPI.binding.externalCode || "",
-            externalName: "Teste de PATCH",
-            lastModifiedBy: clientAPI.binding.lastModifiedBy || "",
-            lastModifiedDateTime: clientAPI.binding.lastModifiedDateTime || null,
-            mdfSystemRecordStatus: clientAPI.binding.mdfSystemRecordStatus || "",
-        }
-            
-        return clientAPI.executeAction("/Attendance_List/Actions/Teams/UpdatePresenceList.action").then(() => {
-            clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Edição de turma",
-                    "Message": "Turma editada com sucesso!",
-                    "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
-                },
-            });
-        })
-        .catch((e) => {
-            clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Edição de turma",
-                    "Message": `Erro: ${e}`
-                }
-            });
-        })
-
-    } catch (error) {
-        
-        return clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Edição de turma",
-                "Message": `Erro: ${error.message}`
-            }
-        });
-    }
-
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/TeamDescription.js":
-/*!**************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/TeamDescription.js ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ TeamDescription)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-function TeamDescription(clientAPI) {
-    var dDate = new Date(clientAPI.binding.cust_START_TME) 
-    var cRet  = 'Início: ' + dDate.getDate().toString().padStart(2,"0") + "/" + (dDate.getMonth()+1).toString().padStart(2,"0") + "/" + dDate.getFullYear().toString()
-    cRet += " às " + dDate.getHours().toString().padStart(2,"0") +":"+ dDate.getMinutes().toString().padStart(2,"0") + "h"
-    
-    cRet += "\n"
-
-    dDate = new Date(clientAPI.binding.cust_END_TME) 
-    cRet += 'Fim: ' + dDate.getDate().toString().padStart(2,"0") + "/" + (dDate.getMonth()+1).toString().padStart(2,"0") + "/" + dDate.getFullYear().toString()
-    cRet += " às " + dDate.getHours().toString().padStart(2,"0") +":"+ dDate.getMinutes().toString().padStart(2,"0") + "h"
-
-    cRet += "\n"
-    
-    cRet += "ID da Turma: " + clientAPI.binding.externalCode.toString()
-    return(cRet)
-}
- 
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/TeamDuration.js":
-/*!***********************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/TeamDuration.js ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ TeamDuration)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-
-function formatarHoras(valor) {
-    if (!valor || isNaN(valor) || valor <= 0) {
-        return "0";
-    }
-    
-    const horas = Math.floor(valor);
-    const minutos = Math.round((valor - horas) * 60);
-    
-    if (horas > 0 && minutos > 0) {
-        return `${horas}h ${minutos}m`;
-    } else if (horas > 0) {
-        return `${horas}h`;
-    } else if (minutos > 0) {
-        return `${minutos}m`;
-    } else {
-        return "0";
-    }
-}
-
-function TeamDuration(clientAPI) {
-    var cHoras = clientAPI.binding.cust_SSG_SEG_NUM.toString()
-
-    return formatarHoras(cHoras)
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/CancelTeam.js":
-/*!****************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/CancelTeam.js ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ CancelTeam)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function CancelTeam(clientAPI) {
-
-    const ComeFromApp = {
-        "cust_Status": "cancelada",
-    }
-    const ComeFromLMS = {
-        "cust_Status": "cancelada",
-        "cust_LMS": "S"
-    }
-
-    try {
-        await clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/Teams/CancelTeam.action",
-            "Properties": {
-                "Properties": clientAPI.binding.cust_fromApp ? ComeFromApp : ComeFromLMS
-            }
-        })
-
-        await clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Cancelamento de turma",
-                "Message": "Turma cancelada com sucesso!",
-                "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
-            },
-        });
-
-    }catch(e){
-        return clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Criação de turma",
-                "Message": `Erro: ${e.message}`
-            }
-        });
-    }
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/CloseTeam.js":
-/*!***************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/CloseTeam.js ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ CloseTeam)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function CloseTeam(clientAPI) {
-    try {
-        const custAlunosQuery = `$filter=cust_Turma eq '${clientAPI.binding.externalCode}'`
-        const custAlunos = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_ListadePresenca', ['cust_Aluno'], custAlunosQuery)
-        const alunosList = custAlunos.map(i => i.cust_Aluno)
-
-        const endDate = new Date(clientAPI.binding.cust_END_TME)
-        const currentDate = new Date()
-
-        if (endDate.getTime() >= currentDate.getTime()) {
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao encerrar turma",
-                    "Message": "Essa turma ainda tem dias de treinamento pendentes!",
-                },
-            });
-        }
-
-        if (!alunosList.length) {
-            return await clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Erro ao encerrar turma",
-                    "Message": "Turmas sem participantes não podem ser encerradas!",
-                },
-            });
-        }
-        // fim validacoes
-        await clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/Teams/CloseTeam.action",
-            "Properties": {
-                "Properties": {
-                    "cust_LMS": "S"
-                }
-            }
-        })
-        
-        await clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Encerramento de turma",
-                "Message": "Turma encerrada com sucesso!",
-                "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
-            },
-        });
-
-    }catch(e){
-        return clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Criação de turma",
-                "Message": `Erro: ${e.message}`
-            }
-        });
-    }
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js":
-/*!************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js ***!
-  \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetPresenceLmsCode)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetPresenceLmsCode(clientAPI) {
-    let appSettings = clientAPI.nativescript.appSettingsModule
-    var listDay = appSettings.getString('day');
-    var ficha = clientAPI.binding.externalCode
-
-    var query = `$filter=cust_ficha eq '${ficha}' and cust_segmento eq '${listDay}'`
-
-    const presenceList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_presencalms", ["externalCode"], query)
-
-    const presenceListItem = presenceList.find(i => i.externalCode)
-
-    return `cust_presencalms('${presenceListItem.externalCode}')`
-}
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceValue.js":
-/*!**********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceValue.js ***!
-  \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetPresenceValue)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetPresenceValue(clientAPI) {
-    let appSettings = clientAPI.nativescript.appSettingsModule
-    var listDay = appSettings.getString('day');
-    var ficha = clientAPI.binding.externalCode
-
-    var query = `$filter=cust_ficha eq '${ficha}' and cust_segmento eq '${listDay}'`
-
-    const presenceList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_presencalms", ["externalCode", "cust_presenca"], query)
-    
-    const presenceListItem = presenceList.find(i => i.externalCode)
-
-    if(presenceListItem.cust_presenca == "ausente"){
-        return false
-    }
-    return true
-}   
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/GetReprovedValue.js":
-/*!**********************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/GetReprovedValue.js ***!
-  \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ GetReprovedValue)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function GetReprovedValue(clientAPI) {
-    var ficha = clientAPI.binding.externalCode
-
-    var query = `$filter=externalCode eq '${ficha}'`
-
-    const presenceList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_ListadePresenca", ["cust_resultado"], query)
-
-    const presenceListItem = presenceList.find(i => i.cust_resultado)
-
-    if(presenceListItem.cust_resultado){
-        return presenceListItem.cust_resultado == "reprovado" ? true : false
-    }
-    return false
-}
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/UpdateTeam.js":
-/*!****************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/UpdateTeam.js ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ UpdateTeam)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-
-async function UpdateTeam(clientAPI) {
-
-    try {
-        var fieldSwitch = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSwitch0/#Value")
-        var reprovedSwitch = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSwitch1/#Value")
-        var fieldNote = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSimpleProperty0/#Value")
-
-        if (Number(fieldNote) !== 0) { 
-        if (!Number(fieldNote)) {
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Valor inválido",
-                    "Message": `O campo nota está com valor inválido.`
-                }
-            });
-        }}
-
-        if (fieldNote > 100) {
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Valor inválido",
-                    "Message": `O campo nota não pode ser superior a 100.`
-                }
-            });
-        }
-
-        if (fieldNote < 0) {
-            return clientAPI.executeAction({
-                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-                "Properties": {
-                    "Title": "Valor inválido",
-                    "Message": `O campo nota não pode ser negativo.`
-                }
-            });
-        }
-
-        await clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/Teams/UpdatePresencalmsEntity.action",
-            "Properties": {
-                "Properties": {
-                    "cust_presenca": fieldSwitch ? "presente" : "ausente",
-                }
-            }
-        })
-
-        await clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/Teams/UpdatePresenceList.action",
-            "Properties": {
-                "Properties": {
-                    "cust_nota": `${fieldNote === '' ? fieldNote : Number(fieldNote)}`,
-                    "cust_resultado": reprovedSwitch ? "reprovado" : null
-                }
-            }
-        })
-
-        await clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Atualização de turma",
-                "Message": "Turma alterada com sucesso!",
-                "OnOK": "/Attendance_List/Actions/ClosePage.action"
-            },
-        });
-    } catch (error) {
-
-        return clientAPI.executeAction({
-            "Name": "/Attendance_List/Actions/GenericMessageBox.action",
-            "Properties": {
-                "Title": "Atualização de turma",
-                "Message": `Não foi possível concluir a ação no momento. Por favor, tente novamente mais tarde e certifique-se de realizar a sincronização.`
-            }
-        });
-    }
-
-}
-
-
-
-/***/ }),
-
-/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js":
-/*!****************************************************************************************!*\
-  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js ***!
-  \****************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ValidatePresenceSwitch)
-/* harmony export */ });
-/**
- * Describe this function...
- * @param {IClientAPI} clientAPI
- */
-async function ValidatePresenceSwitch(clientAPI) {
-    let appSettings = clientAPI.nativescript.appSettingsModule
-    var listDay = appSettings.getString('day');
-
-    const query = `$filter=externalCode eq '${listDay}'`
-    const cust_enddate_array = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_listadiaria', ['cust_enddate'], query)
-
-    const cust_enddate = cust_enddate_array.find(i => i.cust_enddate).cust_enddate
-
-    var today = new Date()
-    var endDate = new Date(cust_enddate)
-
-    if (
-        today.getFullYear() !== endDate.getFullYear() ||
-        today.getMonth() !== endDate.getMonth() ||
-        today.getDate() !== endDate.getDate()
-    ) {
-        return false;
-    }
-
-    endDate.setHours(23, 59, 59, 999)
-    return today.getTime() <= endDate.getTime()
-}
-
-
-/***/ }),
-
 /***/ "./build.definitions/application-index.js":
 /*!************************************************!*\
   !*** ./build.definitions/application-index.js ***!
@@ -3310,6 +167,7 @@ let attendance_list_rules_teams_savecreate_js = __webpack_require__(/*! ./Attend
 let attendance_list_rules_teams_saveedit_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/SaveEdit.js */ "./build.definitions/Attendance_List/Rules/Teams/SaveEdit.js")
 let attendance_list_rules_teams_teamdescription_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/TeamDescription.js */ "./build.definitions/Attendance_List/Rules/Teams/TeamDescription.js")
 let attendance_list_rules_teams_teamduration_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/TeamDuration.js */ "./build.definitions/Attendance_List/Rules/Teams/TeamDuration.js")
+let attendance_list_rules_teams_teamsegmentedduration_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/TeamSegmentedDuration.js */ "./build.definitions/Attendance_List/Rules/Teams/TeamSegmentedDuration.js")
 let attendance_list_rules_teams_update_cancelteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/CancelTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/CancelTeam.js")
 let attendance_list_rules_teams_update_closeteam_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/CloseTeam.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/CloseTeam.js")
 let attendance_list_rules_teams_update_getpresencelmscode_js = __webpack_require__(/*! ./Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js */ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js")
@@ -3484,6 +342,7 @@ module.exports = {
 	attendance_list_rules_teams_saveedit_js : attendance_list_rules_teams_saveedit_js,
 	attendance_list_rules_teams_teamdescription_js : attendance_list_rules_teams_teamdescription_js,
 	attendance_list_rules_teams_teamduration_js : attendance_list_rules_teams_teamduration_js,
+	attendance_list_rules_teams_teamsegmentedduration_js : attendance_list_rules_teams_teamsegmentedduration_js,
 	attendance_list_rules_teams_update_cancelteam_js : attendance_list_rules_teams_update_cancelteam_js,
 	attendance_list_rules_teams_update_closeteam_js : attendance_list_rules_teams_update_closeteam_js,
 	attendance_list_rules_teams_update_getpresencelmscode_js : attendance_list_rules_teams_update_getpresencelmscode_js,
@@ -3506,6 +365,2838 @@ module.exports = {
 	attendance_list_styles_styles_nss : attendance_list_styles_styles_nss,
 	tsconfig_json : tsconfig_json,
 	version_mdkbundlerversion : version_mdkbundlerversion
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Application/AppUpdateFailure.js":
+/*!*********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Application/AppUpdateFailure.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ AppUpdateFailure)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function AppUpdateFailure(clientAPI) {
+  let result = clientAPI.actionResults.AppUpdate.error.toString();
+  var message;
+  console.log(result);
+  if (result.startsWith('Error: Uncaught app extraction failure:')) {
+    result = 'Error: Uncaught app extraction failure:';
+  }
+  if (result.startsWith('Error: LCMS GET Version Response Error Response Status: 404 | Body: 404 Not Found: Requested route')) {
+    result = 'Application instance is not up or running';
+  }
+  if (result.startsWith('Error: LCMS GET Version Response Error Response Status: 404 | Body')) {
+    result = 'Service instance not found.';
+  }
+  switch (result) {
+    case 'Service instance not found.':
+      message = 'Mobile App Update feature is not assigned or not running for your application. Please add the Mobile App Update feature, deploy your application, and try again.';
+      break;
+    case 'Error: LCMS GET Version Response Error Response Status: 404 | Body: Failed to find a matched endpoint':
+      message = 'Mobile App Update feature is not assigned to your application. Please add the Mobile App Update feature, deploy your application, and try again.';
+      break;
+    case 'Error: LCMS GET Version Response failed: Error: Optional(OAuth2Error.tokenRejected: The newly acquired or refreshed token got rejected.)':
+      message = 'The Mobile App Update feature is not assigned to your application or there is no Application metadata deployed. Please check your application in Mobile Services and try again.';
+      break;
+    case 'Error: Uncaught app extraction failure:':
+      message = 'Error extracting metadata. Please redeploy and try again.';
+      break;
+    case 'Application instance is not up or running':
+      message = 'Communication failure. Verify that the BindMobileApplicationRoutesToME Application route is running in your BTP space cockpit.';
+      break;
+    default:
+      message = result;
+      break;
+  }
+  return clientAPI.getPageProxy().executeAction({
+    "Name": "/Attendance_List/Actions/Application/AppUpdateFailureMessage.action",
+    "Properties": {
+      "Duration": 0,
+      "Message": message
+    }
+  });
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Application/AppUpdateSuccess.js":
+/*!*********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Application/AppUpdateSuccess.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ AppUpdateSuccess)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function sleep(ms) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      resolve();
+    }, ms);
+  });
+}
+function AppUpdateSuccess(clientAPI) {
+  var message;
+  // Force a small pause to let the progress banner show in case there is no new version available
+  return sleep(500).then(function () {
+    let result = clientAPI.actionResults.AppUpdate.data;
+    console.log(result);
+    let versionNum = result.split(': ')[1];
+    if (result.startsWith('Current version is already up to date')) {
+      return clientAPI.getPageProxy().executeAction({
+        "Name": "/Attendance_List/Actions/Application/AppUpdateSuccessMessage.action",
+        "Properties": {
+          "Message": `You are already using the latest version: ${versionNum}`,
+          "NumberOfLines": 2
+        }
+      });
+    } else if (result === 'AppUpdate feature is not enabled or no new revision found.') {
+      message = 'No Application metadata found. Please deploy your application and try again.';
+      return clientAPI.getPageProxy().executeAction({
+        "Name": "/Attendance_List/Actions/Application/AppUpdateSuccessMessage.action",
+        "Properties": {
+          "Duration": 5,
+          "Message": message,
+          "NumberOfLines": 2
+        }
+      });
+    }
+  });
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Application/ClientIsMultiUserMode.js":
+/*!**************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Application/ClientIsMultiUserMode.js ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ClientIsMultiUserMode)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function ClientIsMultiUserMode(clientAPI) {
+  return clientAPI.isAppInMultiUserMode();
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Application/Cuid.js":
+/*!*********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Application/Cuid.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Cuid)
+/* harmony export */ });
+function Cuid(context) {
+  const cuidPrefix = 'c';
+  const timestamp = Date.now().toString(36);
+  const randomPart = Math.random().toString(36).substring(2, 10);
+  const uniqueID = cuidPrefix + timestamp + randomPart;
+  return uniqueID;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Application/GetClientSupportVersions.js":
+/*!*****************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Application/GetClientSupportVersions.js ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetClientSupportVersions)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function GetClientSupportVersions(clientAPI) {
+  let versionInfo = clientAPI.getVersionInfo();
+  let versionStr = '';
+  Object.keys(versionInfo).forEach(function (key, index) {
+    // key: the name of the object key
+    // index: the ordinal position of the key within the object
+    //console.log(`Key: ${key}   Index: ${index}`);
+    if (key != 'Application Version') {
+      versionStr += `${key}: ${versionInfo[key]}\n`;
+    }
+  });
+  return versionStr;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Application/GetClientVersion.js":
+/*!*********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Application/GetClientVersion.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetClientVersion)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function GetClientVersion(clientAPI) {
+  let versionInfo = clientAPI.getVersionInfo();
+  if (versionInfo.hasOwnProperty('Application Version')) {
+    return versionInfo['Application Version'];
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Application/OnWillUpdate.js":
+/*!*****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Application/OnWillUpdate.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ OnWillUpdate)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function OnWillUpdate(clientAPI) {
+  return clientAPI.executeAction('/Attendance_List/Actions/Application/OnWillUpdate.action').then(result => {
+    if (result.data) {
+      return clientAPI.executeAction('/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/CloseOffline.action').then(success => Promise.resolve(success), failure => Promise.reject('Offline Odata Close Failed ' + failure));
+    } else {
+      return Promise.reject('User Deferred');
+    }
+  });
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Application/ResetAppSettingsAndLogout.js":
+/*!******************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Application/ResetAppSettingsAndLogout.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ResetAppSettingsAndLogout)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function ResetAppSettingsAndLogout(clientAPI) {
+  let logger = clientAPI.getLogger();
+  let platform = clientAPI.nativescript.platformModule;
+  let appSettings = clientAPI.nativescript.appSettingsModule;
+  var appId;
+  if (platform && (platform.isIOS || platform.isAndroid)) {
+    appId = clientAPI.evaluateTargetPath('#Application/#AppData/MobileServiceAppId');
+  } else {
+    appId = 'WindowsClient';
+  }
+  try {
+    // Remove any other app specific settings
+    appSettings.getAllKeys().forEach(key => {
+      if (key.substring(0, appId.length) === appId) {
+        appSettings.remove(key);
+      }
+    });
+  } catch (err) {
+    logger.log(`ERROR: AppSettings cleanup failure - ${err}`, 'ERROR');
+  } finally {
+    // Logout 
+    return clientAPI.getPageProxy().executeAction('/Attendance_List/Actions/Application/Reset.action');
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Application/Uuidv4.js":
+/*!***********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Application/Uuidv4.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Uuidv4)
+/* harmony export */ });
+function Uuidv4(context) {
+  function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : r & 0x3 | 0x8;
+      return v.toString(16);
+    });
+  }
+  const uuidV4 = uuidv4();
+  return uuidV4;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/CAP_SERVICE_SF_LMS/ErrorArchive_CheckForSyncError.js":
+/*!******************************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/CAP_SERVICE_SF_LMS/ErrorArchive_CheckForSyncError.js ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ CheckForSyncError)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} context
+ */
+function CheckForSyncError(context) {
+  context.count('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'ErrorArchive', '').then(errorCount => {
+    if (errorCount > 0) {
+      return context.getPageProxy().executeAction('/Attendance_List/Actions/ErrorArchive/ErrorArchive_SyncFailure.action').then(function () {
+        return Promise.reject(false);
+      });
+    }
+  });
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Logging/LogLevels.js":
+/*!**********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Logging/LogLevels.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ LogLevels)
+/* harmony export */ });
+function LogLevels(clientAPI) {
+  var levels = [];
+  levels.push({
+    'DisplayValue': 'Error',
+    'ReturnValue': 'Error'
+  });
+  levels.push({
+    'DisplayValue': 'Warning',
+    'ReturnValue': 'Warn'
+  });
+  levels.push({
+    'DisplayValue': 'Info',
+    'ReturnValue': 'Info'
+  });
+  levels.push({
+    'DisplayValue': 'Debug',
+    'ReturnValue': 'Debug'
+  });
+  levels.push({
+    'DisplayValue': 'Trace',
+    'ReturnValue': 'Trace'
+  });
+  return levels;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Logging/SetTraceCategories.js":
+/*!*******************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Logging/SetTraceCategories.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SetTraceCategories)
+/* harmony export */ });
+function SetTraceCategories(clientAPI) {
+  var logger = clientAPI.getLogger();
+  const sectionedTable = clientAPI.getPageProxy().getControl('SectionedTable');
+  const fcsection = sectionedTable.getSection('FormCellSection0');
+  const traceCategory = fcsection.getControl('TracingCategoriesListPicker');
+  const odataTrace = fcsection.getControl('odataTrace');
+  try {
+    if (traceCategory.getValue()) {
+      var values = traceCategory.getValue();
+      var categories = [];
+      if (values && values.length) {
+        categories = values.map(value => {
+          return 'mdk.trace.' + value.ReturnValue;
+        });
+      }
+      clientAPI.setDebugSettings(odataTrace.getValue(), true, categories);
+    }
+  } catch (exception) {
+    logger.log(String(exception), 'Error');
+    return undefined;
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Logging/SetUserLogLevel.js":
+/*!****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Logging/SetUserLogLevel.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SetUserLogLevel)
+/* harmony export */ });
+function SetUserLogLevel(clientAPI) {
+  try {
+    if (clientAPI.getValue() && clientAPI.getValue()[0]) {
+      var logger = clientAPI.getLogger();
+      var listPickerValue = clientAPI.getValue()[0].ReturnValue;
+      if (listPickerValue) {
+        switch (listPickerValue) {
+          case 'Debug':
+            logger.setLevel('Debug');
+            ShowTraceOptions(clientAPI, false);
+            break;
+          case 'Error':
+            logger.setLevel('Error');
+            ShowTraceOptions(clientAPI, false);
+            break;
+          case 'Warn':
+            logger.setLevel('Warn');
+            ShowTraceOptions(clientAPI, false);
+            break;
+          case 'Info':
+            logger.setLevel('Info');
+            ShowTraceOptions(clientAPI, false);
+            break;
+          case 'Trace':
+            logger.setLevel('Trace');
+            ShowTraceOptions(clientAPI, true);
+            break;
+          default:
+            // eslint-disable-next-line no-console
+            console.log(`unrecognized key ${listPickerValue}`);
+        }
+        return listPickerValue;
+      }
+    }
+  } catch (exception) {
+    logger.log(String(exception), 'Error');
+    return undefined;
+  }
+}
+function ShowTraceOptions(clientAPI, tracingEnabled) {
+  let categories = clientAPI.getPageProxy().getControl('SectionedTable').getControl('TracingCategoriesListPicker');
+  let odataTrace = clientAPI.getPageProxy().getControl('SectionedTable').getControl('odataTrace');
+  categories.setVisible(tracingEnabled);
+  odataTrace.setVisible(tracingEnabled);
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Logging/ToggleLogging.js":
+/*!**************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Logging/ToggleLogging.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ToggleLogging)
+/* harmony export */ });
+function ToggleLogging(clientAPI) {
+  try {
+    var logger = clientAPI.getLogger();
+    const sectionedTable = clientAPI.getPageProxy().getControl('SectionedTable');
+    const fcsection = sectionedTable.getSection('FormCellSection0');
+    const enableLogSwitch = fcsection.getControl('EnableLogSwitch');
+    const logLevelListPicker = fcsection.getControl('LogLevelListPicker');
+    let switchValue = enableLogSwitch.getValue();
+    if (switchValue) {
+      logger.on();
+      logLevelListPicker.setVisible(true);
+      logLevelListPicker.setEditable(true);
+      logLevelListPicker.redraw();
+    } else {
+      logger.off();
+      logLevelListPicker.setEditable(false);
+      logLevelListPicker.setVisible(false);
+      logLevelListPicker.redraw();
+    }
+    return switchValue;
+  } catch (exception) {
+    logger.log(String(exception), 'Error');
+    return undefined;
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Logging/TraceCategories.js":
+/*!****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Logging/TraceCategories.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TraceCategories)
+/* harmony export */ });
+function TraceCategories(clientAPI) {
+  var categories = ['action', 'api', 'app', 'binding', 'branding', 'core', 'i18n', 'lcms', 'logging', 'odata', 'onboarding', 'profiling', 'push', 'restservice', 'settings', 'targetpath', 'ui'];
+  var values = [];
+  categories.forEach(category => {
+    values.push({
+      'DisplayValue': category,
+      'ReturnValue': category
+    });
+  });
+  return values;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Logging/UserLogSetting.js":
+/*!***************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Logging/UserLogSetting.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ UserLogSetting)
+/* harmony export */ });
+function UserLogSetting(clientAPI) {
+  try {
+    var logger = clientAPI.getLogger();
+    const sectionedTable = clientAPI.getControl('SectionedTable');
+    const fcsection = sectionedTable.getSection('FormCellSection0');
+    const enableLogSwitch = fcsection.getControl('EnableLogSwitch');
+    const logLevelListPicker = fcsection.getControl('LogLevelListPicker');
+    const traceCategory = fcsection.getControl('TracingCategoriesListPicker');
+    const odataTrace = fcsection.getControl('odataTrace');
+
+    //Persist the user logging preferences
+    if (logger) {
+      console.log("in logger state");
+      if (logger.isTurnedOn()) {
+        if (enableLogSwitch) {
+          enableLogSwitch.setValue(true);
+        }
+        if (logLevelListPicker) {
+          logLevelListPicker.setEditable(true);
+        }
+      } else {
+        if (enableLogSwitch) {
+          enableLogSwitch.setValue(false);
+        }
+        if (logLevelListPicker) {
+          logLevelListPicker.setEditable(false);
+        }
+      }
+      var logLevel = logger.getLevel();
+      if (logLevel) {
+        if (logLevelListPicker) {
+          logLevelListPicker.setValue([logLevel]);
+        }
+      }
+      if (logLevel === 'Trace') {
+        traceCategory.setVisible(true);
+        odataTrace.setVisible(true);
+      }
+
+      //Upon selecting a value in the List picker and clicking the back button 
+      //will enable the onload page rule. This will set the selected value
+      //in the control
+      if (logLevelListPicker.getValue()[0]) {
+        var returnValue = logLevelListPicker.getValue()[0].ReturnValue;
+        if (returnValue) {
+          logLevelListPicker.setValue([returnValue]);
+          logger.setLevel(returnValue);
+        }
+      }
+    }
+  } catch (exception) {
+    // eslint-disable-next-line no-console
+    console.log(String(exception), 'Error User Logger could not be set');
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/CalendarQuery.js":
+/*!***********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/CalendarQuery.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ CalendarQuery)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+function defaultQuery(context) {
+  var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav";
+  var dDate = new Date();
+  var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
+  // let cFilter = "cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
+  let dfilter = `$filter=(cust_START_TME ge 2025-01-02T00:00:00Z and cust_START_TME le 2025-01-02T23:59:59Z) and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq 'SRMELLO')`;
+  dfilter += cExpand;
+  return dfilter;
+}
+async function CalendarQuery(context) {
+  var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav";
+  var dDate = new Date();
+  var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
+  // let cFilter = "cust_LMS ne 'S' or cust_LMS eq null and cust_Status ne 'cancelada' or cust_Status eq null and externalName ne null and cust_START_TME ge " + cDate + "T00:00:00Z and cust_START_TME le " + cDate + "T23:59:59Z";
+
+  const IASUser = context.evaluateTargetPath("#Application/#AppData/UserId");
+  // const IASUser = 'SRMELLO'
+
+  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const response = await context.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
+  const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+  const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+  let cFilter = `$filter=(cust_START_TME ge ${cDate}T00:00:00Z and cust_START_TME le ${cDate}T23:59:59Z) and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`;
+  cFilter += cExpand;
+  return cFilter;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/EndTeam.js":
+/*!*****************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/EndTeam.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ fimTurma)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function fimTurma(clientAPI) {
+  var dDate = new Date(clientAPI.binding.cust_END_TME);
+  var cRet = "Término: " + dDate.getDate().toString().padStart(2, "0") + "/" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "/" + dDate.getFullYear().toString();
+  cRet += " às " + dDate.getHours().toString().padStart(2, "0") + ":" + dDate.getMinutes().toString().padStart(2, "0") + "h";
+  return cRet;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/GetExtCode.js":
+/*!********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/GetExtCode.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetExtCode)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function GetExtCode(clientAPI) {
+  let clientData = clientAPI.getAppClientData();
+  alert(clientData.ExtCode);
+  return clientData.ExtCode || "";
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/GetSFUser.js":
+/*!*******************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/GetSFUser.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetSFUser)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function GetSFUser(clientAPI) {
+  let clientData = clientAPI.getAppClientData();
+  alert(clientData.SFUser);
+  return clientData.SFUser || "";
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/GetThreeTeams.js":
+/*!***********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/GetThreeTeams.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetThreeTeams)
+/* harmony export */ });
+async function GetThreeTeams(context) {
+  const IASUser = context.evaluateTargetPath("#Application/#AppData/UserId");
+  // const IASUser = 'SRMELLO'
+
+  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const response = await context.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
+  const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+  const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+  var cTop = "&$top=3";
+  var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav";
+  var dDate = new Date();
+  var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
+  // var cFilter = "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'";
+  var cFilter = `$filter=cust_END_TME ge ${cDate}T00:00:00Z and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`;
+  var cFilter;
+  cFilter += cTop + cExpand;
+  return cFilter;
+}
+
+// export default function GetThreeTeams(context) {    
+//     var cTop = "&$top=3"
+//     var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
+//     var dDate = new Date();
+//     var cDate = dDate.getFullYear().toString() + "-" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "-" + dDate.getDate().toString().padStart(2, "0");
+//     var cFilter =  "$filter=cust_END_TME ge " + cDate + "T00:00:00Z and externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'";
+//     var cFilter
+//     cFilter += cTop + cExpand
+
+//     return cFilter;
+// }
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/SetUserIds.js":
+/*!********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/SetUserIds.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SetUserIds)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function SetUserIds(clientAPI) {
+  const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
+  //  const IASUser = "ABILIK"
+  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
+  const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+  const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+  let clientData = clientAPI.getAppClientData();
+  clientData.SFUser = SFUser;
+  clientData.ExtCode = ExtCode;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/StartTeam.js":
+/*!*******************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/StartTeam.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ InicioTurma)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function InicioTurma(clientAPI) {
+  var dDate = new Date(clientAPI.binding.cust_START_TME);
+  var cRet = 'Início: ' + dDate.getDate().toString().padStart(2, "0") + "/" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "/" + dDate.getFullYear().toString();
+  cRet += " às " + dDate.getHours().toString().padStart(2, "0") + ":" + dDate.getMinutes().toString().padStart(2, "0") + "h";
+  return cRet;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/TeamDescription.js":
+/*!*************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/TeamDescription.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TeamDescription)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function TeamDescription(clientAPI) {
+  var dDate = new Date(clientAPI.binding.cust_START_TME);
+  var cRet = 'Início: ' + dDate.getDate().toString().padStart(2, "0") + "/" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "/" + dDate.getFullYear().toString();
+  cRet += " às " + dDate.getHours().toString().padStart(2, "0") + ":" + dDate.getMinutes().toString().padStart(2, "0") + "h";
+  cRet += "\n";
+  dDate = new Date(clientAPI.binding.cust_END_TME);
+  cRet += 'Fim: ' + dDate.getDate().toString().padStart(2, "0") + "/" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "/" + dDate.getFullYear().toString();
+  cRet += " às " + dDate.getHours().toString().padStart(2, "0") + ":" + dDate.getMinutes().toString().padStart(2, "0") + "h";
+  return cRet;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js":
+/*!*************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/UpdateQueryWithSelectedDate.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ UpdateQueryWithSelectedDate)
+/* harmony export */ });
+async function UpdateQueryWithSelectedDate(clientAPI) {
+  try {
+    const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
+    // const IASUser = 'SRMELLO'
+
+    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+    const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
+    const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+    const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+    let selectedDate = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionCalendar1").getSelectedDate();
+    let year = selectedDate.getFullYear();
+    let month = ("0" + (selectedDate.getMonth() + 1)).slice(-2);
+    let day = ("0" + selectedDate.getDate()).slice(-2);
+    let formattedDate = year + '-' + month + '-' + day;
+    var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav";
+    let filterQuery = `$filter=(cust_START_TME ge ${formattedDate}T00:00:00Z and cust_START_TME le ${formattedDate}T23:59:59Z) and (cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`;
+    filterQuery += cExpand;
+    let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
+    let oTarget = oCardObj.getTargetSpecifier();
+    oTarget.setQueryOptions(filterQuery);
+    oCardObj.setTargetSpecifier(oTarget);
+  } catch (error) {
+    alert("An error occurred: " + error.message);
+  }
+}
+
+// export default function UpdateQueryWithSelectedDate(clientAPI) {
+//     try {
+//         let selectedDate = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionCalendar1").getSelectedDate();
+//         let year = selectedDate.getFullYear();
+//         let month = ("0" + (selectedDate.getMonth() + 1)).slice(-2);
+//         let day = ("0" + selectedDate.getDate()).slice(-2);
+//         let formattedDate = year + '-' + month + '-' + day;
+//         var cExpand = "&$expand=cust_Inst1Nav,cust_Inst2Nav"
+//         let filterQuery = "$filter=cust_LMS ne 'S' and cust_Status ne 'cancelada' and externalName ne null and cust_START_TME ge " + formattedDate + "T00:00:00Z and cust_START_TME le " + formattedDate + "T23:59:59Z";
+//         filterQuery += cExpand
+//         let oCardObj = clientAPI.getPageProxy().getControl("SectionedTable0").getSection("SectionObjectCardCollection1");
+//         let oTarget = oCardObj.getTargetSpecifier();
+//         oTarget.setQueryOptions(filterQuery);
+//         oCardObj.setTargetSpecifier(oTarget);
+//     } catch (error) {
+//         alert("An error occurred: " + error.message);
+//     }
+// }
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Main/WelcomeMessage.js":
+/*!************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Main/WelcomeMessage.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ WelcomeMessage)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+function WelcomeMessage(context) {
+  var dToday = new Date();
+  var cRet = '';
+  if (dToday.getHours() >= 12 && dToday.getHours() < 18) {
+    cRet = "Boa tarde, ";
+  } else if (dToday.getHours() >= 18 && dToday.getHours() < 24) {
+    cRet = "Boa noite, ";
+  } else {
+    cRet = "Bom dia, ";
+  }
+  cRet += context.evaluateTargetPath("#Application/#AppData/UserId");
+  return cRet;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Service/Initialize.js":
+/*!***********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Service/Initialize.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Initialize)
+/* harmony export */ });
+function Initialize(context) {
+  // Perform pre data initialization task
+
+  // Initialize all your Data sources
+  let _CAP_SERVICE_SF_LMS = context.executeAction('/Attendance_List/Actions/CAP_SERVICE_SF_LMS/Service/InitializeOffline.action');
+
+  //You can add more service initialize actions here
+
+  return Promise.all([_CAP_SERVICE_SF_LMS]).then(() => {
+    // After Initializing the DB connections
+
+    // Display successful initialization  message to the user
+    return context.executeAction({
+      "Name": "/Attendance_List/Actions/GenericToastMessage.action",
+      "Properties": {
+        "Message": "Application Services Initialized",
+        "Animated": true,
+        "Duration": 1,
+        "IsIconHidden": true,
+        "NumberOfLines": 1
+      }
+    });
+  }).catch(() => {
+    return false;
+  });
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/AddParticipantsToList.js":
+/*!********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/AddParticipantsToList.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ AddParticipantsToList)
+/* harmony export */ });
+/* harmony import */ var _Application_Cuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Application/Cuid */ "./build.definitions/Attendance_List/Rules/Application/Cuid.js");
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+async function AddParticipantsToList(clientAPI) {
+  try {
+    const custAlunosQuery = `$filter=cust_Turma eq '${clientAPI.binding.externalCode}'`;
+    const custAlunos = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_ListadePresenca', ['cust_Aluno'], custAlunosQuery);
+    const alunosList = custAlunos.map(i => i.cust_Aluno);
+    const partners = clientAPI.evaluateTargetPath('#Control:FormCellListPicker0/#Value/');
+    if (partners.length === 0) {
+      return alert("nenhum participante selecionado");
+    }
+    const firstDay = clientAPI.binding.cust_START_TME;
+    const lastDay = clientAPI.binding.cust_END_TME;
+    const partnerList = partners.map((i, index) => {
+      if (alunosList.includes(i.ReturnValue)) return;
+      const externalCode = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])();
+      const props = {
+        "externalCode": externalCode,
+        "cust_Turma": clientAPI.binding.externalCode,
+        "cust_Aluno": i.ReturnValue,
+        "externalName": i.BindingObject.cust_fname + ' ' + (i.BindingObject.cust_mname ? i.BindingObject.cust_mname + ' ' : '') + (i.BindingObject.cust_lname ? i.BindingObject.cust_lname : ''),
+        "cust_startdate": new Date(firstDay).toISOString(),
+        "cust_enddate": new Date(lastDay).toISOString()
+      };
+      return props;
+    }).filter(i => i);
+    const query = `$filter=cust_turma eq '${clientAPI.binding.externalCode}'`;
+    const dailyList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_listadiaria", ["externalCode", "cust_turma", "cust_startdate", "cust_enddate", "cust_totalhoras"], query);
+    const presencalmsList = dailyList.map(d => partnerList.map(p => {
+      const endDate = new Date(d.cust_enddate);
+      endDate.setHours(0, 0, 0, 0);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return {
+        "externalCode": (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])(),
+        "cust_enddate": new Date(d.cust_enddate).toISOString(),
+        "cust_startdate": new Date(d.cust_startdate).toISOString(),
+        "cust_ficha": p.externalCode,
+        "cust_segmento": d.externalCode,
+        "cust_turma": d.cust_turma,
+        "cust_presenca": today.getTime() <= endDate.getTime() ? "presente" : "ausente"
+      };
+    })).reduce((acc, current) => acc.concat(current), []);
+    await Promise.all(partnerList.map(prop => {
+      // criar lista de presença (ficha)
+
+      return clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/Teams/CreatePresenceList.action",
+        "Properties": {
+          "Properties": prop
+        }
+      });
+    }));
+
+    // await Promise.all(dailyList.map(prop => { // criar lista diaria
+
+    //     return clientAPI.executeAction({
+    //         "Name": "/Attendance_List/Actions/Teams/CreateDailyList.action",
+    //         "Properties": {
+    //             "Properties": prop,
+    //         }
+    //     })
+    // }))
+
+    await Promise.all(presencalmsList.map(prop => {
+      // criar presença lms
+
+      return clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/Teams/CreatePresencalmsEntity.action",
+        "Properties": {
+          "Properties": prop
+        }
+      });
+    }));
+    clientAPI.executeAction("/Attendance_List/Actions/ClosePage.action");
+  } catch (error) {
+    return clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Adição de participante",
+        "Message": `Erro: ${error.message}`
+      }
+    });
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/FormatEndDate.js":
+/*!*******************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/FormatEndDate.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetEndDate)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function GetEndDate(clientAPI) {
+  const endDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePickerEndDate/#Value");
+  return `/Date(${new Date(endDate).getTime()})/`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/FormatStartDate.js":
+/*!*********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/FormatStartDate.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FormatStartDate)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function FormatStartDate(clientAPI) {
+  const startDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePickerStartDate/#Value");
+  return `/Date(${new Date(startDate).getTime()})/`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/GenerateId/GenerateId.js":
+/*!***************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/GenerateId/GenerateId.js ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GenerateId)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GenerateId(clientAPI) {
+  try {
+    const entity = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_Turmas', ['externalCode']);
+    const onlyExternalCodes = entity.map(i => i.externalCode);
+    alert(onlyExternalCodes);
+    const externalCodes = onlyExternalCodes.filter(i => String(i) != 'NaN').sort((a, b) => a - b);
+    const onlyExternalCode = externalCodes.find((_, index) => index == externalCodes.length - 1);
+    return String(onlyExternalCode + 1);
+  } catch (error) {
+    alert(error);
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/GetDefaultInstructor.js":
+/*!**************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/GetDefaultInstructor.js ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetDefaultInstructor)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetDefaultInstructor(clientAPI) {
+  const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
+  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode"], query);
+  const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+  return ExtCode;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/GetUserId.js":
+/*!***************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/GetUserId.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ getUserId)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function getUserId(clientAPI) {
+  let userId = clientAPI.evaluateTargetPath('#Application/#ClientData/UserId');
+  alert(userId);
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/QueryCursos.js":
+/*!*****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/QueryCursos.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ QueryCursos)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function QueryCursos(clientAPI) {
+  const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
+  // const IASUser = "ABILIK"
+  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
+  const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+  const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+  const search = clientAPI.searchString || '';
+  let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${ExtCode}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${SFUser}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null&$search='${search}'`;
+  return cFilter;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/QueryInstructorList.js":
+/*!*************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/QueryInstructorList.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ QueryInstructorList)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function QueryInstructorList(clientAPI) {
+  let userId = clientAPI.evaluateTargetPath('#Application/#ClientData/UserId');
+  return `$filter=cust_RELATED_USER ne '${userId}'`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/QueryParticipants.js":
+/*!***********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/QueryParticipants.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ QueryParticipants)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function QueryParticipants(clientAPI) {
+  const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
+  // const IASUser = "ABILIK"
+  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
+  const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+  const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+  const search = clientAPI.searchString || '';
+  let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}'&$search='${search}'`;
+  return cFilter;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/QuerySecondaryInstructor.js":
+/*!******************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/QuerySecondaryInstructor.js ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ QuerySecondaryInstructor)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function QuerySecondaryInstructor(clientAPI) {
+  const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
+  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
+  const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+  const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+  const search = clientAPI.searchString || '';
+  let cFilter = `$filter=cust_RELATED_USER ne '${ExtCode}' and cust_RELATED_USER ne '${SFUser}' and externalCode ne '${SFUser}' and externalCode ne '${ExtCode}'&$search='${search}'`;
+  return cFilter;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Create/SetInitialBinding.js":
+/*!***********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Create/SetInitialBinding.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SetInitialBinding)
+/* harmony export */ });
+function SetInitialBinding(context) {
+  function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = Math.random() * 16 | 0; // Gera um número aleatório de 0-15
+      const v = c === 'x' ? r : r & 0x3 | 0x8; // Ajusta os bits para conformidade com UUID v4
+      return v.toString(16); // Retorna o valor em hexadecimal
+    });
+  }
+
+  // Retorna o UUID gerado
+  return uuidv4();
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Delete.js":
+/*!*****************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Delete.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Delete)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function Delete(clientAPI) {
+  try {
+    clientAPI.executeAction("/Attendance_List/Actions/Teams/DeleteTeam.action").then(() => {
+      clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Exclusão de turma",
+          "Message": "Turma excluida com sucesso!",
+          "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+        }
+      });
+    }).catch(e => {
+      clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Exclusão de turma",
+          "Message": `Erro: ${e}`
+        }
+      });
+    });
+  } catch (error) {
+    return clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Exclusão de turma",
+        "Message": `Erro: ${error.message}`
+      }
+    });
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/FormatDate.js":
+/*!*****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/FormatDate.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FormatDate)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function FormatDate(clientAPI) {
+  const date = new Date(clientAPI.binding.cust_startdate);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js":
+/*!************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetAlunoFirstName.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetAlunoFirstName)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetAlunoFirstName(clientAPI) {
+  const query = `$filter=externalCode eq '${clientAPI.binding.cust_Aluno}'`;
+  const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Alunos", ["cust_fname"], query);
+  const partner = response.find(i => i.cust_fname);
+  return `${partner.cust_fname}`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetAlunoName.js":
+/*!*******************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetAlunoName.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetAlunoName)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetAlunoName(clientAPI) {
+  const query = `$filter=externalCode eq '${clientAPI.binding.cust_Aluno}'`;
+  const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Alunos", ["cust_lname"], query);
+  const partner = response.find(i => i.cust_lname);
+  return `${partner.cust_lname}`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetInstNav1.js":
+/*!******************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetInstNav1.js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetInstNav1)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetInstNav1(clientAPI) {
+  const query = `$filter=externalCode eq '${clientAPI.binding.cust_INST_ID1}'`;
+  const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["cust_fname", "cust_lname"], query);
+  const item = entity.find(i => Boolean(i.cust_fname) && Boolean(i.cust_lname));
+  const label = `${item.cust_fname} ${item.cust_lname}`;
+  return item ? label : '-';
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetInstNav2.js":
+/*!******************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetInstNav2.js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetInstNav1)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetInstNav1(clientAPI) {
+  const query = `$filter=externalCode eq '${clientAPI.binding.cust_INST_ID2}'`;
+  const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["cust_fname", "cust_lname"], query);
+  const item = entity.find(i => Boolean(i.cust_fname) && Boolean(i.cust_lname));
+  const label = `${item.cust_fname} ${item.cust_lname}`;
+  return item ? label : '-';
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetPartnerNote.js":
+/*!*********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetPartnerNote.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetPartnerNote)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+function format(value) {
+  if (value.length === 1) {
+    return `  ${value}`;
+  }
+  if (value.length === 2) {
+    return ` ${value}`;
+  }
+  if (value.length === 3) {
+    return value;
+  }
+  return ` - `;
+}
+function GetPartnerNote(clientAPI) {
+  const note = clientAPI.binding.cust_nota;
+  return clientAPI.binding.cust_nota ? `Nota:${format(note)}` : 'Nota: - ';
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js":
+/*!************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetTeamDetailsDay)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetTeamDetailsDay(clientAPI) {
+  const query = `$filter=cust_turma eq '${clientAPI.binding.cust_turma}'&$orderby=cust_startdate`;
+  const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_listadiaria", ["cust_startdate"], query);
+  const dayIndex = entity.map(i => i.cust_startdate).indexOf(clientAPI.binding.cust_startdate);
+  return `Dia ${dayIndex + 1}`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamStatus.js":
+/*!********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/GetTeamStatus.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetTeamStatus)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetTeamStatus(clientAPI) {
+  let appSettings = clientAPI.nativescript.appSettingsModule;
+  var listDay = appSettings.getString('day');
+  var ficha = clientAPI.binding.externalCode;
+  var query = `$filter=cust_ficha eq '${ficha}' and cust_segmento eq '${listDay}'`;
+  const presenceList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_presencalms", ["externalCode", "cust_presenca"], query);
+  const presenceListItem = presenceList.find(i => i.externalCode);
+  if (presenceListItem.cust_presenca == 'ausente') {
+    return " ausente";
+  }
+  return "presente";
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/IsAddParticipantsButtonEnable.js":
+/*!************************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/IsAddParticipantsButtonEnable.js ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IsAddParticipantsButtonEnable)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function IsAddParticipantsButtonEnable(clientAPI) {
+  // const date1 = new Date(clientAPI.binding.cust_START_TME);
+  const date2 = new Date(clientAPI.binding.cust_END_TME);
+
+  // const year = date1.getFullYear();
+  // const month = date1.getMonth();
+  // const day = date1.getDate();
+
+  // const hours = date2.getHours();
+  // const minutes = date2.getMinutes();
+
+  // const combinedDate = new Date(year, month, day, hours, minutes);
+
+  // const startTeam = new Date(combinedDate).getTime()
+  // const today = new Date().getTime()
+  // if (startTeam < today) return false
+  // return true
+
+  const endTeam = new Date(date2).getTime();
+  const today = new Date().getTime();
+  if (endTeam < today) return false;
+  return true;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/OnPartnerPress.js":
+/*!*********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/OnPartnerPress.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ OnPartnerPress)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function OnPartnerPress(clientAPI) {
+  alert(JSON.stringify(clientAPI.binding));
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Details/SetStorageVariable.js":
+/*!*************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Details/SetStorageVariable.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SetStorageVariable)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function SetStorageVariable(clientAPI) {
+  try {
+    let appSettings = clientAPI.nativescript.appSettingsModule;
+    let item = clientAPI.getPageProxy().getActionBinding().externalCode;
+    let actionBinding = clientAPI.getPageProxy().getActionBinding();
+    appSettings.setString('day', String(item));
+    await clientAPI.executeAction("/Attendance_List/Actions/Teams/NavToDailyAttendanceList.action");
+  } catch (e) {
+    alert(e);
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/FormatEndDate.js":
+/*!************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/FormatEndDate.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FormatEndDate)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function FormatEndDate(clientAPI) {
+  const endDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePicker1/#Value");
+  return `/Date(${new Date(endDate).getTime()})/`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/FormatStartDate.js":
+/*!**************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/FormatStartDate.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FormatStartDate)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function FormatStartDate(clientAPI) {
+  const startDate = clientAPI.evaluateTargetPath("#Control:FormCellDatePicker0/#Value");
+  return `/Date(${new Date(startDate).getTime()})/`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/GetAluno.js":
+/*!*******************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/GetAluno.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetAluno)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetAluno(clientAPI) {
+  const query = `$filter=externalCode eq '${clientAPI.binding.cust_Aluno}'`;
+  const value = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Alunos", ["externalName"], query);
+  const externalName = value.find(i => i.externalName);
+  return externalName.externalName;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/GetFullName.js":
+/*!**********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/GetFullName.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetFullName)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function GetFullName(clientAPI) {
+  var cRet = '';
+  cRet = clientAPI.binding.externalCode + ' ' + clientAPI.binding.cust_fname + ' ' + (clientAPI.binding.cust_mname ? clientAPI.binding.cust_mname + ' ' : '') + (clientAPI.binding.cust_lname ? clientAPI.binding.cust_lname : '');
+  return cRet;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/GetIntervalo.js":
+/*!***********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/GetIntervalo.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetIntervalo)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+function formatarHoras(valor) {
+  if (!valor || isNaN(valor) || valor <= 0) {
+    return "0";
+  }
+  const horas = Math.floor(valor);
+  const minutos = Math.round((valor - horas) * 60);
+  if (horas > 0 && minutos > 0) {
+    return `${horas}h ${minutos}m`;
+  } else if (horas > 0) {
+    return `${horas}h`;
+  } else if (minutos > 0) {
+    return `${minutos}m`;
+  } else {
+    return "0";
+  }
+}
+function GetIntervalo(clientAPI) {
+  const interval = String(Number(clientAPI.binding.cust_intervalo) / 60);
+  return formatarHoras(interval);
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/ProcessReturnValue.js":
+/*!*****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/ProcessReturnValue.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ProcessReturnValue)
+/* harmony export */ });
+function ProcessReturnValue(context) {
+  // Retrieve selected employees (cust_matricula) from the list picker
+  // let selectedEmployees = context.evaluateTargetPath("#Control:FormCellListPicker0/#SelectedItems");
+
+  // Retrieve externalCode from the page binding for cust_Turma
+  // let cust_Turma = context.evaluateTargetPath("#Page:TurmaEdit/#Binding/externalCode");
+
+  // Map each selected employee to the required properties
+  /* return selectedEmployees.map(employee => {
+      let cust_Aluno = employee.cust_matricula;
+      let externalCode = `${cust_Turma}${cust_Aluno}`;
+      let cust_AlunosNav = `$filter=externalCode eq '${cust_Aluno}'`;
+       return {
+          cust_Aluno,
+          externalCode,
+          cust_AlunosNav
+      };
+  }); */
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/QueryFicha.js":
+/*!*********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/QueryFicha.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ QueryFicha)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function QueryFicha(clientAPI) {
+  const queryTeam = `$filter=externalCode eq '${clientAPI.binding.cust_turma}'`;
+  const responseTeam = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Turmas", ['cust_INST_ID1', 'cust_INST_ID2'], queryTeam);
+  const InstCode1 = responseTeam.find(i => i.cust_INST_ID1)?.cust_INST_ID1 || '';
+  const queryInst1 = `$filter=externalCode eq '${InstCode1}' or cust_RELATED_USER eq '${InstCode1}'`;
+  const responseInst1 = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ['externalCode', 'cust_RELATED_USER'], queryInst1);
+  const InstCode2 = responseTeam.find(i => i.cust_INST_ID2)?.cust_INST_ID2 || '';
+  const queryInst2 = `$filter=externalCode eq '${InstCode2}' or cust_RELATED_USER eq '${InstCode2}'`;
+  const responseInst2 = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ['externalCode', 'cust_RELATED_USER'], queryInst2);
+  const Inst1 = responseInst1.find(i => i.externalCode);
+  const Inst2 = responseInst2.find(i => i.externalCode);
+  let AlunoFilter = '';
+  if (Inst1 && Inst1.externalCode) {
+    AlunoFilter += ` and cust_Aluno ne '${Inst1.externalCode}'`;
+  }
+  if (Inst1 && Inst1.cust_RELATED_USER) {
+    AlunoFilter += ` and cust_Aluno ne '${Inst1.cust_RELATED_USER}'`;
+  }
+  if (Inst2 && Inst2.externalCode) {
+    AlunoFilter += ` and cust_Aluno ne '${Inst2.externalCode}'`;
+  }
+  if (Inst2 && Inst2.cust_RELATED_USER) {
+    AlunoFilter += ` and cust_Aluno ne '${Inst2.cust_RELATED_USER}'`;
+  }
+  const cFilter = `$filter=cust_Turma eq '${clientAPI.binding.cust_turma}'${AlunoFilter}`;
+  return cFilter;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/QueryFichaAddParticipants.js":
+/*!************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/QueryFichaAddParticipants.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ QueryFichaAddParticipants)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function QueryFichaAddParticipants(clientAPI) {
+  const InstCode1 = clientAPI.binding.cust_INST_ID1 || '';
+  const queryInst1 = `$filter=externalCode eq '${InstCode1}' or cust_RELATED_USER eq '${InstCode1}'`;
+  const responseInst1 = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ['externalCode', 'cust_RELATED_USER'], queryInst1);
+  const InstCode2 = clientAPI.binding.cust_INST_ID2 || '';
+  const queryInst2 = `$filter=externalCode eq '${InstCode2}' or cust_RELATED_USER eq '${InstCode2}'`;
+  const responseInst2 = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ['externalCode', 'cust_RELATED_USER'], queryInst2);
+  const Inst1 = responseInst1.find(i => i.externalCode);
+  const Inst2 = responseInst2.find(i => i.externalCode);
+  let AlunoFilter = '';
+  if (Inst1 && Inst1.externalCode) {
+    AlunoFilter += ` and cust_Aluno ne '${Inst1.externalCode}'`;
+  }
+  if (Inst1 && Inst1.cust_RELATED_USER) {
+    AlunoFilter += ` and cust_Aluno ne '${Inst1.cust_RELATED_USER}'`;
+  }
+  if (Inst2 && Inst2.externalCode) {
+    AlunoFilter += ` and cust_Aluno ne '${Inst2.externalCode}'`;
+  }
+  if (Inst2 && Inst2.cust_RELATED_USER) {
+    AlunoFilter += ` and cust_Aluno ne '${Inst2.cust_RELATED_USER}'`;
+  }
+  const cFilter = `$filter=cust_Turma eq '${clientAPI.binding.externalCode}'${AlunoFilter}`;
+  return cFilter;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/QueryParticipantsAddition.js":
+/*!************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/QueryParticipantsAddition.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ QueryParticipantsAddition)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function QueryParticipantsAddition(clientAPI) {
+  const queryInst1 = `$filter=externalCode eq '${clientAPI.binding.cust_INST_ID1}' or cust_RELATED_USER eq '${clientAPI.binding.cust_INST_ID1}'`;
+  const responseInst1 = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], queryInst1);
+  const ExtCodeInst1 = responseInst1.find(i => i.externalCode)?.externalCode || '';
+  const SFUserInst1 = responseInst1.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+  let filterInst1 = `cust_matricula ne '${ExtCodeInst1}' and externalCode ne '${ExtCodeInst1}' and cust_matricula ne '${SFUserInst1}' and externalCode ne '${SFUserInst1}'`;
+  const queryInst2 = `$filter=externalCode eq '${clientAPI.binding.cust_INST_ID2}' or cust_RELATED_USER eq '${clientAPI.binding.cust_INST_ID2}'`;
+  const responseInst2 = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], queryInst2);
+  const ExtCodeInst2 = responseInst2.find(i => i.externalCode)?.externalCode || '';
+  const SFUserInst2 = responseInst2.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+  let filterInst2 = `cust_matricula ne '${ExtCodeInst2}' and externalCode ne '${ExtCodeInst2}' and cust_matricula ne '${SFUserInst2}' and externalCode ne '${SFUserInst2}'`;
+  const search = clientAPI.searchString || '';
+  let cFilter = `$filter=${filterInst1} and ${filterInst2}&$search='${search}'`;
+  return cFilter;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/QueryShowAllTeams.js":
+/*!****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/QueryShowAllTeams.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ QueryShowAllTeams)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+async function QueryShowAllTeams(clientAPI) {
+  const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
+  // const IASUser = 'SRMELLO'
+
+  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
+  const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
+  const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
+  // const userFilter = ` and cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}' `;
+
+  var cFilter = `$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=(cust_LMS ne 'S' or cust_LMS eq null) and (cust_Status ne 'cancelada' or cust_Status eq null) and (externalName ne null) and (cust_INST_ID1 eq '${ExtCode}' or cust_INST_ID1 eq '${SFUser}')`;
+  // let cFilter = "?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada' "
+  // cFilter += userFilter
+  cFilter += "&$orderby=cust_START_TME";
+  return cFilter;
+}
+// export default function QueryShowAllTeams(clientAPI) {
+//     return "?$expand=cust_ListaNav($expand=cust_AlunosNav),cust_Inst1Nav,cust_Inst2Nav&$filter=externalName ne null and cust_LMS ne 'S' and cust_Status ne 'cancelada'&$orderby=cust_START_TME"
+
+// }
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/SaveCreate.js":
+/*!*********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/SaveCreate.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SaveCreate)
+/* harmony export */ });
+/* harmony import */ var _Application_Cuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Application/Cuid */ "./build.definitions/Attendance_List/Rules/Application/Cuid.js");
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+async function SaveCreate(clientAPI) {
+  function gerarPresencaCurso(dataHoraInicio, dataHoraFim) {
+    const inicio = new Date(dataHoraInicio);
+    const fim = new Date(dataHoraFim);
+
+    // Extrair o horário inicial e final
+    const horarioInicial = {
+      horas: inicio.getHours(),
+      minutos: inicio.getMinutes()
+    };
+    const horarioFinal = {
+      horas: fim.getHours(),
+      minutos: fim.getMinutes()
+    };
+
+    // Normalizar as datas para o horário fixo
+    inicio.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
+    fim.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
+    const listaPresenca = [];
+    let dataAtual = new Date(inicio);
+
+    // Gerar lista de presença
+    while (dataAtual <= fim) {
+      const dataInicioDia = new Date(dataAtual);
+      const dataFimDia = new Date(dataAtual);
+
+      // Configurar o horário inicial e final do dia
+      dataInicioDia.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
+      dataFimDia.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
+
+      // Garantir que o último dia não ultrapasse a data final
+      if (dataFimDia > fim) {
+        dataFimDia.setTime(fim.getTime());
+      }
+
+      // Adicionar o dia à lista de presença
+      listaPresenca.push({
+        inicio: dataInicioDia,
+        fim: dataFimDia
+      });
+
+      // Avançar para o próximo dia
+      dataAtual.setDate(dataAtual.getDate() + 1);
+    }
+    return listaPresenca;
+  }
+  try {
+    clientAPI.showActivityIndicator();
+    const teamId = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])();
+    const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/');
+    // const workload = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyWorkload/#Value')
+    const intervalValue = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPicker1/#Value').find(i => i);
+    const interval = intervalValue ? intervalValue.ReturnValue : null;
+    const firstDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerStartDate/#Value');
+    const lastDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerEndDate/#Value');
+    const courseDays = gerarPresencaCurso(new Date(firstDay).toISOString(), new Date(lastDay).toISOString());
+    /* const userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId'); */
+    const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#Value').find(i => i);
+    if (!cust_cursos_id) {
+      clientAPI.dismissActivityIndicator();
+      return await clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Erro ao criar turma",
+          "Message": "O curso é obrigatório para realizar a criação da turma!"
+        }
+      });
+    }
+    const query = `$filter=externalCode eq '${cust_cursos_id.ReturnValue}'`;
+    const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID", "cust_CPNT_TITLE"], query);
+    function calculateHoursDiff(inicio, fim) {
+      const init = new Date(inicio);
+      const end = new Date(fim);
+      const horarioInicial = {
+        horas: init.getHours(),
+        minutos: init.getMinutes()
+      };
+      const horarioFinal = {
+        horas: end.getHours(),
+        minutos: end.getMinutes()
+      };
+      const newInitDate = new Date(inicio);
+      const newEndDate = new Date(inicio);
+      newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
+      newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
+      const diffMs = newEndDate - newInitDate;
+      return diffMs / (1000 * 60 * 60);
+    }
+    const diferencaHoras = calculateHoursDiff(firstDay, lastDay);
+    const workload = !interval ? diferencaHoras : diferencaHoras - Number(interval) / 60;
+    const validateDate = new Date(firstDay) > new Date(lastDay);
+    if (diferencaHoras < Number(interval) / 60) {
+      clientAPI.dismissActivityIndicator();
+      return await clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Erro ao criar turma",
+          "Message": "O intervalo não pode ser maior que o total de horas da turma!"
+        }
+      });
+    }
+    if (diferencaHoras < 0 || validateDate) {
+      clientAPI.dismissActivityIndicator();
+      return await clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Erro ao criar turma",
+          "Message": "A hora inicial não pode ser maior que a hora final!"
+        }
+      });
+    }
+    if (workload > 8) {
+      clientAPI.dismissActivityIndicator();
+      return await clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Erro ao criar turma",
+          "Message": "A carga horária não pode passar as 8 horas!"
+        }
+      });
+    }
+    if (diferencaHoras > 4 && !interval) {
+      clientAPI.dismissActivityIndicator();
+      return await clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Erro ao criar turma",
+          "Message": "Turma com mais de 4 horas de carga horária precisa ter intervalo!"
+        }
+      });
+    }
+    /* const queryInst = `$filter=cust_RELATED_USER eq '${userId}'`
+    const instructors = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode"], queryInst)
+     const inst1 = instructors.find(i => i.externalCode) */
+    const curse = entity.find(i => i.cust_CPNT_TYP_ID);
+    const partnerList = partners.map((i, index) => {
+      const externalCode = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])();
+      const props = {
+        "externalCode": externalCode,
+        "cust_Turma": teamId,
+        "cust_Aluno": i.ReturnValue,
+        "externalName": i.BindingObject.cust_fname + ' ' + (i.BindingObject.cust_mname ? i.BindingObject.cust_mname + ' ' : '') + (i.BindingObject.cust_lname ? i.BindingObject.cust_lname : '')
+      };
+      return props;
+    });
+    const dailyList = courseDays.map((i, index) => {
+      const externalCode = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])();
+      const props = {
+        "externalCode": externalCode,
+        "cust_turma": teamId,
+        "cust_startdate": new Date(i.inicio).toISOString(),
+        "cust_enddate": new Date(i.fim).toISOString(),
+        "cust_totalhoras": String(Number(workload.toFixed(2))),
+        "cust_intervalo": interval,
+        "cust_segCode": String(index + 1)
+      };
+      return props;
+    });
+    const presencalmsList = dailyList.flatMap(d => partnerList.map(p => ({
+      "externalCode": (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])(),
+      "cust_enddate": new Date(d.cust_enddate).toISOString(),
+      "cust_startdate": new Date(d.cust_startdate).toISOString(),
+      "cust_ficha": p.externalCode,
+      "cust_segmento": d.externalCode,
+      "cust_turma": d.cust_turma,
+      "cust_presenca": "presente"
+    })));
+
+    // if (!workload) {
+    //     return await clientAPI.executeAction({
+    //         "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+    //         "Properties": {
+    //             "Title": "Erro ao criar turma",
+    //             "Message": "O campo carga horária obrigatório para a criação de turma!"
+    //         },
+    //     });
+    // }
+
+    // if (workload > 8) {
+    //     return await clientAPI.executeAction({
+    //         "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+    //         "Properties": {
+    //             "Title": "Erro ao criar turma",
+    //             "Message": "Turmas não podem ter mais de 8 horas!"
+    //         },
+    //     });
+    // }
+    // if (workload > 4 && !interval) {
+    //     return await clientAPI.executeAction({
+    //         "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+    //         "Properties": {
+    //             "Title": "Erro ao criar turma",
+    //             "Message": "Turmas com mais de 4 horas precisam ter intervalo!"
+    //         },
+    //     });
+    // }
+
+    /* 
+    Validação do Datepicker da data inicial
+    Regra: Não pode criar turma iniciando com data diferente da data atual
+    */
+    const startDateTime = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerStartDate/#Value'); // Valor do DatePicker
+    const inputDate = new Date(startDateTime); // Valor do DatePicker formatado no new Date
+    inputDate.setHours(0, 0, 0, 0); // Setando o tempo igual a zero pois será comparado apenas a data
+    const currentDate = new Date(); // Data atual
+    currentDate.setHours(0, 0, 0, 0); // Setando o tempo igual a zero pois será comparado apenas a data
+
+    if (inputDate.getTime() !== currentDate.getTime()) {
+      // Se a data inicial for diferente da data atual retorna mensagem de erro
+      clientAPI.dismissActivityIndicator();
+      return await clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Erro ao criar turma",
+          "Message": "A data inicial não pode ser diferente da data atual!"
+        }
+      });
+    }
+
+    // Final da validação da data inicial
+
+    await Promise.all(partnerList.map(prop => {
+      // criar lista de presença (ficha)
+
+      return clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/Teams/CreatePresenceList.action",
+        "Properties": {
+          "Properties": prop
+        }
+      });
+    }));
+    await Promise.all(dailyList.map(prop => {
+      // criar lista diaria
+      return clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/Teams/CreateDailyList.action",
+        "Properties": {
+          "Properties": prop
+        }
+      });
+    }));
+    await clientAPI.executeAction({
+      // criar turma
+      "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
+      "Properties": {
+        "Properties": {
+          "externalCode": teamId,
+          "externalName": curse.cust_CPNT_TITLE,
+          "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
+          "cust_SSG_SEG_NUM": String(Number((workload * dailyList.length).toFixed(2))),
+          "cust_intervalo": interval,
+          "cust_fromApp": true
+        }
+      }
+    });
+    await Promise.all(presencalmsList.map(prop => {
+      // criar presença lms
+
+      return clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/Teams/CreatePresencalmsEntity.action",
+        "Properties": {
+          "Properties": prop
+        }
+      });
+    }));
+    clientAPI.dismissActivityIndicator();
+    await clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Criação de turma",
+        "Message": "Turma criada com sucesso!",
+        "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+      }
+    });
+  } catch (error) {
+    return clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Criação de turma",
+        "Message": `Erro: ${error.message}`
+      }
+    });
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/SaveEdit.js":
+/*!*******************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/SaveEdit.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ SaveEdit)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function SaveEdit(clientAPI) {
+  try {
+    /* let pageProxy = context.getPageProxy();
+    let actionBinding = pageProxy.getActionBinding();
+    alert(actionBinding) */
+    // let value = clientAPI.evaluateTargetPath('#Page:TeamEdit/#Control:SectionedTable0/#ClientData')
+    /* let cRet = clientAPI.evaluateTargetPath('#Control:FormCellListPicker2/#SelectedValue')
+    alert(cRet) */
+
+    // const  cust_INST_ID2 = clientAPI.evaluateTargetPath('#Control:FormCellListPicker2/#SelectedValue')
+    // #Page:TeamEdit/#Control:FormCellListPicker0/#ClientData/?
+    const values = clientAPI.evaluateTargetPath('#Control:FormCellListPicker0/#Value/');
+    const valuesWithObj = values.map(i => i.ReturnValue);
+    alert(`${JSON.stringify(valuesWithObj)}`);
+    let properties = {
+      createdBy: clientAPI.binding.createdBy || "",
+      createdDateTime: clientAPI.binding.createdDateTime || null,
+      cust_ACT_CPNT_ID: clientAPI.binding.cust_ACT_CPNT_ID || "",
+      cust_CPNT_TYP_ID: clientAPI.binding.cust_CPNT_TYP_ID || "",
+      cust_END_TME: clientAPI.binding.cust_END_TME || null,
+      cust_INST_ID1: clientAPI.binding.cust_INST_ID1 || "",
+      cust_INST_ID2: cust_INST_ID2 || "",
+      // Novo valor do ListPicker
+      cust_LMS: clientAPI.binding.cust_LMS || "",
+      cust_LOCN_DESC: clientAPI.binding.cust_LOCN_DESC || "",
+      cust_LOCN_ID1: clientAPI.binding.cust_LOCN_ID1 || "",
+      cust_NOTACTIVE: clientAPI.binding.cust_NOTACTIVE || false,
+      cust_SSG_SEG_NUM: clientAPI.binding.cust_SSG_SEG_NUM || "",
+      cust_START_TME: clientAPI.binding.cust_START_TME || null,
+      cust_Status: clientAPI.binding.cust_Status || "",
+      externalCode: clientAPI.binding.externalCode || "",
+      externalName: "Teste de PATCH",
+      lastModifiedBy: clientAPI.binding.lastModifiedBy || "",
+      lastModifiedDateTime: clientAPI.binding.lastModifiedDateTime || null,
+      mdfSystemRecordStatus: clientAPI.binding.mdfSystemRecordStatus || ""
+    };
+    return clientAPI.executeAction("/Attendance_List/Actions/Teams/UpdatePresenceList.action").then(() => {
+      clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Edição de turma",
+          "Message": "Turma editada com sucesso!",
+          "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+        }
+      });
+    }).catch(e => {
+      clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Edição de turma",
+          "Message": `Erro: ${e}`
+        }
+      });
+    });
+  } catch (error) {
+    return clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Edição de turma",
+        "Message": `Erro: ${error.message}`
+      }
+    });
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/TeamDescription.js":
+/*!**************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/TeamDescription.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TeamDescription)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+function TeamDescription(clientAPI) {
+  var dDate = new Date(clientAPI.binding.cust_START_TME);
+  var cRet = 'Início: ' + dDate.getDate().toString().padStart(2, "0") + "/" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "/" + dDate.getFullYear().toString();
+  cRet += " às " + dDate.getHours().toString().padStart(2, "0") + ":" + dDate.getMinutes().toString().padStart(2, "0") + "h";
+  cRet += "\n";
+  dDate = new Date(clientAPI.binding.cust_END_TME);
+  cRet += 'Fim: ' + dDate.getDate().toString().padStart(2, "0") + "/" + (dDate.getMonth() + 1).toString().padStart(2, "0") + "/" + dDate.getFullYear().toString();
+  cRet += " às " + dDate.getHours().toString().padStart(2, "0") + ":" + dDate.getMinutes().toString().padStart(2, "0") + "h";
+  cRet += "\n";
+  cRet += "ID da Turma: " + clientAPI.binding.externalCode.toString();
+  return cRet;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/TeamDuration.js":
+/*!***********************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/TeamDuration.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TeamDuration)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+function formatarHoras(valor) {
+  if (!valor || isNaN(valor) || valor <= 0) {
+    return "0";
+  }
+  const horas = Math.floor(valor);
+  const minutos = Math.round((valor - horas) * 60);
+  if (horas > 0 && minutos > 0) {
+    return `${horas}h ${minutos}m`;
+  } else if (horas > 0) {
+    return `${horas}h`;
+  } else if (minutos > 0) {
+    return `${minutos}m`;
+  } else {
+    return "0";
+  }
+}
+function TeamDuration(clientAPI) {
+  var cHoras = clientAPI.binding.cust_SSG_SEG_NUM.toString();
+  return formatarHoras(cHoras);
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/TeamSegmentedDuration.js":
+/*!********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/TeamSegmentedDuration.js ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TeamSegmentedDuration)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+function formatarHoras(valor) {
+  if (!valor || isNaN(valor) || valor <= 0) {
+    return "0";
+  }
+  const horas = Math.floor(valor);
+  const minutos = Math.round((valor - horas) * 60);
+  if (horas > 0 && minutos > 0) {
+    return `${horas}h ${minutos}m`;
+  } else if (horas > 0) {
+    return `${horas}h`;
+  } else if (minutos > 0) {
+    return `${minutos}m`;
+  } else {
+    return "0";
+  }
+}
+function daysBetweenDates(date1Str, date2Str) {
+  const date1 = new Date(date1Str);
+  const date2 = new Date(date2Str);
+  date1.setHours(0, 0, 0, 0);
+  date2.setHours(0, 0, 0, 0);
+  const timeDifference = Math.abs(date2 - date1);
+  const millisecondsPerDay = 1000 * 60 * 60 * 24;
+  return Math.floor(timeDifference / millisecondsPerDay);
+}
+function TeamSegmentedDuration(clientAPI) {
+  var cHoras = Number(clientAPI.binding.cust_SSG_SEG_NUM);
+  var initDate = new Date(clientAPI.binding.cust_START_TME);
+  var finalDate = new Date(clientAPI.binding.cust_END_TME);
+  var datesDiff = daysBetweenDates(initDate, finalDate) + 1;
+  var segmentDuration = cHoras / datesDiff;
+  return formatarHoras(String(segmentDuration));
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/CancelTeam.js":
+/*!****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/CancelTeam.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ CancelTeam)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function CancelTeam(clientAPI) {
+  const ComeFromApp = {
+    "cust_Status": "cancelada"
+  };
+  const ComeFromLMS = {
+    "cust_Status": "cancelada",
+    "cust_LMS": "S"
+  };
+  try {
+    await clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/Teams/CancelTeam.action",
+      "Properties": {
+        "Properties": clientAPI.binding.cust_fromApp ? ComeFromApp : ComeFromLMS
+      }
+    });
+    await clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Cancelamento de turma",
+        "Message": "Turma cancelada com sucesso!",
+        "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+      }
+    });
+  } catch (e) {
+    return clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Criação de turma",
+        "Message": `Erro: ${e.message}`
+      }
+    });
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/CloseTeam.js":
+/*!***************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/CloseTeam.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ CloseTeam)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function CloseTeam(clientAPI) {
+  try {
+    const custAlunosQuery = `$filter=cust_Turma eq '${clientAPI.binding.externalCode}'`;
+    const custAlunos = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_ListadePresenca', ['cust_Aluno'], custAlunosQuery);
+    const alunosList = custAlunos.map(i => i.cust_Aluno);
+    const endDate = new Date(clientAPI.binding.cust_END_TME);
+    const currentDate = new Date();
+    if (endDate.getTime() >= currentDate.getTime()) {
+      return await clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Erro ao encerrar turma",
+          "Message": "Essa turma ainda tem dias de treinamento pendentes!"
+        }
+      });
+    }
+    if (!alunosList.length) {
+      return await clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Erro ao encerrar turma",
+          "Message": "Turmas sem participantes não podem ser encerradas!"
+        }
+      });
+    }
+    // fim validacoes
+    await clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/Teams/CloseTeam.action",
+      "Properties": {
+        "Properties": {
+          "cust_LMS": "S"
+        }
+      }
+    });
+    await clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Encerramento de turma",
+        "Message": "Turma encerrada com sucesso!",
+        "OnOK": "/Attendance_List/Actions/Teams/NavToMain.action"
+      }
+    });
+  } catch (e) {
+    return clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Criação de turma",
+        "Message": `Erro: ${e.message}`
+      }
+    });
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js":
+/*!************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceLmsCode.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetPresenceLmsCode)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetPresenceLmsCode(clientAPI) {
+  let appSettings = clientAPI.nativescript.appSettingsModule;
+  var listDay = appSettings.getString('day');
+  var ficha = clientAPI.binding.externalCode;
+  var query = `$filter=cust_ficha eq '${ficha}' and cust_segmento eq '${listDay}'`;
+  const presenceList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_presencalms", ["externalCode"], query);
+  const presenceListItem = presenceList.find(i => i.externalCode);
+  return `cust_presencalms('${presenceListItem.externalCode}')`;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceValue.js":
+/*!**********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/GetPresenceValue.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetPresenceValue)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetPresenceValue(clientAPI) {
+  let appSettings = clientAPI.nativescript.appSettingsModule;
+  var listDay = appSettings.getString('day');
+  var ficha = clientAPI.binding.externalCode;
+  var query = `$filter=cust_ficha eq '${ficha}' and cust_segmento eq '${listDay}'`;
+  const presenceList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_presencalms", ["externalCode", "cust_presenca"], query);
+  const presenceListItem = presenceList.find(i => i.externalCode);
+  if (presenceListItem.cust_presenca == "ausente") {
+    return false;
+  }
+  return true;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/GetReprovedValue.js":
+/*!**********************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/GetReprovedValue.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GetReprovedValue)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function GetReprovedValue(clientAPI) {
+  var ficha = clientAPI.binding.externalCode;
+  var query = `$filter=externalCode eq '${ficha}'`;
+  const presenceList = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_ListadePresenca", ["cust_resultado"], query);
+  const presenceListItem = presenceList.find(i => i.cust_resultado);
+  if (presenceListItem.cust_resultado) {
+    return presenceListItem.cust_resultado == "reprovado" ? true : false;
+  }
+  return false;
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/UpdateTeam.js":
+/*!****************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/UpdateTeam.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ UpdateTeam)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+
+async function UpdateTeam(clientAPI) {
+  try {
+    var fieldSwitch = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSwitch0/#Value");
+    var reprovedSwitch = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSwitch1/#Value");
+    var fieldNote = clientAPI.evaluateTargetPath("#Page:BePresence/#Control:FormCellSimpleProperty0/#Value");
+    var cust_resultado = Boolean(`${reprovedSwitch}` === 'true') ? "reprovado" : null;
+    var cust_nota = fieldNote === '' ? null : String(Number(fieldNote));
+    if (Number(fieldNote) !== 0) {
+      if (!Number(fieldNote)) {
+        return clientAPI.executeAction({
+          "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+          "Properties": {
+            "Title": "Valor inválido",
+            "Message": `O campo nota está com valor inválido.`
+          }
+        });
+      }
+    }
+    if (fieldNote > 100) {
+      return clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Valor inválido",
+          "Message": `O campo nota não pode ser superior a 100.`
+        }
+      });
+    }
+    if (fieldNote < 0) {
+      return clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Valor inválido",
+          "Message": `O campo nota não pode ser negativo.`
+        }
+      });
+    }
+    await clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/Teams/UpdatePresencalmsEntity.action",
+      "Properties": {
+        "Properties": {
+          "cust_presenca": fieldSwitch ? "presente" : "ausente"
+        }
+      }
+    });
+    await clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/Teams/UpdatePresenceList.action",
+      "Properties": {
+        "Properties": {
+          "cust_nota": cust_nota,
+          "cust_resultado": cust_resultado
+        }
+      }
+    });
+    await clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Atualização de turma",
+        "Message": "Turma alterada com sucesso!",
+        "OnOK": "/Attendance_List/Actions/ClosePage.action"
+      }
+    });
+  } catch (error) {
+    return clientAPI.executeAction({
+      "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+      "Properties": {
+        "Title": "Atualização de turma",
+        "Message": `Não foi possível concluir a ação no momento. Por favor, tente novamente mais tarde e certifique-se de realizar a sincronização.`
+      }
+    });
+  }
+}
+
+/***/ }),
+
+/***/ "./build.definitions/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js":
+/*!****************************************************************************************!*\
+  !*** ./build.definitions/Attendance_List/Rules/Teams/Update/ValidatePresenceSwitch.js ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ValidatePresenceSwitch)
+/* harmony export */ });
+/**
+ * Describe this function...
+ * @param {IClientAPI} clientAPI
+ */
+async function ValidatePresenceSwitch(clientAPI) {
+  let appSettings = clientAPI.nativescript.appSettingsModule;
+  var listDay = appSettings.getString('day');
+  const query = `$filter=externalCode eq '${listDay}'`;
+  const cust_enddate_array = await clientAPI.read('/Attendance_List/Services/CAP_SERVICE_SF_LMS.service', 'cust_listadiaria', ['cust_enddate'], query);
+  const cust_enddate = cust_enddate_array.find(i => i.cust_enddate).cust_enddate;
+  var today = new Date();
+  var endDate = new Date(cust_enddate);
+  if (today.getFullYear() !== endDate.getFullYear() || today.getMonth() !== endDate.getMonth() || today.getDate() !== endDate.getDate()) {
+    return false;
+  }
+  endDate.setHours(23, 59, 59, 999);
+  return today.getTime() <= endDate.getTime();
 }
 
 /***/ }),
@@ -4384,7 +4075,7 @@ module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Typ
   \************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"ObjectHeader":{"Description":"/Attendance_List/Rules/Teams/TeamDescription.js","DetailImageIsCircular":false,"HeadlineText":"{externalName}","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader0","Visible":true},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.SimplePropertyCollection","_Name":"SectionSimplePropertyCollection0","Visible":true,"EmptySection":{"FooterVisible":false},"SimplePropertyCells":[{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/Details/GetInstNav1.js","_Name":"SectionSimplePropertyCell0","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Instrutor Principal","AccessoryType":"DisclosureIndicator","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/Details/GetInstNav2.js","_Name":"SectionSimplePropertyCell1","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Instrutor Secundário","AccessoryType":"DisclosureIndicator","Visible":true}},{"SimplePropertyCell":{"Value":"{cust_LOCN_DESC}","_Name":"SectionSimplePropertyCell2","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Local","AccessoryType":"None","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/TeamDuration.js","_Name":"SectionSimplePropertyCell3","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Carga Horária","AccessoryType":"None","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/GetIntervalo.js","_Name":"SectionSimplePropertyCell4","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Intervalo","AccessoryType":"None","Visible":true}}],"Layout":{"NumberOfColumns":2}},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Layout":{"LayoutType":"Vertical","HorizontalAlignment":"Leading"},"_Type":"Section.Type.ButtonTable","_Name":"SectionButtonTable0","Visible":true,"EmptySection":{"FooterVisible":false},"Buttons":[{"_Type":"ButtonTable.Type.Button","_Name":"ButtonTableTypeButton0","Title":"Adicionar participantes","Alignment":"Center","ButtonType":"Text","Semantic":"Tint","Image":"sap-icon://add","ImagePosition":"Leading","FullWidth":false,"Visible":true,"Enabled":"/Attendance_List/Rules/Teams/Details/IsAddParticipantsButtonEnable.js","OnPress":"/Attendance_List/Actions/NavToAddParticipants.action"}]},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.ObjectCollection","DataSubscriptions":[],"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_listadiaria","QueryOptions":"$filter=cust_turma eq '{externalCode}'&$orderby=cust_startdate"},"_Name":"SectionObjectCollection0","Header":{"_Type":"SectionCommon.Type.Header","_Name":"SectionCommonTypeHeader0","AccessoryType":"None","UseTopPadding":true,"Caption":"Dias de aula"},"Visible":true,"EmptySection":{"Caption":"Sem aulas na turma","FooterVisible":true},"DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"ObjectCell":{"Title":"/Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js","Subhead":"/Attendance_List/Rules/Teams/Details/FormatDate.js","DisplayDescriptionInMobile":true,"AccessoryType":"DisclosureIndicator","PreserveIconStackSpacing":false,"OnPress":"/Attendance_List/Rules/Teams/Details/SetStorageVariable.js","Styles":{"Title":"letter-color","Subhead":"letter-black-color"},"AvatarStack":{"Avatars":[{"Image":"sap-icon://date-time","Style":"avatar"}],"ImageIsCircular":false,"ImageHasBorder":false},"AvatarGrid":{"Avatars":[],"ImageIsCircular":true},"_Type":"ObjectCollection.Type.ObjectCell"},"Layout":{"NumberOfColumns":2}}]}],"_Type":"Page","_Name":"TeamDetails","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem0","Caption":"Item","SystemItem":"Edit","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Teams/PopoverTeamEdit.action"}],"_Name":"ActionBar1","_Type":"Control.Type.ActionBar","Caption":"Detalhes da turma","PrefersLargeCaption":false}}
+module.exports = {"Controls":[{"FilterFeedbackBar":{"ShowAllFilters":false,"_Type":"Control.Type.FilterFeedbackBar"},"_Type":"Control.Type.SectionedTable","_Name":"SectionedTable0","Sections":[{"ObjectHeader":{"Description":"/Attendance_List/Rules/Teams/TeamDescription.js","DetailImageIsCircular":false,"HeadlineText":"{externalName}","StatusPosition":"Stacked","StatusImagePosition":"Leading","SubstatusImagePosition":"Leading","Styles":{"ObjectHeader":"background-100"}},"_Type":"Section.Type.ObjectHeader","_Name":"SectionObjectHeader0","Visible":true},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.SimplePropertyCollection","_Name":"SectionSimplePropertyCollection0","Visible":true,"EmptySection":{"FooterVisible":false},"SimplePropertyCells":[{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/Details/GetInstNav1.js","_Name":"SectionSimplePropertyCell0","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Instrutor Principal","AccessoryType":"DisclosureIndicator","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/Details/GetInstNav2.js","_Name":"SectionSimplePropertyCell1","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Instrutor Secundário","AccessoryType":"DisclosureIndicator","Visible":true}},{"SimplePropertyCell":{"Value":"{cust_LOCN_DESC}","_Name":"SectionSimplePropertyCell2","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Local","AccessoryType":"None","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/TeamSegmentedDuration.js","_Name":"SectionSimplePropertyCell5","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Carga Horária ","AccessoryType":"None","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/TeamDuration.js","_Name":"SectionSimplePropertyCell3","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Carga Horária Total","AccessoryType":"None","Visible":true}},{"SimplePropertyCell":{"Value":"/Attendance_List/Rules/Teams/GetIntervalo.js","_Name":"SectionSimplePropertyCell4","_Type":"SimplePropertyCollection.Type.Cell","KeyName":"Intervalo","AccessoryType":"None","Visible":true}}],"Layout":{"NumberOfColumns":2}},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"Layout":{"LayoutType":"Vertical","HorizontalAlignment":"Leading"},"_Type":"Section.Type.ButtonTable","_Name":"SectionButtonTable0","Visible":true,"EmptySection":{"FooterVisible":false},"Buttons":[{"_Type":"ButtonTable.Type.Button","_Name":"ButtonTableTypeButton0","Title":"Adicionar participantes","Alignment":"Center","ButtonType":"Text","Semantic":"Tint","Image":"sap-icon://add","ImagePosition":"Leading","FullWidth":false,"Visible":true,"Enabled":"/Attendance_List/Rules/Teams/Details/IsAddParticipantsButtonEnable.js","OnPress":"/Attendance_List/Actions/NavToAddParticipants.action"}]},{"Separators":{"TopSectionSeparator":false,"BottomSectionSeparator":true,"HeaderSeparator":true,"FooterSeparator":true,"ControlSeparator":true},"_Type":"Section.Type.ObjectCollection","DataSubscriptions":[],"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_listadiaria","QueryOptions":"$filter=cust_turma eq '{externalCode}'&$orderby=cust_startdate"},"_Name":"SectionObjectCollection0","Header":{"_Type":"SectionCommon.Type.Header","_Name":"SectionCommonTypeHeader0","AccessoryType":"None","UseTopPadding":true,"Caption":"Dias de aula"},"Visible":true,"EmptySection":{"Caption":"Sem aulas na turma","FooterVisible":true},"DataPaging":{"ShowLoadingIndicator":false,"PageSize":50},"ObjectCell":{"Title":"/Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js","Subhead":"/Attendance_List/Rules/Teams/Details/FormatDate.js","DisplayDescriptionInMobile":true,"AccessoryType":"DisclosureIndicator","PreserveIconStackSpacing":false,"OnPress":"/Attendance_List/Rules/Teams/Details/SetStorageVariable.js","Styles":{"Title":"letter-color","Subhead":"letter-black-color"},"AvatarStack":{"Avatars":[{"Image":"sap-icon://date-time","Style":"avatar"}],"ImageIsCircular":false,"ImageHasBorder":false},"AvatarGrid":{"Avatars":[],"ImageIsCircular":true},"_Type":"ObjectCollection.Type.ObjectCell"},"Layout":{"NumberOfColumns":2}}]}],"_Type":"Page","_Name":"TeamDetails","ActionBar":{"Items":[{"_Type":"Control.Type.ActionBarItem","_Name":"ActionBarItem0","Caption":"Item","SystemItem":"Edit","Position":"Right","IsIconCircular":false,"Visible":true,"OnPress":"/Attendance_List/Actions/Teams/PopoverTeamEdit.action"}],"_Name":"ActionBar1","_Type":"Control.Type.ActionBar","Caption":"Detalhes da turma","PrefersLargeCaption":false}}
 
 /***/ }),
 
