@@ -17,6 +17,19 @@ export default async function QueryParticipants(clientAPI) {
 
     const search = clientAPI.searchString || ''
 
-    let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}'&$search='${search}'`
+    
+    const capitalizeSearch = search.split(" ").filter(w => w).map(word => {
+        const exceptions = ["de", "da", "das", "do", "dos"]
+
+        if (exceptions.includes(word)) {
+            return word.toLowerCase()
+        }
+
+        const capitalize = word[0].toUpperCase() + word.slice(1).toLowerCase()
+
+        return capitalize
+    }).join(' ')
+
+    let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}'&$search='${capitalizeSearch}'`
     return cFilter
 }
