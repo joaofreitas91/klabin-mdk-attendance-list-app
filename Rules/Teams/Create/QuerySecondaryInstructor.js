@@ -19,12 +19,13 @@ export default async function QuerySecondaryInstructor(clientAPI) {
 
     const capitalizeSearch = search.split(" ").filter(w => w).map(word => {
         const exceptions = ["de", "da", "das", "do", "dos"]
+        const wordToLoweCase = word.toLowerCase()
 
-        if (exceptions.includes(word)) {
-            return word.toLowerCase()
+        if (exceptions.includes(wordToLoweCase)) {
+            return wordToLoweCase
         }
 
-        const capitalize = word[0].toUpperCase() + word.slice(1).toLowerCase()
+        const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1)
 
         return capitalize
     }).join(' ')
