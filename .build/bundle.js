@@ -2340,7 +2340,16 @@ async function QueryParticipantsAddition(clientAPI) {
   const SFUserInst2 = responseInst2.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
   let filterInst2 = `cust_matricula ne '${ExtCodeInst2}' and externalCode ne '${ExtCodeInst2}' and cust_matricula ne '${SFUserInst2}' and externalCode ne '${SFUserInst2}'`;
   const search = clientAPI.searchString || '';
-  let cFilter = `$filter=${filterInst1} and ${filterInst2}&$search='${search}'`;
+  const capitalizeSearch = search.split(" ").filter(w => w).map(word => {
+    const exceptions = ["de", "da", "das", "do", "dos"];
+    const wordToLoweCase = word.toLowerCase();
+    if (exceptions.includes(wordToLoweCase)) {
+      return wordToLoweCase;
+    }
+    const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1);
+    return capitalize;
+  }).join(' ');
+  let cFilter = `$filter=${filterInst1} and ${filterInst2}&$search='${capitalizeSearch}'`;
   return cFilter;
 }
 
@@ -2484,7 +2493,7 @@ async function SaveCreate(clientAPI) {
         minutos: end.getMinutes()
       };
       const newInitDate = new Date(inicio);
-      const newEndDate = new Date(inicio);
+      const newEndDate = new Date(fim);
       newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
       newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
       const diffMs = newEndDate - newInitDate;
