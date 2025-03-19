@@ -1633,7 +1633,16 @@ async function QueryParticipants(clientAPI) {
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
   const search = clientAPI.searchString || '';
-  let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}'&$search='${search}'`;
+  const capitalizeSearch = search.split(" ").filter(w => w).map(word => {
+    const exceptions = ["de", "da", "das", "do", "dos"];
+    const wordToLoweCase = word.toLowerCase();
+    if (exceptions.includes(wordToLoweCase)) {
+      return wordToLoweCase;
+    }
+    const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1);
+    return capitalize;
+  }).join(' ');
+  let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}'&$search='${capitalizeSearch}'`;
   return cFilter;
 }
 
@@ -1661,7 +1670,16 @@ async function QuerySecondaryInstructor(clientAPI) {
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
   const search = clientAPI.searchString || '';
-  let cFilter = `$filter=cust_RELATED_USER ne '${ExtCode}' and cust_RELATED_USER ne '${SFUser}' and externalCode ne '${SFUser}' and externalCode ne '${ExtCode}'&$search='${search}'`;
+  const capitalizeSearch = search.split(" ").filter(w => w).map(word => {
+    const exceptions = ["de", "da", "das", "do", "dos"];
+    const wordToLoweCase = word.toLowerCase();
+    if (exceptions.includes(wordToLoweCase)) {
+      return wordToLoweCase;
+    }
+    const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1);
+    return capitalize;
+  }).join(' ');
+  let cFilter = `$filter=cust_RELATED_USER ne '${ExtCode}' and cust_RELATED_USER ne '${SFUser}' and externalCode ne '${SFUser}' and externalCode ne '${ExtCode}'&$search='${capitalizeSearch}'`;
   return cFilter;
 }
 
