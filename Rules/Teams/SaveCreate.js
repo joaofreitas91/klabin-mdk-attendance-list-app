@@ -102,7 +102,7 @@ export default async function SaveCreate(clientAPI) {
             };
 
             const newInitDate = new Date(inicio)
-            const newEndDate = new Date(inicio)
+            const newEndDate = new Date(fim)
 
             newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
             newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
