@@ -30,7 +30,7 @@ export default async function QuerySecondaryInstructor(clientAPI) {
         return capitalize
     }).join(' ')
 
-    let cFilter = `$filter=cust_RELATED_USER ne '${ExtCode}' and cust_RELATED_USER ne '${SFUser}' and externalCode ne '${SFUser}' and externalCode ne '${ExtCode}'&$search='${capitalizeSearch}'`
+    let cFilter = `$filter=cust_RELATED_USER ne '${ExtCode}' and cust_RELATED_USER ne '${SFUser}' and externalCode ne '${SFUser}' and externalCode ne '${ExtCode}' and cust_fname ne null&$orderby=cust_fname&$search='${capitalizeSearch}'`
 
     return cFilter
 }
