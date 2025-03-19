@@ -29,7 +29,20 @@ export default async function QueryParticipantsAddition(clientAPI) {
 
     const search = clientAPI.searchString || ''
 
-    let cFilter = `$filter=${filterInst1} and ${filterInst2}&$search='${search}'`
+    const capitalizeSearch = search.split(" ").filter(w => w).map(word => {
+        const exceptions = ["de", "da", "das", "do", "dos"]
+        const wordToLoweCase = word.toLowerCase()
+
+        if (exceptions.includes(wordToLoweCase)) {
+            return wordToLoweCase
+        }
+
+        const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1)
+
+        return capitalize
+    }).join(' ')
+
+    let cFilter = `$filter=${filterInst1} and ${filterInst2}&$search='${capitalizeSearch}'`
 
     return cFilter
 }
