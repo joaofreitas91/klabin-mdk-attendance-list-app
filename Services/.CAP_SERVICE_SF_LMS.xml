@@ -121,7 +121,7 @@
                 <Property Name="cust_enddate_LMS" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_enviado_LMS" Type="Edm.Boolean"/>
                 <Property Name="cust_nota" Type="Edm.String"/>
-                <Property Name="cust_resultado" Type="Edm.String" MaxLength="10"/>
+                <Property Name="cust_resultado" Type="Edm.String" MaxLength="35"/>
                 <Property Name="cust_sequencia" Type="Edm.String" MaxLength="10"/>
                 <Property Name="cust_startdate" Type="Edm.DateTimeOffset"/>
                 <Property Name="cust_startdate_LMS" Type="Edm.DateTimeOffset"/>
