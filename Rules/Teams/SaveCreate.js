@@ -91,24 +91,56 @@ export default async function SaveCreate(clientAPI) {
             const init = new Date(inicio);
             const end = new Date(fim);
 
-            const horarioInicial = {
-                horas: init.getHours(),
-                minutos: init.getMinutes()
-            };
+            const horario1 = `${init.getHours()}:${init.getMinutes()}`
+            const horario2 = `${end.getHours()}:${end.getMinutes()}`
 
-            const horarioFinal = {
-                horas: end.getHours(),
-                minutos: end.getMinutes()
-            };
+            const [h1, m1] = horario1.split(':').map(Number);
+            const [h2, m2] = horario2.split(':').map(Number);
+            
+            // Converter os horários para minutos
+            const minutos1 = h1 * 60 + m1;
+            const minutos2 = h2 * 60 + m2;
+            
+            // Calcular a diferença considerando o ciclo de 24h
+            let diferenca = minutos2 - minutos1;
+            if (diferenca <= 0) {
+                diferenca += 1440; // 1440 minutos em um dia
+            }
+            
+            // Converter a diferença para horas decimais
+            const horasDecimais = diferenca / 60;
+            
+            return horasDecimais
 
-            const newInitDate = new Date(inicio)
-            const newEndDate = new Date(fim)
+            // const horarioInicial = {
+            //     horas: init.getHours(),
+            //     minutos: init.getMinutes()
+            // };
 
-            newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
-            newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
+            // const horarioFinal = {
+            //     horas: end.getHours(),
+            //     minutos: end.getMinutes()
+            // };
 
-            const diffMs = newEndDate - newInitDate;
-            return diffMs / (1000 * 60 * 60);
+            // const newInitDate = new Date(inicio)
+            // const newEndDate = new Date(fim)
+
+            // newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
+            // newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
+
+            // const diffMs = newEndDate - newInitDate;
+            // return diffMs / (1000 * 60 * 60);
+
+            // const h1 = init.getHours()
+            // const h2 = end.getHours()
+
+            // // Calcular a diferença considerando o ciclo de 24h
+            // let diferenca = h2 - h1;
+            // if (diferenca <= 0) {
+            //     diferenca += 24;
+            // }
+
+            // return diferenca
         }
 
         const diferencaHoras = calculateHoursDiff(firstDay, lastDay);
@@ -263,7 +295,7 @@ export default async function SaveCreate(clientAPI) {
                 }
             })
         }))
-        
+
         await Promise.all(dailyList.map(prop => { // criar lista diaria
             return clientAPI.executeAction({
                 "Name": "/Attendance_List/Actions/Teams/CreateDailyList.action",
@@ -272,7 +304,7 @@ export default async function SaveCreate(clientAPI) {
                 }
             })
         }))
-        
+
         await clientAPI.executeAction({ // criar turma
             "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
             "Properties": {
@@ -286,7 +318,7 @@ export default async function SaveCreate(clientAPI) {
                 }
             }
         })
-        
+
         await Promise.all(presencalmsList.map(prop => { // criar presença lms
 
             return clientAPI.executeAction({
