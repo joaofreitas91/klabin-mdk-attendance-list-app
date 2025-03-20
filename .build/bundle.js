@@ -1582,7 +1582,7 @@ async function QueryCursos(clientAPI) {
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
   const search = clientAPI.searchString || '';
-  let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${ExtCode}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${SFUser}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null&$search='${search}'`;
+  let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${ExtCode}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${SFUser}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null&$search='${search.toUpperCase()}'`;
   return cFilter;
 }
 
@@ -1605,7 +1605,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 function QueryInstructorList(clientAPI) {
   let userId = clientAPI.evaluateTargetPath('#Application/#ClientData/UserId');
-  return `$filter=cust_RELATED_USER ne '${userId}'`;
+  return `$filter=cust_RELATED_USER ne '${userId}' and cust_fname ne null&$orderby=cust_fname`;
 }
 
 /***/ }),
@@ -1642,7 +1642,7 @@ async function QueryParticipants(clientAPI) {
     const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1);
     return capitalize;
   }).join(' ');
-  let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}'&$search='${capitalizeSearch}'`;
+  let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}' and cust_fname ne null&$orderby=cust_fname&$search='${capitalizeSearch}'`;
   return cFilter;
 }
 
@@ -1679,7 +1679,7 @@ async function QuerySecondaryInstructor(clientAPI) {
     const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1);
     return capitalize;
   }).join(' ');
-  let cFilter = `$filter=cust_RELATED_USER ne '${ExtCode}' and cust_RELATED_USER ne '${SFUser}' and externalCode ne '${SFUser}' and externalCode ne '${ExtCode}'&$search='${capitalizeSearch}'`;
+  let cFilter = `$filter=cust_RELATED_USER ne '${ExtCode}' and cust_RELATED_USER ne '${SFUser}' and externalCode ne '${SFUser}' and externalCode ne '${ExtCode}' and cust_fname ne null&$orderby=cust_fname&$search='${capitalizeSearch}'`;
   return cFilter;
 }
 
@@ -2349,7 +2349,7 @@ async function QueryParticipantsAddition(clientAPI) {
     const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1);
     return capitalize;
   }).join(' ');
-  let cFilter = `$filter=${filterInst1} and ${filterInst2}&$search='${capitalizeSearch}'`;
+  let cFilter = `$filter=${filterInst1} and ${filterInst2} and cust_fname ne null&$orderby=cust_fname&$search='${capitalizeSearch}'`;
   return cFilter;
 }
 
@@ -2484,20 +2484,54 @@ async function SaveCreate(clientAPI) {
     function calculateHoursDiff(inicio, fim) {
       const init = new Date(inicio);
       const end = new Date(fim);
-      const horarioInicial = {
-        horas: init.getHours(),
-        minutos: init.getMinutes()
-      };
-      const horarioFinal = {
-        horas: end.getHours(),
-        minutos: end.getMinutes()
-      };
-      const newInitDate = new Date(inicio);
-      const newEndDate = new Date(fim);
-      newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
-      newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
-      const diffMs = newEndDate - newInitDate;
-      return diffMs / (1000 * 60 * 60);
+      const horario1 = `${init.getHours()}:${init.getMinutes()}`;
+      const horario2 = `${end.getHours()}:${end.getMinutes()}`;
+      const [h1, m1] = horario1.split(':').map(Number);
+      const [h2, m2] = horario2.split(':').map(Number);
+
+      // Converter os horários para minutos
+      const minutos1 = h1 * 60 + m1;
+      const minutos2 = h2 * 60 + m2;
+
+      // Calcular a diferença considerando o ciclo de 24h
+      let diferenca = minutos2 - minutos1;
+      if (diferenca <= 0) {
+        diferenca += 1440; // 1440 minutos em um dia
+      }
+
+      // Converter a diferença para horas decimais
+      const horasDecimais = diferenca / 60;
+      return horasDecimais;
+
+      // const horarioInicial = {
+      //     horas: init.getHours(),
+      //     minutos: init.getMinutes()
+      // };
+
+      // const horarioFinal = {
+      //     horas: end.getHours(),
+      //     minutos: end.getMinutes()
+      // };
+
+      // const newInitDate = new Date(inicio)
+      // const newEndDate = new Date(fim)
+
+      // newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
+      // newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
+
+      // const diffMs = newEndDate - newInitDate;
+      // return diffMs / (1000 * 60 * 60);
+
+      // const h1 = init.getHours()
+      // const h2 = end.getHours()
+
+      // // Calcular a diferença considerando o ciclo de 24h
+      // let diferenca = h2 - h1;
+      // if (diferenca <= 0) {
+      //     diferenca += 24;
+      // }
+
+      // return diferenca
     }
     const diferencaHoras = calculateHoursDiff(firstDay, lastDay);
     const workload = !interval ? diferencaHoras : diferencaHoras - Number(interval) / 60;
