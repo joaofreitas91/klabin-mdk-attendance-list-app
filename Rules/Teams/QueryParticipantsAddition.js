@@ -42,7 +42,7 @@ export default async function QueryParticipantsAddition(clientAPI) {
         return capitalize
     }).join(' ')
 
-    let cFilter = `$filter=${filterInst1} and ${filterInst2} and cust_fname ne null&$orderby=cust_fname&$search='${capitalizeSearch}'`
+    let cFilter = `$filter=${filterInst1} and ${filterInst2} and cust_fname ne null and cust_NOTACTIVE eq 'N'&$orderby=cust_fname&$search='${capitalizeSearch}'`
 
     return cFilter
 }

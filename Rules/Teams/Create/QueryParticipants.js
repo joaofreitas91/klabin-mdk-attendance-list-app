@@ -31,6 +31,6 @@ export default async function QueryParticipants(clientAPI) {
         return capitalize
     }).join(' ')
 
-    let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}' and cust_fname ne null&$orderby=cust_fname&$search='${capitalizeSearch}'`
+    let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}' and cust_fname ne null and cust_NOTACTIVE eq 'N'&$orderby=cust_fname&$search='${capitalizeSearch}'`
     return cFilter
 }
