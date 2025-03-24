@@ -1582,7 +1582,7 @@ async function QueryCursos(clientAPI) {
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
   const search = clientAPI.searchString || '';
-  let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${ExtCode}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${SFUser}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null&$search='${search.toUpperCase()}'`;
+  let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${ExtCode}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${SFUser}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null or cust_NOTACTIVE eq 'N'&$search='${search.toUpperCase()}'`;
   return cFilter;
 }
 
@@ -1642,7 +1642,7 @@ async function QueryParticipants(clientAPI) {
     const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1);
     return capitalize;
   }).join(' ');
-  let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}' and cust_fname ne null&$orderby=cust_fname&$search='${capitalizeSearch}'`;
+  let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}' and cust_fname ne null and cust_NOTACTIVE eq 'N'&$orderby=cust_fname&$search='${capitalizeSearch}'`;
   return cFilter;
 }
 
@@ -2349,7 +2349,7 @@ async function QueryParticipantsAddition(clientAPI) {
     const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1);
     return capitalize;
   }).join(' ');
-  let cFilter = `$filter=${filterInst1} and ${filterInst2} and cust_fname ne null&$orderby=cust_fname&$search='${capitalizeSearch}'`;
+  let cFilter = `$filter=${filterInst1} and ${filterInst2} and cust_fname ne null and cust_NOTACTIVE eq 'N'&$orderby=cust_fname&$search='${capitalizeSearch}'`;
   return cFilter;
 }
 
@@ -2412,50 +2412,40 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 async function SaveCreate(clientAPI) {
-  function gerarPresencaCurso(dataHoraInicio, dataHoraFim) {
-    const inicio = new Date(dataHoraInicio);
-    const fim = new Date(dataHoraFim);
-
-    // Extrair o horário inicial e final
-    const horarioInicial = {
-      horas: inicio.getHours(),
-      minutos: inicio.getMinutes()
-    };
-    const horarioFinal = {
-      horas: fim.getHours(),
-      minutos: fim.getMinutes()
-    };
-
-    // Normalizar as datas para o horário fixo
-    inicio.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
-    fim.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
-    const listaPresenca = [];
-    let dataAtual = new Date(inicio);
-
-    // Gerar lista de presença
-    while (dataAtual <= fim) {
-      const dataInicioDia = new Date(dataAtual);
-      const dataFimDia = new Date(dataAtual);
-
-      // Configurar o horário inicial e final do dia
-      dataInicioDia.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
-      dataFimDia.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
-
-      // Garantir que o último dia não ultrapasse a data final
-      if (dataFimDia > fim) {
-        dataFimDia.setTime(fim.getTime());
-      }
-
-      // Adicionar o dia à lista de presença
-      listaPresenca.push({
-        inicio: dataInicioDia,
-        fim: dataFimDia
-      });
-
-      // Avançar para o próximo dia
-      dataAtual.setDate(dataAtual.getDate() + 1);
+  function calculateHoursDiff(inpStartDate, inpEndDate) {
+    const startDate = new Date(inpStartDate);
+    const endDate = new Date(inpEndDate);
+    const startHour = startDate.getHours();
+    const startMinute = startDate.getMinutes();
+    const endHour = endDate.getHours();
+    const endMinute = endDate.getMinutes();
+    const hoursToMinute = h => h * 60;
+    const initialMinutes = hoursToMinute(startHour) + startMinute;
+    const endMinutes = hoursToMinute(endHour) + endMinute;
+    let timeDifferenceInMinutes = endMinutes - initialMinutes;
+    if (timeDifferenceInMinutes <= 0) {
+      timeDifferenceInMinutes += 1440; // 1440 minutes in one day
     }
-    return listaPresenca;
+    const minutesToHour = timeDifferenceInMinutes / 60;
+    return minutesToHour;
+  }
+  function dailyListFactory(inpStartDate, inpEndDate) {
+    let startDate = new Date(inpStartDate);
+    const endDate = new Date(inpEndDate);
+    const ranges = [];
+    const totalHours = calculateHoursDiff(inpStartDate, inpEndDate);
+    while (startDate < endDate) {
+      const currentInitialHour = startDate.getHours();
+      const start = new Date(startDate);
+      const end = new Date(startDate);
+      end.setHours(currentInitialHour + totalHours);
+      ranges.push({
+        inicio: start,
+        fim: end
+      });
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    return ranges;
   }
   try {
     clientAPI.showActivityIndicator();
@@ -2466,7 +2456,7 @@ async function SaveCreate(clientAPI) {
     const interval = intervalValue ? intervalValue.ReturnValue : null;
     const firstDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerStartDate/#Value');
     const lastDay = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellDatePickerEndDate/#Value');
-    const courseDays = gerarPresencaCurso(new Date(firstDay).toISOString(), new Date(lastDay).toISOString());
+    const courseDays = dailyListFactory(new Date(firstDay).toISOString(), new Date(lastDay).toISOString());
     /* const userId= clientAPI.evaluateTargetPath('#Application/#ClientData/UserId'); */
     const cust_cursos_id = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerCurse/#Value').find(i => i);
     if (!cust_cursos_id) {
@@ -2481,58 +2471,6 @@ async function SaveCreate(clientAPI) {
     }
     const query = `$filter=externalCode eq '${cust_cursos_id.ReturnValue}'`;
     const entity = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Cursos", ["cust_CPNT_TYP_ID", "cust_CPNT_TITLE"], query);
-    function calculateHoursDiff(inicio, fim) {
-      const init = new Date(inicio);
-      const end = new Date(fim);
-      const horario1 = `${init.getHours()}:${init.getMinutes()}`;
-      const horario2 = `${end.getHours()}:${end.getMinutes()}`;
-      const [h1, m1] = horario1.split(':').map(Number);
-      const [h2, m2] = horario2.split(':').map(Number);
-
-      // Converter os horários para minutos
-      const minutos1 = h1 * 60 + m1;
-      const minutos2 = h2 * 60 + m2;
-
-      // Calcular a diferença considerando o ciclo de 24h
-      let diferenca = minutos2 - minutos1;
-      if (diferenca <= 0) {
-        diferenca += 1440; // 1440 minutos em um dia
-      }
-
-      // Converter a diferença para horas decimais
-      const horasDecimais = diferenca / 60;
-      return horasDecimais;
-
-      // const horarioInicial = {
-      //     horas: init.getHours(),
-      //     minutos: init.getMinutes()
-      // };
-
-      // const horarioFinal = {
-      //     horas: end.getHours(),
-      //     minutos: end.getMinutes()
-      // };
-
-      // const newInitDate = new Date(inicio)
-      // const newEndDate = new Date(fim)
-
-      // newInitDate.setHours(horarioInicial.horas, horarioInicial.minutos, 0, 0);
-      // newEndDate.setHours(horarioFinal.horas, horarioFinal.minutos, 0, 0);
-
-      // const diffMs = newEndDate - newInitDate;
-      // return diffMs / (1000 * 60 * 60);
-
-      // const h1 = init.getHours()
-      // const h2 = end.getHours()
-
-      // // Calcular a diferença considerando o ciclo de 24h
-      // let diferenca = h2 - h1;
-      // if (diferenca <= 0) {
-      //     diferenca += 24;
-      // }
-
-      // return diferenca
-    }
     const diferencaHoras = calculateHoursDiff(firstDay, lastDay);
     const workload = !interval ? diferencaHoras : diferencaHoras - Number(interval) / 60;
     const validateDate = new Date(firstDay) > new Date(lastDay);
