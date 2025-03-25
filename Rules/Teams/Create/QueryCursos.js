@@ -17,6 +17,6 @@ export default async function QueryCursos(clientAPI) {
 
     const search = clientAPI.searchString || ''
 
-    let cFilter = `$filter=cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${ExtCode}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${SFUser}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null or cust_NOTACTIVE eq 'N'&$search='${search.toUpperCase()}'`
+    let cFilter = `$filter=(cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${ExtCode}') or cust_InstrutorNav/any(z: z/externalCode eq '${ExtCode}') or cust_InstrutorNav/any(z: z/cust_RELATED_USER eq '${SFUser}') or cust_InstrutorNav/any(z: z/externalCode eq '${SFUser}') or cust_instrutor eq null) and cust_NOTACTIVE eq 'N'&$search='${search.toUpperCase()}'`
     return cFilter
 }
