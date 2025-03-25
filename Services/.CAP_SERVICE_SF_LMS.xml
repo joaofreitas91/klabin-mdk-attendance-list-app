@@ -249,6 +249,7 @@
                 <Property Name="cust_fname" Type="Edm.String" MaxLength="100"/>
                 <Property Name="cust_lname" Type="Edm.String" MaxLength="200"/>
                 <Property Name="cust_mname" Type="Edm.String" MaxLength="100"/>
+                <Property Name="cust_notactive" Type="Edm.String" MaxLength="1"/>
                 <Property Name="externalName" Type="Edm.String" MaxLength="128"/>
                 <Property Name="lastModifiedBy" Type="Edm.String" MaxLength="100"/>
                 <Property Name="lastModifiedDateTime" Type="Edm.DateTimeOffset"/>
