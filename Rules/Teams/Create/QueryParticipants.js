@@ -4,8 +4,7 @@
  */
 export default async function QueryParticipants(clientAPI) {
     const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-    // const IASUser = "ABILIK"
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+    const query = `$filter=(externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}') and cust_notactive eq 'N'`;
     const response = await clientAPI.read(
         "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
         "cust_Instrutores",
@@ -16,7 +15,6 @@ export default async function QueryParticipants(clientAPI) {
     const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
 
     const search = clientAPI.searchString || ''
-
 
     const capitalizeSearch = search.split(" ").filter(w => w).map(word => {
         const exceptions = ["de", "da", "das", "do", "dos"]
@@ -31,6 +29,6 @@ export default async function QueryParticipants(clientAPI) {
         return capitalize
     }).join(' ')
 
-    let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}' and cust_fname ne null and cust_NOTACTIVE eq 'N'&$orderby=cust_fname&$search='${capitalizeSearch}'`
+    let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}' and cust_NOTACTIVE eq 'N'&$orderby=cust_fname&$search='${capitalizeSearch}'`
     return cFilter
 }

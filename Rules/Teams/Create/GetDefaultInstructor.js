@@ -5,7 +5,7 @@
 export default async function GetDefaultInstructor(clientAPI) {
     const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
 
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+    const query = `$filter=(externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}') and cust_notactive eq 'N'`;
     const response = await clientAPI.read(
         "/Attendance_List/Services/CAP_SERVICE_SF_LMS.service",
         "cust_Instrutores",
