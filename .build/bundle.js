@@ -1001,7 +1001,7 @@ async function CalendarQuery(context) {
   const IASUser = context.evaluateTargetPath("#Application/#AppData/UserId");
   // const IASUser = 'SRMELLO'
 
-  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const query = `$filter=(externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}') and cust_notactive eq 'N'`;
   const response = await context.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
@@ -1097,7 +1097,7 @@ async function GetThreeTeams(context) {
   const IASUser = context.evaluateTargetPath("#Application/#AppData/UserId");
   // const IASUser = 'SRMELLO'
 
-  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const query = `$filter=(externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}') and cust_notactive eq 'N'`;
   const response = await context.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
@@ -1144,7 +1144,7 @@ __webpack_require__.r(__webpack_exports__);
 async function SetUserIds(clientAPI) {
   const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
   //  const IASUser = "ABILIK"
-  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const query = `$filter=(externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}') and cust_notactive eq 'N'`;
   const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
@@ -1223,7 +1223,7 @@ async function UpdateQueryWithSelectedDate(clientAPI) {
     const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
     // const IASUser = 'SRMELLO'
 
-    const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+    const query = `$filter=(externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}') and cust_notactive eq 'N'`;
     const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
     const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
     const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
@@ -1531,7 +1531,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 async function GetDefaultInstructor(clientAPI) {
   const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const query = `$filter=(externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}') and cust_notactive eq 'N'`;
   const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode"], query);
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   return ExtCode;
@@ -1579,7 +1579,7 @@ __webpack_require__.r(__webpack_exports__);
 async function QueryCursos(clientAPI) {
   const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
   // const IASUser = "ABILIK"
-  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const query = `$filter=(externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}') and cust_notactive eq 'N'`;
   const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
@@ -1629,8 +1629,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 async function QueryParticipants(clientAPI) {
   const IASUser = clientAPI.evaluateTargetPath("#Application/#AppData/UserId");
-  // const IASUser = "ABILIK"
-  const query = `$filter=externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}'`;
+  const query = `$filter=(externalCode eq '${IASUser}' or cust_RELATED_USER eq '${IASUser}') and cust_notactive eq 'N'`;
   const response = await clientAPI.read("/Attendance_List/Services/CAP_SERVICE_SF_LMS.service", "cust_Instrutores", ["externalCode", "cust_RELATED_USER"], query);
   const ExtCode = response.find(i => i.externalCode)?.externalCode || '';
   const SFUser = response.find(i => i.cust_RELATED_USER)?.cust_RELATED_USER || '';
@@ -1644,7 +1643,7 @@ async function QueryParticipants(clientAPI) {
     const capitalize = wordToLoweCase[0].toUpperCase() + wordToLoweCase.slice(1);
     return capitalize;
   }).join(' ');
-  let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}' and cust_fname ne null and cust_NOTACTIVE eq 'N'&$orderby=cust_fname&$search='${capitalizeSearch}'`;
+  let cFilter = `$filter=externalCode ne '${ExtCode}' and cust_matricula ne '${ExtCode}' and externalCode ne '${SFUser}' and cust_matricula ne '${SFUser}' and cust_NOTACTIVE eq 'N'&$orderby=cust_fname&$search='${capitalizeSearch}'`;
   return cFilter;
 }
 
