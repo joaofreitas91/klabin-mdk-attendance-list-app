@@ -175,9 +175,13 @@
 						"Title": "/Attendance_List/Rules/Teams/Details/GetTeamDetailsDay.js",
 						"Subhead": "/Attendance_List/Rules/Teams/Details/FormatDate.js",
 						"DisplayDescriptionInMobile": true,
+						"SubstatusText": "ID: {externalCode}",
 						"AccessoryType": "DisclosureIndicator",
 						"PreserveIconStackSpacing": false,
 						"OnPress": "/Attendance_List/Rules/Teams/Details/SetStorageVariable.js",
+						"ContextMenu": {
+							"PerformFirstActionWithFullSwipe": true
+						},
 						"Styles": {
 							"Title": "letter-color",
 							"Subhead": "letter-black-color"
