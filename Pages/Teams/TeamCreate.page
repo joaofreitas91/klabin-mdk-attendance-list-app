@@ -231,7 +231,7 @@
 						{
 							"_Type": "Control.Type.FormCell.ListPicker",
 							"_Name": "FormCellListPickerInstructor2",
-							"IsVisible": true,
+							"IsVisible": false,
 							"Separator": false,
 							"AllowMultipleSelection": false,
 							"AllowEmptySelection": true,
@@ -245,8 +245,6 @@
 							"AllowDefaultValueIfOneItem": false,
 							"IsEditable": true,
 							"Search": {
-								"Enabled": true,
-								"BarcodeScanner": true,
 								"Options": {
 									"CaseSensitive": false,
 									"NumberSearch": {
@@ -255,7 +253,9 @@
 									"UseSearchOverFilter": {
 										"Enabled": false
 									}
-								}
+								},
+								"Enabled": true,
+								"BarcodeScanner": true
 							},
 							"PickerItems": {
 								"Target": {
@@ -306,8 +306,6 @@
 							"AllowDefaultValueIfOneItem": false,
 							"IsEditable": true,
 							"Search": {
-								"Enabled": true,
-								"BarcodeScanner": true,
 								"Options": {
 									"CaseSensitive": false,
 									"NumberSearch": {
@@ -316,7 +314,9 @@
 									"UseSearchOverFilter": {
 										"Enabled": false
 									}
-								}
+								},
+								"Enabled": true,
+								"BarcodeScanner": true
 							},
 							"PickerItems": {
 								"Target": {
