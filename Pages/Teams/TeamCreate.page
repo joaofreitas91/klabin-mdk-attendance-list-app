@@ -368,8 +368,7 @@
 			{
 				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem2",
-				"Caption": "Item",
-				"SystemItem": "Save",
+				"Caption": "Salvar",
 				"Position": "Right",
 				"IsIconCircular": false,
 				"Visible": true,
@@ -378,6 +377,7 @@
 		],
 		"_Name": "Salvar",
 		"_Type": "Control.Type.ActionBar",
-		"Caption": "Criar turma"
+		"Caption": "Criar Turma"
+
 	}
 }
