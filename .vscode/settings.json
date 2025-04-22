@@ -7,11 +7,12 @@
         "right": {
             "visible": true,
             "width": 478
-        }
+        },
+        "device": "tablet"
     },
     "mdk.defaultEditor": "Text Editor",
     "workbench.editorAssociations": {
-        "*.app": "default",
+        "*.app": "mdk.app",
         "*.global": "default",
         "*.action": "default",
         "*.extension": "default",
@@ -21,5 +22,8 @@
         "*.rule": "default",
         "*.properties": "default",
         "*.fragment": "default"
+    },
+    "mdk.i18n": {
+        "displayLanguages": "i18n,pt_BR"
     }
 }
