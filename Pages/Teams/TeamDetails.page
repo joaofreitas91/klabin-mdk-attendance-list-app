@@ -56,7 +56,7 @@
 								"_Type": "SimplePropertyCollection.Type.Cell",
 								"KeyName": "Instrutor Secundário",
 								"AccessoryType": "DisclosureIndicator",
-								"Visible": true
+								"Visible": false
 							}
 						},
 						{
