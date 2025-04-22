@@ -113,10 +113,22 @@
 	],
 	"_Type": "Page",
 	"_Name": "UserActivityLog",
+	"OnLoaded": "/Attendance_List/Rules/Logging/UserLogSetting.js",
 	"ActionBar": {
+		"Items": [
+			{
+				"_Type": "Control.Type.ActionBarItem",
+				"_Name": "ActionBarItem0",
+				"Caption": "Voltar",
+				"Position": "Left",
+				"IsIconCircular": false,
+				"Visible": true,
+				"OnPress": "/Attendance_List/Actions/Teams/NavToMain.action"
+			}
+		],
+		"_Name": "ActionBar0",
+		"_Type": "Control.Type.ActionBar",
 		"Caption": "Activity Log",
-		"PrefersLargeCaption": false,
-		"_Type": "Control.Type.ActionBar"
-	},
-	"OnLoaded": "/Attendance_List/Rules/Logging/UserLogSetting.js"
+		"PrefersLargeCaption": false
+	}
 }
