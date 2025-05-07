@@ -181,7 +181,6 @@
 					"Card": {
 						"Visible": true,
 						"Title": "{externalName}",
-						"Subhead": "Local: {cust_LOCN_DESC}",
 						"DetailImage": "/Attendance_List/Images/logo.png",
 						"DetailImageIsCircular": false,
 						"Description": "/Attendance_List/Rules/Main/TeamDescription.js",
@@ -222,8 +221,18 @@
 	},
 	"_Type": "Page",
 	"_Name": "Main",
+	"OnLoaded": "/Attendance_List/Actions/Teams/onLoadLogging.action",
 	"ActionBar": {
 		"Items": [
+			{
+				"_Type": "Control.Type.ActionBarItem",
+				"_Name": "ActionBarItem1",
+				"Caption": "Log",
+				"Position": "Left",
+				"IsIconCircular": false,
+				"Visible": true,
+				"OnPress": "/Attendance_List/Actions/Teams/onLoadLogging.action"
+			},
 			{
 				"_Type": "Control.Type.ActionBarItem",
 				"_Name": "ActionBarItem0",

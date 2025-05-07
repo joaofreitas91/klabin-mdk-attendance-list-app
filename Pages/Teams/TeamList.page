@@ -36,7 +36,6 @@
 						"Visible": true,
 						"Title": "{externalName}",
 						"Subhead": "/Attendance_List/Rules/Main/StartTeam.js",
-						"Footnote": "Local: {cust_LOCN_DESC}",
 						"DetailImageIsCircular": false,
 						"StatusText": "/Attendance_List/Rules/Main/EndTeam.js",
 						"PrimaryAction": {
@@ -67,7 +66,7 @@
 	"_Name": "TeamList",
 	"ActionBar": {
 		"Items": [],
-		"_Name": "ActionBar1",
+		"_Name": "ActionBar2",
 		"_Type": "Control.Type.ActionBar"
 	}
 }

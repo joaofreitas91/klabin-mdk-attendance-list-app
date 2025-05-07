@@ -66,7 +66,7 @@
 								"_Type": "SimplePropertyCollection.Type.Cell",
 								"KeyName": "Local",
 								"AccessoryType": "None",
-								"Visible": true
+								"Visible": false
 							}
 						},
 						{
