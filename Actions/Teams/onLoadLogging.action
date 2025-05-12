@@ -1,0 +1,8 @@
+{
+	"_Type": "Action.Type.Logger.LogMessage",
+	"ActionResult": {
+		"_Name": "onLoadLogging"
+	},
+	"Message": "App is loaded",
+	"Level": "Error"
+}

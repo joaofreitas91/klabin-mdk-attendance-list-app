@@ -226,12 +226,12 @@
 		"Items": [
 			{
 				"_Type": "Control.Type.ActionBarItem",
-				"_Name": "ActionBarItem1",
-				"Caption": "Log",
+				"_Name": "showUserButton",
+				"Caption": "Show User",
 				"Position": "Left",
 				"IsIconCircular": false,
-				"Visible": true,
-				"OnPress": "/Attendance_List/Actions/Teams/onLoadLogging.action"
+				"Visible": false,
+				"OnPress": "/Attendance_List/Rules/Teams/ShowUser.js"
 			},
 			{
 				"_Type": "Control.Type.ActionBarItem",
