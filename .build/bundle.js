@@ -2411,10 +2411,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ SaveCreate)
 /* harmony export */ });
 /* harmony import */ var _Application_Cuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Application/Cuid */ "./build.definitions/Attendance_List/Rules/Application/Cuid.js");
+/* harmony import */ var _Create_GetDefaultInstructor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create/GetDefaultInstructor */ "./build.definitions/Attendance_List/Rules/Teams/Create/GetDefaultInstructor.js");
 /**
  * Describe this function...
  * @param {IClientAPI} clientAPI
  */
+
 
 async function SaveCreate(clientAPI) {
   function calculateHoursDiff(inpStartDate, inpEndDate) {
@@ -2454,6 +2456,17 @@ async function SaveCreate(clientAPI) {
   }
   try {
     clientAPI.showActivityIndicator();
+    const instructor = await (0,_Create_GetDefaultInstructor__WEBPACK_IMPORTED_MODULE_1__["default"])(clientAPI);
+    if (!instructor) {
+      clientAPI.dismissActivityIndicator();
+      return clientAPI.executeAction({
+        "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+        "Properties": {
+          "Title": "Erro ao criar turma",
+          "Message": `Você não está cadastrado como instrutor, verifique o cadastro, sincronize os dados e tente novamente.`
+        }
+      });
+    }
     const teamId = (0,_Application_Cuid__WEBPACK_IMPORTED_MODULE_0__["default"])();
     const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/');
     // const workload = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellSimplePropertyWorkload/#Value')
@@ -2635,6 +2648,7 @@ async function SaveCreate(clientAPI) {
         "Properties": {
           "externalCode": teamId,
           "externalName": curse.cust_CPNT_TITLE,
+          "cust_INST_ID1": instructor,
           "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
           "cust_SSG_SEG_NUM": String(Number((workload * dailyList.length).toFixed(2))),
           "cust_intervalo": interval,
@@ -2662,10 +2676,11 @@ async function SaveCreate(clientAPI) {
       }
     });
   } catch (error) {
+    clientAPI.dismissActivityIndicator();
     return clientAPI.executeAction({
       "Name": "/Attendance_List/Actions/GenericMessageBox.action",
       "Properties": {
-        "Title": "Criação de turma",
+        "Title": "Error ao criar turma",
         "Message": `Erro: ${error.message}`
       }
     });
@@ -4642,7 +4657,7 @@ module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult"
   \*********************************************************************************/
 /***/ ((module) => {
 
-module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult":{"_Name":"CreateEntityTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"Properties":{"externalCode":"","cust_ACT_CPNT_ID":"#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue","cust_END_TME":"#Control:FormCellDatePickerEndDate/#Value","cust_INST_ID1":"#Page:TeamCreate/#Control:FormCellListPickerInstructor1/#SelectedValue","cust_INST_ID2":"#Control:FormCellListPickerInstructor2/#SelectedValue","cust_SSG_SEG_NUM":"#Control:FormCellSimplePropertyWorkload/#Value","cust_START_TME":"#Control:FormCellDatePickerStartDate/#Value"}}
+module.exports = {"_Type":"Action.Type.ODataService.CreateEntity","ActionResult":{"_Name":"CreateEntityTeam"},"Target":{"Service":"/Attendance_List/Services/CAP_SERVICE_SF_LMS.service","EntitySet":"cust_Turmas"},"Properties":{"externalCode":"","cust_ACT_CPNT_ID":"#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue","cust_END_TME":"#Control:FormCellDatePickerEndDate/#Value","cust_INST_ID1":"#Page:TeamCreate/#Control:FormCellListPickerInstructor1/#SelectedValue","cust_SSG_SEG_NUM":"#Control:FormCellSimplePropertyWorkload/#Value","cust_START_TME":"#Control:FormCellDatePickerStartDate/#Value"}}
 
 /***/ }),
 

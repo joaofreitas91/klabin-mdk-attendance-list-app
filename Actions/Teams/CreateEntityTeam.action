@@ -12,7 +12,6 @@
 		"cust_ACT_CPNT_ID": "#Page:TeamCreate/#Control:FormCellListPickerCurse/#SelectedValue",
 		"cust_END_TME": "#Control:FormCellDatePickerEndDate/#Value",
 		"cust_INST_ID1": "#Page:TeamCreate/#Control:FormCellListPickerInstructor1/#SelectedValue",
-		"cust_INST_ID2": "#Control:FormCellListPickerInstructor2/#SelectedValue",
 		"cust_SSG_SEG_NUM": "#Control:FormCellSimplePropertyWorkload/#Value",
 		"cust_START_TME": "#Control:FormCellDatePickerStartDate/#Value"
 	}
