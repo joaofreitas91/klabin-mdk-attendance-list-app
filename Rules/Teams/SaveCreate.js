@@ -3,6 +3,7 @@
  * @param {IClientAPI} clientAPI
  */
 import Cuid from "../Application/Cuid"
+import GetDefaultInstructor from "./Create/GetDefaultInstructor";
 
 export default async function SaveCreate(clientAPI) {
 
@@ -60,6 +61,19 @@ export default async function SaveCreate(clientAPI) {
     try {
 
         clientAPI.showActivityIndicator()
+
+        const instructor = await GetDefaultInstructor(clientAPI)
+
+        if (!instructor) {
+            clientAPI.dismissActivityIndicator();
+            return clientAPI.executeAction({
+                "Name": "/Attendance_List/Actions/GenericMessageBox.action",
+                "Properties": {
+                    "Title": "Erro ao criar turma",
+                    "Message": `Você não está cadastrado como instrutor, verifique o cadastro, sincronize os dados e tente novamente.`
+                }
+            });
+        }
 
         const teamId = Cuid()
         const partners = clientAPI.evaluateTargetPath('#Page:TeamCreate/#Control:FormCellListPickerParticipants/#Value/')
@@ -251,12 +265,16 @@ export default async function SaveCreate(clientAPI) {
             })
         }))
 
+
+
+
         await clientAPI.executeAction({ // criar turma
             "Name": "/Attendance_List/Actions/Teams/CreateEntityTeam.action",
             "Properties": {
                 "Properties": {
                     "externalCode": teamId,
                     "externalName": curse.cust_CPNT_TITLE,
+                    "cust_INST_ID1": instructor,
                     "cust_CPNT_TYP_ID": curse.cust_CPNT_TYP_ID,
                     "cust_SSG_SEG_NUM": String(Number((workload * dailyList.length).toFixed(2))),
                     "cust_intervalo": interval,
@@ -287,11 +305,12 @@ export default async function SaveCreate(clientAPI) {
         });
 
     } catch (error) {
+        clientAPI.dismissActivityIndicator();
 
         return clientAPI.executeAction({
             "Name": "/Attendance_List/Actions/GenericMessageBox.action",
             "Properties": {
-                "Title": "Criação de turma",
+                "Title": "Error ao criar turma",
                 "Message": `Erro: ${error.message}`
             }
         });
